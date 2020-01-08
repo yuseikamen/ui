@@ -33,6 +33,10 @@
     "vanitygen": "node packages/app-accounts/scripts/vanitygen.js",
     "start": "cd packages/apps && webpack --config webpack.config.js"
   },
+  "dependencies": {
+    "@cennznet/api": "^0.20.7",
+    "@cennznet/types": "^0.20.7"
+  },
   "devDependencies": {
     "@babel/core": "^7.7.7",
     "@babel/register": "^7.7.7",
