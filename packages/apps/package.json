@@ -18,5 +18,8 @@
     "@polkadot/react-signer": "^0.37.0-beta.62",
     "@polkadot/ui-assets": "^0.47.0-beta.3",
     "query-string": "^6.8.3"
+  },
+  "devDependencies": {
+    "webpack-cli": "^3.3.10"
   }
 }

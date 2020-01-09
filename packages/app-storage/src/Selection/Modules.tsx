@@ -8,7 +8,7 @@ import { RawParams } from '@polkadot/react-params/types';
 import { ComponentProps, StorageEntryPromise } from '../types';
 
 import React, { useContext, useState } from 'react';
-import { getTypeDef } from '@polkadot/types';
+import { getTypeDef } from '@cennznet/types';
 import { Button, InputStorage } from '@polkadot/react-components';
 import Params from '@polkadot/react-params';
 import { ApiContext } from '@polkadot/react-api';

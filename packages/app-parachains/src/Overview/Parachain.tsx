@@ -8,7 +8,7 @@ import { I18nProps } from '@polkadot/react-components/types';
 import BN from 'bn.js';
 import React from 'react';
 import styled from 'styled-components';
-import { Bytes, Option } from '@polkadot/types';
+import { Bytes, Option } from '@cennznet/types';
 import { Card, Static } from '@polkadot/react-components';
 import { styles as rowStyles } from '@polkadot/react-components/Row';
 import { withCalls, withMulti } from '@polkadot/react-api';

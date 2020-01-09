@@ -4,7 +4,7 @@
 
 import { BlockNumber, Extrinsic, Health, PeerInfo } from '@polkadot/types/interfaces';
 
-import { Vec } from '@polkadot/types';
+import { Vec } from '@cennznet/types';
 
 export interface Info {
   blockNumber?: BlockNumber;

@@ -7,7 +7,7 @@ import { Codec, TypeDef } from '@polkadot/types/types';
 import { BareProps } from './types';
 
 import React from 'react';
-import { getTypeDef } from '@polkadot/types';
+import { getTypeDef } from '@cennznet/types';
 import Params from '@polkadot/react-params';
 
 import { classes } from './util';

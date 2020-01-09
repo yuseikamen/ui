@@ -14,7 +14,7 @@ import ReactDOM from 'react-dom';
 import { HashRouter } from 'react-router-dom';
 import store from 'store';
 import { ThemeProvider } from 'styled-components';
-import { getTypeRegistry } from '@polkadot/types';
+import { getTypeRegistry } from '@cennznet/types';
 import { Api } from '@polkadot/react-api';
 import { QueueConsumer } from '@polkadot/react-components/Status/Context';
 import Queue from '@polkadot/react-components/Status/Queue';

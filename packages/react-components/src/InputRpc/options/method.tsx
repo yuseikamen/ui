@@ -10,7 +10,8 @@ import map from '@polkadot/jsonrpc';
 
 export default function createOptions (api: ApiPromise, sectionName: string): DropdownOptions {
   const section = map[sectionName];
-
+  // console.log("***************************");
+  // console.log('Section:',section);
   if (!section || Object.keys((api.rpc as any)[sectionName]).length === 0) {
     return [];
   }

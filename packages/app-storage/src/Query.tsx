@@ -12,7 +12,7 @@ import styled from 'styled-components';
 import { Button, Labelled } from '@polkadot/react-components';
 import { withCallDiv } from '@polkadot/react-api';
 import valueToText from '@polkadot/react-params/valueToText';
-import { Compact, Data, Option } from '@polkadot/types';
+import { Compact, Data, Option } from '@cennznet/types';
 import { isU8a, u8aToHex, u8aToString } from '@polkadot/util';
 
 import translate from './translate';
@@ -78,7 +78,9 @@ function createComponent (type: string, Component: React.ComponentType<any>, def
 
 function getCachedComponent (query: QueryTypes): CacheInstance {
   const { id, isConst, key, params = [] } = query as StorageModuleQuery;
-
+  // console.log('^^^^^^^^^^^^^^^^^^^^^^^');
+  console.log('KEY....',key);
+  console.log('Params:',params);
   if (!cache[id]) {
     let renderHelper;
     let type: string;

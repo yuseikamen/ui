@@ -14,6 +14,7 @@ export default function withCalls <P> (...calls: Call[]): (Component: React.Comp
   return (Component: React.ComponentType<P>): React.ComponentType<any> => {
     // NOTE: Order is reversed so it makes sense in the props, i.e. component
     // after something can use the value of the preceding version
+    console.log('Inside with calls..');
     return calls
       .reverse()
       .reduce((Component, call): React.ComponentType<any> => {

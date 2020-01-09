@@ -5,7 +5,7 @@
 import { Props } from '../types';
 
 import React, { useEffect, useState } from 'react';
-import { Compact } from '@polkadot/types';
+import { Compact } from '@cennznet/types';
 import { Input } from '@polkadot/react-components';
 import { hexToU8a, u8aConcat } from '@polkadot/util';
 

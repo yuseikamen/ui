@@ -36,7 +36,7 @@ export default function Transfer ({ accountId }: Props): React.ReactElement<Prop
               icon='send'
               label='make transfer'
               params={[recipientId, amount]}
-              tx='balances.transfer'
+              tx='genericAsset.transfer'
             />
           </Button.Group>
         </div>

@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import React from 'react';
-import { createType } from '@polkadot/types';
+import { createType } from '@cennznet/types';
 import { Button, Input } from '@polkadot/react-components';
 
 import ContractModal, { ContractModalProps as Props, ContractModalState } from '../Modal';

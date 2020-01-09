@@ -7,7 +7,7 @@ import { Props as BaseProps, RawParam } from '../types';
 
 import React, { useState } from 'react';
 import { WithTranslation } from 'react-i18next';
-import { Vec } from '@polkadot/types';
+import { Vec } from '@cennznet/types';
 import { assert, isHex, u8aToHex, u8aToString } from '@polkadot/util';
 
 import translate from '../translate';

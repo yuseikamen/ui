@@ -6,7 +6,7 @@ import { TypeDef } from '@polkadot/types/types';
 import { ParamDef, Props, RawParam } from '../types';
 
 import React, { useEffect, useState } from 'react';
-import { createType, getTypeDef } from '@polkadot/types';
+import { createType, getTypeDef } from '@cennznet/types';
 
 import Params from '../';
 import Base from './Base';

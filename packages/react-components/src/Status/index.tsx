@@ -7,7 +7,7 @@ import { QueueStatus, QueueTx, QueueTxStatus } from './types';
 
 import React from 'react';
 import styled from 'styled-components';
-import { GenericCall } from '@polkadot/types';
+import { GenericCall } from '@cennznet/types';
 
 import AddressMini from '../AddressMini';
 import Button from '../Button';

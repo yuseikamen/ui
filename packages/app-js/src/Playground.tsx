@@ -15,7 +15,7 @@ import styled from 'styled-components';
 import { ApiContext } from '@polkadot/react-api';
 import { Button, Dropdown, Editor } from '@polkadot/react-components';
 import uiKeyring from '@polkadot/ui-keyring';
-import * as types from '@polkadot/types';
+import * as types from '@cennznet/types';
 import * as util from '@polkadot/util';
 import * as hashing from '@polkadot/util-crypto';
 

@@ -6,7 +6,7 @@ import { TypeDef, TypeDefInfo } from '@polkadot/types/types';
 import { RawParamValue } from './types';
 
 import BN from 'bn.js';
-import { Bytes, U8a, createType, getTypeDef } from '@polkadot/types';
+import { Bytes, U8a, createType, getTypeDef } from '@cennznet/types';
 
 export default function getInitValue (def: TypeDef): RawParamValue | RawParamValue[] {
   if (def.info === TypeDefInfo.Vec) {

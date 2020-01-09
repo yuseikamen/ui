@@ -8,7 +8,7 @@ import { AccountId, StakingLedger } from '@polkadot/types/interfaces';
 
 import React, { useEffect, useState } from 'react';
 import { Icon } from '@polkadot/react-components';
-import { Option } from '@polkadot/types';
+import { Option } from '@cennznet/types';
 import { withCalls } from '@polkadot/react-api';
 
 import translate from '../../translate';

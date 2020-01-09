@@ -4,8 +4,8 @@
 
 import { SubmittableExtrinsicFunction } from '@polkadot/api/promise/types';
 
-import ApiPromise from '@polkadot/api/promise';
-
+// import ApiPromise from '@polkadot/api/promise';
+import {Api as ApiPromise} from '@cennznet/api';
 // helpers for HOC props
 export type OmitProps<T, K> = Pick<T, Exclude<keyof T, K>>;
 export type SubtractProps<T, K> = OmitProps<T, keyof K>;

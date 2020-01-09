@@ -6,7 +6,7 @@ import { Extrinsic } from '@polkadot/types/interfaces';
 import { Props } from '../types';
 
 import React from 'react';
-import { GenericCall } from '@polkadot/types';
+import { GenericCall } from '@cennznet/types';
 import { Call, Static } from '@polkadot/react-components';
 import { classes } from '@polkadot/react-components/util';
 

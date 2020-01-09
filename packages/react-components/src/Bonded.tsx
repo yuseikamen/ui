@@ -15,7 +15,7 @@ import { classes } from './util';
 export interface Props extends BareProps {
   bonded?: BN | BN[];
   label?: React.ReactNode;
-  params?: AccountId | AccountIndex | Address | string | Uint8Array | null;
+  params?: any;
   withLabel?: boolean;
 }
 

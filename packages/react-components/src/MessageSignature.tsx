@@ -7,7 +7,7 @@ import { I18nProps } from '@polkadot/react-components/types';
 
 import React from 'react';
 import styled from 'styled-components';
-import { displayType } from '@polkadot/types';
+import { displayType } from '@cennznet/types';
 
 import Icon from './Icon';
 import Tooltip from './Tooltip';

@@ -5,7 +5,7 @@
 import { Props, RawParam } from '@polkadot/react-params/types';
 
 import React, { useContext } from 'react';
-import { createType } from '@polkadot/types';
+import { createType } from '@cennznet/types';
 import { ApiContext } from '@polkadot/react-api';
 
 import ExtrinsicDisplay from './Extrinsic';

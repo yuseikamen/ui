@@ -15,7 +15,7 @@ import {
   storageGetInfo,
   storageSystemEvents,
   storageListenToBalanceChange,
-  storageListenToMultipleBalancesChange,
+  // storageListenToMultipleBalancesChange,
   storageRetrieveInfoOnQueryKeys
 } from './storage-examples';
 
@@ -35,7 +35,7 @@ const snippets: Snippet[] = [
   storageGetInfo,
   storageSystemEvents,
   storageListenToBalanceChange,
-  storageListenToMultipleBalancesChange,
+ // storageListenToMultipleBalancesChange,
   storageRetrieveInfoOnQueryKeys,
   constsStakingParameters,
   extrinsicMakeTransfer

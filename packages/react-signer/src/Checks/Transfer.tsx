@@ -9,7 +9,7 @@ import { ExtraFees } from './types';
 
 import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
-import { Compact, UInt } from '@polkadot/types';
+import { Compact, UInt } from '@cennznet/types';
 import { withCalls, withMulti } from '@polkadot/react-api';
 import { Icon } from '@polkadot/react-components';
 import { formatBalance } from '@polkadot/util';
@@ -18,9 +18,9 @@ import translate from '../translate';
 import { ZERO_BALANCE } from './constants';
 
 interface Props extends I18nProps {
+  assetId?: BN,
   amount: BN | Compact<UInt>;
   fees: DerivedFees;
-  balances_all?: DerivedBalances;
   recipientId: string;
   onChange: (fees: ExtraFees) => void;
 }
@@ -30,7 +30,7 @@ interface State extends ExtraFees {
   isNoEffect: boolean;
 }
 
-export function Transfer ({ amount, balances_all = ZERO_BALANCE, fees, onChange, t }: Props): React.ReactElement<Props> {
+export function Transfer ({ amount, fees, onChange, t }: Props): React.ReactElement<Props> {
   const [{ isCreation, isNoEffect }, setState] = useState<State>({
     extraFees: new BN(0),
     extraAmount: new BN(0),
@@ -42,13 +42,13 @@ export function Transfer ({ amount, balances_all = ZERO_BALANCE, fees, onChange,
   useEffect((): void => {
     let extraFees = new BN(fees.transferFee);
 
-    if (balances_all.votingBalance.isZero()) {
-      extraFees = extraFees.add(fees.creationFee);
-    }
+    // if (balances_all.votingBalance.isZero()) {
+    //   extraFees = extraFees.add(fees.creationFee);
+    // }
 
     const extraAmount = amount instanceof Compact ? amount.unwrap() : new BN(amount);
-    const isCreation = balances_all.votingBalance.isZero() && fees.creationFee.gtn(0);
-    const isNoEffect = extraAmount.add(balances_all.votingBalance).lt(fees.existentialDeposit);
+    const isCreation = false;
+    const isNoEffect = false;
     const extraWarn = isCreation || isNoEffect;
     const update = {
       extraAmount,
@@ -56,14 +56,14 @@ export function Transfer ({ amount, balances_all = ZERO_BALANCE, fees, onChange,
       extraWarn
     };
 
-    onChange(update);
+   // onChange(update);
 
     setState({
       ...update,
       isCreation,
       isNoEffect
     });
-  }, [amount, balances_all, fees]);
+  }, [amount,  fees]);
 
   return (
     <>
@@ -94,7 +94,9 @@ export function Transfer ({ amount, balances_all = ZERO_BALANCE, fees, onChange,
 export default withMulti(
   Transfer,
   translate,
-  withCalls<Props>(
-    ['derive.balances.all', { paramName: 'recipientId' }]
-  )
+  // withCalls<Props>(
+  //   // ['query.genericAsset.freeBalance', {
+  //   //   paramName: 'assetId' }]
+  //     ['query.genericAsset.freeBalance', { paramName: ['assetId', 'recipientId'] }],
+  // )
 );

@@ -6,7 +6,7 @@
 import { EthereumAddress, EcdsaSignature } from '@polkadot/types/interfaces';
 
 import secp256k1 from 'secp256k1/elliptic';
-import { createType } from '@polkadot/types';
+import { createType } from '@cennznet/types';
 import { assert, hexToU8a, stringToU8a, u8aToBuffer, u8aConcat } from '@polkadot/util';
 import { keccakAsHex, keccakAsU8a } from '@polkadot/util-crypto';
 

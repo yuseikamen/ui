@@ -6,7 +6,7 @@ import { Props } from '../types';
 
 import BN from 'bn.js';
 import React from 'react';
-import { GenericVote } from '@polkadot/types';
+import { GenericVote } from '@cennznet/types';
 import { Dropdown } from '@polkadot/react-components';
 
 import Bare from './Bare';

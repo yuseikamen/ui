@@ -8,7 +8,7 @@ import { QueueTxPayloadAdd, QueueTxMessageSetStatus, QueueTxStatus } from '@polk
 import { Hash } from '@polkadot/types/interfaces';
 import { SignerPayloadJSON } from '@polkadot/types/types';
 
-import { ClassOf } from '@polkadot/types';
+import { ClassOf } from '@cennznet/types';
 
 export default class ApiSigner implements Signer {
   private _queuePayload: QueueTxPayloadAdd;

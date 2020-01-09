@@ -9,7 +9,7 @@ import { ComponentProps } from './types';
 import React from 'react';
 import { withCalls } from '@polkadot/react-api';
 import { Button } from '@polkadot/react-components';
-import { createType } from '@polkadot/types';
+import { createType } from '@cennznet/types';
 
 import Members from './Members';
 import SubmitCandidacy from './SubmitCandidacy';

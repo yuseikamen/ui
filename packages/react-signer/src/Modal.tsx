@@ -16,7 +16,7 @@ import BN from 'bn.js';
 import React from 'react';
 import { SubmittableResult } from '@polkadot/api';
 import { web3FromSource } from '@polkadot/extension-dapp';
-import { createType } from '@polkadot/types';
+import { createType } from '@cennznet/types';
 import { Button, InputBalance, Modal, Toggle } from '@polkadot/react-components';
 import { withApi, withMulti, withObservable } from '@polkadot/react-api';
 import keyring from '@polkadot/ui-keyring';
@@ -493,7 +493,7 @@ class Signer extends React.PureComponent<Props, State> {
     const submittable = extrinsic as SubmittableExtrinsic;
 
     assert(submittable, 'Expected an extrinsic to be supplied to sendExtrinsic');
-
+    console.log("Submittable:", submittable);
     return isUnsigned
       // eslint-disable-next-line @typescript-eslint/unbound-method
       ? this.makeExtrinsicCall(submittable, queueTx, submittable.send)

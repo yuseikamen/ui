@@ -5,7 +5,7 @@
 import { Props } from '../types';
 
 import React from 'react';
-import { ClassOf } from '@polkadot/types';
+import { ClassOf } from '@cennznet/types';
 import { Dropdown } from '@polkadot/react-components';
 import { bnToBn } from '@polkadot/util';
 

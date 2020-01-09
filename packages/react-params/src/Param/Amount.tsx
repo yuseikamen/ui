@@ -6,7 +6,7 @@ import { Props } from '../types';
 
 import BN from 'bn.js';
 import React from 'react';
-import { ClassOf } from '@polkadot/types';
+import { ClassOf } from '@cennznet/types';
 import { Input } from '@polkadot/react-components';
 import { bnToBn, formatNumber } from '@polkadot/util';
 

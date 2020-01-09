@@ -10,8 +10,10 @@ const nonce = await api.query.system.accountNonce(ALICE),
 
 console.log('Current nonce', nonce);
 
-const unsub = await api.tx.balances
-  .transfer(recipient,12345)
+const unsub = await api.tx.genericAsset
+  .transfer(16000, receiver.address, 12345)
+// const unsub = await api.tx.balances
+//   .transfer(recipient,12345)
   .signAndSend(sender, ({ events = [], status }) => {
     console.log('Transaction status:', status.type);
 

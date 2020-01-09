@@ -8,7 +8,7 @@ import { ApiProps } from '@polkadot/react-api/types';
 import { ComponentProps } from './types';
 
 import React from 'react';
-import { createType } from '@polkadot/types';
+import { createType } from '@cennznet/types';
 import { Button, Icon, Extrinsic, TxButton, TxComponent } from '@polkadot/react-components';
 import { withApi, withMulti } from '@polkadot/react-api';
 

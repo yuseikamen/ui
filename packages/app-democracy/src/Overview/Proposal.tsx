@@ -8,7 +8,7 @@ import { I18nProps } from '@polkadot/react-components/types';
 
 import BN from 'bn.js';
 import React from 'react';
-import { Option, Tuple, Vec } from '@polkadot/types';
+import { Option, Tuple, Vec } from '@cennznet/types';
 import { ActionItem, InputAddress, Labelled, Static } from '@polkadot/react-components';
 import { withCalls, withMulti } from '@polkadot/react-api';
 import { formatBalance } from '@polkadot/util';

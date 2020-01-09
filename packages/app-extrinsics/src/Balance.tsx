@@ -30,6 +30,8 @@ function BalanceDisplay ({ className, label, style, balances_all }: Props): Reac
 export default withMulti(
   BalanceDisplay,
   withCalls<Props>(
-    ['derive.balances.all', { paramName: 'params' }]
+    //['query.genericAsset.freeBalance', { paramName: 'params' }]
+     ['query.genericAsset.freeBalance', { paramName: ['assetId', 'addressId'] }],
+
   )
 );

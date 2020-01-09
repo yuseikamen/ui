@@ -7,7 +7,7 @@ import { Proposal } from '@polkadot/types/interfaces';
 import BN from 'bn.js';
 import React from 'react';
 import styled from 'styled-components';
-import { GenericCall } from '@polkadot/types';
+import { GenericCall } from '@cennznet/types';
 import { formatNumber } from '@polkadot/util';
 
 import Call from './Call';

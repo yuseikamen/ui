@@ -5,6 +5,7 @@
 import { DerivedBalances, DerivedStaking } from '@polkadot/api-derive/types';
 import { ValidatorPrefs0to145 } from '@polkadot/types/interfaces';
 import { BareProps, I18nProps } from './types';
+import { AssetId } from '@cennznet/types';
 
 import BN from 'bn.js';
 import React from 'react';
@@ -41,7 +42,8 @@ export interface ValidatorPrefsType {
 
 interface Props extends BareProps, I18nProps {
   address: string;
-  balancesAll?: DerivedBalances;
+  assetId?: AssetId | string,
+  balancesAll?: any;
   children?: React.ReactNode;
   extraInfo?: [string, string][];
   stakingInfo?: DerivedStaking;
@@ -221,7 +223,7 @@ function renderValidatorPrefs ({ stakingInfo, t, withValidatorPrefs = false }: P
 }
 
 function renderBalances (props: Props): React.ReactNode {
-  const { balancesAll, stakingInfo, t, withBalance = true } = props;
+  const { balancesAll, stakingInfo, t, withBalance = true, assetId = 'CENTRAPAY-T' } = props;
   const balanceDisplay = withBalance === true
     ? DEFAULT_BALANCES
     : withBalance || false;
@@ -383,11 +385,12 @@ export default withMulti(
   `,
   translate,
   withCalls<Props>(
-    ['derive.balances.all', {
-      paramName: 'address',
-      propName: 'balancesAll',
-      skipIf: skipBalancesIf
-    }],
+    ['query.genericAsset.freeBalance', { paramName: ['assetId', 'address'] }],
+    // ['query.genericAsset.freeBalance', {
+    //   paramName: 'assetId',
+    //   propName: 'balancesAll',
+    //   skipIf: skipBalancesIf
+    // }],
     ['derive.staking.info', {
       paramName: 'address',
       propName: 'stakingInfo',

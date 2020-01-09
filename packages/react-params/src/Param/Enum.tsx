@@ -6,7 +6,7 @@ import { TypeDef } from '@polkadot/types/types';
 import { ParamDef, Props, RawParam } from '../types';
 
 import React, { useEffect, useState } from 'react';
-import { Enum, createType, getTypeDef } from '@polkadot/types';
+import { Enum, createType, getTypeDef } from '@cennznet/types';
 import { Dropdown } from '@polkadot/react-components';
 
 import Params from '../';

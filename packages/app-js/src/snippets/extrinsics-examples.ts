@@ -17,7 +17,7 @@ const BOB = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty';
 const randomAmount = Math.floor((Math.random() * 100000) + 1);
 
 // Create a extrinsic, transferring randomAmount units to Bob.
-const transfer = api.tx.balances.transfer(BOB, randomAmount);
+const transfer = api.tx.genericAssets.transfer(16001, BOB, randomAmount);
 
 // Sign and Send the transaction
 transfer.signAndSend(ALICE, ({ events = [], status }) => {

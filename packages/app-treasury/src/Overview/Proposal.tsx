@@ -8,7 +8,7 @@ import { SubjectInfo } from '@polkadot/ui-keyring/observable/types';
 
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { Option } from '@polkadot/types';
+import { Option } from '@cennznet/types';
 import { ActionItem, Icon, TreasuryProposal } from '@polkadot/react-components';
 import { withCalls, withMulti, withObservable } from '@polkadot/react-api';
 import keyring from '@polkadot/ui-keyring';

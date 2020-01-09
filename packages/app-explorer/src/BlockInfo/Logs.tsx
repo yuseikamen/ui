@@ -7,7 +7,7 @@ import { Codec, TypeDef } from '@polkadot/types/types';
 import { I18nProps } from '@polkadot/react-components/types';
 
 import React from 'react';
-import { Struct, Tuple, U8a, Vec, getTypeDef } from '@polkadot/types';
+import { Struct, Tuple, U8a, Vec, getTypeDef } from '@cennznet/types';
 import { Column } from '@polkadot/react-components';
 import Params from '@polkadot/react-params';
 

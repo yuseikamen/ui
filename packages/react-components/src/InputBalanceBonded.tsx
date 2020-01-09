@@ -8,6 +8,7 @@ import { DerivedFees, DerivedBalances } from '@polkadot/api-derive/types';
 
 import BN from 'bn.js';
 import React from 'react';
+import { AssetId } from '@cennznet/types';
 import { ApiProps } from '@polkadot/react-api/types';
 import { BitLengthOption } from '@polkadot/react-components/constants';
 import { calcTxLength } from '@polkadot/react-signer/Checks';
@@ -20,7 +21,7 @@ import { bnMax } from '@polkadot/util';
 interface Props extends BareProps, ApiProps {
   autoFocus?: boolean;
   balances_fees?: DerivedFees;
-  balances_all?: DerivedBalances;
+  balances_all?: any;
   controllerId: string;
   defaultValue?: BN | string;
   destination?: number;
@@ -32,6 +33,7 @@ interface Props extends BareProps, ApiProps {
   onChange?: (value?: BN) => void;
   onEnter?: () => void;
   placeholder?: string;
+  assetId?: AssetId | string,
   stashId: string;
   value?: BN | string;
   withEllipsis?: boolean;
@@ -105,7 +107,7 @@ class InputBalanceBonded extends React.PureComponent<Props, State> {
   private setMaxBalance = (): void => {
     const { api, balances_fees = ZERO_FEES, balances_all = ZERO_BALANCE, controllerId, destination, extrinsicProp } = this.props;
     const { transactionBaseFee, transactionByteFee } = balances_fees;
-    const { freeBalance } = balances_all;
+   // const { freeBalance } = balances_all;
     let prevMax = new BN(0);
     let maxBalance = new BN(1);
     let extrinsic;
@@ -126,7 +128,7 @@ class InputBalanceBonded extends React.PureComponent<Props, State> {
       const txLength = calcTxLength(extrinsic, balances_all.accountNonce);
       const fees = transactionBaseFee.add(transactionByteFee.mul(txLength));
 
-      maxBalance = bnMax(freeBalance.sub(fees), ZERO);
+      maxBalance = bnMax(balances_all.sub(fees), ZERO);
     }
 
     this.nextState({
@@ -155,7 +157,8 @@ export default withMulti(
   InputBalanceBonded,
   withApi,
   withCalls<Props>(
-    'derive.balances.fees',
-    ['derive.balances.all', { paramName: 'stashId' }]
+    'query.genericAsset.fees',
+    ['query.genericAsset.freeBalance', { paramName: ['assetId', 'stashId'] }],
+   // ['query.genericAsset.freeBalance', { paramName: 'stashId' }]
   )
 );

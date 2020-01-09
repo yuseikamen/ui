@@ -10,7 +10,7 @@ import { ApiProps } from '@polkadot/react-api/types';
 import BN from 'bn.js';
 import React from 'react';
 import styled from 'styled-components';
-import { Option } from '@polkadot/types';
+import { Option } from '@cennznet/types';
 import { AddressInfo, Button, InputAddress, InputBalance, Modal, TxButton, TxComponent } from '@polkadot/react-components';
 import { withCalls, withApi, withMulti } from '@polkadot/react-api';
 

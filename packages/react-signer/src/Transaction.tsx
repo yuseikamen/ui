@@ -7,7 +7,7 @@ import { QueueTx } from '@polkadot/react-components/Status/types';
 
 import BN from 'bn.js';
 import React from 'react';
-import { GenericCall } from '@polkadot/types';
+import { GenericCall } from '@cennznet/types';
 import { Call, InputAddress, Modal } from '@polkadot/react-components';
 
 import Checks from './Checks';

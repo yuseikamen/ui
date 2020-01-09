@@ -11,7 +11,7 @@ import { ComponentProps } from './types';
 import BN from 'bn.js';
 import React from 'react';
 import styled from 'styled-components';
-import { createType } from '@polkadot/types';
+import { createType } from '@cennznet/types';
 import { withCalls, withMulti } from '@polkadot/react-api';
 import { AddressRow, Button, Toggle } from '@polkadot/react-components';
 import TxModal, { TxModalState, TxModalProps } from '@polkadot/react-components/TxModal';

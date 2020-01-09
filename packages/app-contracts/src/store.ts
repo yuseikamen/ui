@@ -8,7 +8,7 @@ import { CodeJson, CodeStored } from './types';
 import EventEmitter from 'eventemitter3';
 import store from 'store';
 import { Abi } from '@polkadot/api-contract';
-import { createType } from '@polkadot/types';
+import { createType } from '@cennznet/types';
 import { api } from '@polkadot/react-api';
 
 const KEY_CODE = 'code:';

@@ -68,6 +68,7 @@ export default function withCall<P extends ApiProps> (endpoint: string, {
         const [, section, method] = endpoint.split('.');
 
         this.propName = `${section}_${method}`;
+        // console.log('PROPS NAME:', this.propName);
       }
 
       public componentDidUpdate (prevProps: any): void {
@@ -124,16 +125,30 @@ export default function withCall<P extends ApiProps> (endpoint: string, {
         }
       }
 
-      private getParams (props: any): [boolean, any[]] {
-        const paramValue = paramPick
-          ? paramPick(props)
-          : paramName
-            ? props[paramName]
-            : undefined;
+      private getParams (props: any): [boolean, Array<any>] {
+        let paramValue;
+        if (Array.isArray(paramName)) {
+          paramValue = paramName.map(name => props[name]);
+        } else {
+          paramValue = paramPick
+            ? paramPick(props)
+            : paramName
+              ? props[paramName]
+              : undefined;
+        }
 
         if (atProp) {
           at = props[atProp];
         }
+        // const paramValue = paramPick
+        //   ? paramPick(props)
+        //   : paramName
+        //     ? props[paramName]
+        //     : undefined;
+        //
+        // if (atProp) {
+        //   at = props[atProp];
+        // }
 
         // When we are specifying a param and have an invalid, don't use it. For 'params',
         // we default to the original types, i.e. no validation (query app uses this)
@@ -148,6 +163,8 @@ export default function withCall<P extends ApiProps> (endpoint: string, {
               ? paramValue
               : [paramValue]
           );
+        console.log("Param name..",paramName);
+        console.log("Param values..",values);
         return [true, values];
       }
 
@@ -160,7 +177,8 @@ export default function withCall<P extends ApiProps> (endpoint: string, {
         assert(!at || area === 'query', 'Only able to do an \'at\' query on the api.query interface');
 
         const apiSection = (api as any)[area][section];
-
+        // console.log('In construct api section...');
+        // console.log(' ', apiSection,' ',area, ' ', section, ' ', method);
         return [
           apiSection,
           area,
@@ -179,13 +197,20 @@ export default function withCall<P extends ApiProps> (endpoint: string, {
             'subscribe'
           ];
         }
-
+        console.log('End point:', endpoint);
         const endpoints: string[] = [endpoint].concat(fallbacks || []);
         const expanded = endpoints.map(this.constructApiSection);
-        const [apiSection, area, section, method] = expanded.find(([apiSection]): boolean =>
+        let [apiSection, area, section, method] = expanded.find(([apiSection]): boolean =>
           !!apiSection
         ) || [{}, expanded[0][1], expanded[0][2], expanded[0][3]];
-
+        // console.log('Inside REACT_API...................................>>>>>getApiMethod');
+        console.log('Method:', method);
+        // if (method === 'totalBalance' || section === 'balance' || method === 'freeBalance' ) {
+        //   const address = newParams[0];
+        //   newParams[0] = '16001';
+        //   newParams[1] = address;
+        // }
+      //  assert(method === 'freeBalance' && newParams.length !== 2 , 'Pass two params for GA' );
         assert(apiSection && apiSection[method], `Unable to find api.${area}.${section}.${method}`);
 
         const meta = apiSection[method].meta;
@@ -217,6 +242,7 @@ export default function withCall<P extends ApiProps> (endpoint: string, {
           assert(at || !atProp, 'Unable to perform query on non-existent at hash');
 
           info = this.getApiMethod(newParams);
+          console.log("Infor from query is ", info);
         } catch (error) {
           // don't flood the console with the same errors each time, just do it once, then
           // ignore it going forward
@@ -267,7 +293,7 @@ export default function withCall<P extends ApiProps> (endpoint: string, {
       private triggerUpdate (props: any, value?: any): void {
         try {
           const callResult = (props.transform || transform)(value);
-
+          console.log('Call Result::', callResult);
           if (!this.isActive || isEqual(callResult, this.state.callResult)) {
             return;
           }
@@ -280,7 +306,7 @@ export default function withCall<P extends ApiProps> (endpoint: string, {
             callUpdatedAt: Date.now()
           });
         } catch (error) {
-          // console.warn(endpoint, '::', error.message);
+           console.warn(endpoint, '::', error.message);
         }
       }
 

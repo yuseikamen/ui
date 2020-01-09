@@ -14,8 +14,9 @@ import { withCalls } from '@polkadot/react-api';
 import translate from '../../translate';
 
 interface Props extends ApiProps, I18nProps {
-  allBalances?: DerivedBalances;
+  allBalances?: any;
   accountId: string | null;
+  assetId: string;
   onError: (error: string | null) => void;
   value?: BN | null;
 }
@@ -29,7 +30,7 @@ function ValidateAmount ({ allBalances, onError, value, t }: Props): React.React
     if (allBalances && value) {
       let newError: string | null = null;
 
-      if (value.gt(allBalances.freeBalance)) {
+      if (value.gt(allBalances)) {
         newError = t('The specified value is greater than your free balance. The node will bond the maximum amount available.');
       }
 
@@ -53,9 +54,10 @@ function ValidateAmount ({ allBalances, onError, value, t }: Props): React.React
 
 export default translate(
   withCalls<Props>(
-    ['derive.balances.all', {
-      paramName: 'accountId',
-      propName: 'allBalances'
-    }]
+    // ['query.genericAsset.freeBalance', {
+    //   paramName: 'accountId',
+    //   propName: 'allBalances'
+    // }]
+      ['query.genericAsset.freeBalance', { paramName: ['assetId', 'accountId'], propName: 'allBalances' }],
   )(ValidateAmount)
 );

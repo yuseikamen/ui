@@ -14,7 +14,7 @@ import translate from '../translate';
 
 interface Props extends I18nProps {
   accountId?: string | null;
-  allBalances?: DerivedBalances;
+  allBalances?: any;
   onChange: (value: BN) => void;
 }
 

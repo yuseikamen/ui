@@ -9,6 +9,8 @@ import React from 'react';
 import ApiPromise from '@polkadot/api/promise';
 
 export default function createOptions (api: ApiPromise, sectionName: string): DropdownOptions {
+  // console.log('Section name', sectionName);
+  // console.log('INside key........');
   const section = api.query[sectionName];
 
   if (!section || Object.keys(section).length === 0) {

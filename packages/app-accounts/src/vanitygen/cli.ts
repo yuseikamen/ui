@@ -88,7 +88,7 @@ switch (network) {
     break;
 }
 
-console.log(options);
+// console.log(options);
 
 function showProgress (): void {
   const elapsed = (Date.now() - startAt) / 1000;

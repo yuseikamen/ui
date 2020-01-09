@@ -9,7 +9,7 @@ import { ExtraFees } from './types';
 
 import BN from 'bn.js';
 import React, { useState, useEffect } from 'react';
-import { Compact, UInt } from '@polkadot/types';
+import { Compact, UInt } from '@cennznet/types';
 import { withCalls, withMulti } from '@polkadot/react-api';
 import { Icon } from '@polkadot/react-components';
 import { formatBalance } from '@polkadot/util';

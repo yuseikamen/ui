@@ -7,7 +7,7 @@ import { AppProps, I18nProps } from '@polkadot/react-components/types';
 import React, { useEffect, useState } from 'react';
 import store from 'store';
 import styled from 'styled-components';
-import { getTypeRegistry } from '@polkadot/types';
+import { getTypeRegistry } from '@cennznet/types';
 import { Button, Editor, InputFile } from '@polkadot/react-components';
 import { isJsonObject, stringToU8a, u8aToString } from '@polkadot/util';
 

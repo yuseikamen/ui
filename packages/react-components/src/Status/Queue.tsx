@@ -8,7 +8,7 @@ import { ActionStatus, PartialQueueTxExtrinsic, PartialQueueTxRpc, QueueStatus, 
 
 import React, { useRef, useState } from 'react';
 import jsonrpc from '@polkadot/jsonrpc';
-import { createType } from '@polkadot/types';
+import { createType } from '@cennznet/types';
 
 import { QueueProvider } from './Context';
 import { SubmittableResult } from '@polkadot/api';

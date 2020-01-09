@@ -7,7 +7,7 @@ import { I18nProps } from '@polkadot/react-components/types';
 
 import React from 'react';
 import styled from 'styled-components';
-import { GenericCall } from '@polkadot/types';
+import { GenericCall } from '@cennznet/types';
 import { AddressMini, Call, Column, LinkPolkascan } from '@polkadot/react-components';
 import { formatNumber } from '@polkadot/util';
 

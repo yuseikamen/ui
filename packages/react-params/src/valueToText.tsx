@@ -9,7 +9,7 @@ import './Params.css';
 import React from 'react';
 import { classes } from '@polkadot/react-components/util';
 import { isNull, isUndefined, u8aToHex } from '@polkadot/util';
-import { Option, U8a } from '@polkadot/types';
+import { Option, U8a } from '@cennznet/types';
 
 interface DivProps {
   className?: string;

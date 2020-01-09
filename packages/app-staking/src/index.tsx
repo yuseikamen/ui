@@ -12,7 +12,7 @@ import { ComponentProps } from './types';
 import React from 'react';
 import { Route, Switch } from 'react-router';
 import styled from 'styled-components';
-import { Option } from '@polkadot/types';
+import { Option } from '@cennznet/types';
 import { HelpOverlay } from '@polkadot/react-components';
 import Tabs from '@polkadot/react-components/Tabs';
 import { withCalls, withMulti, withObservable } from '@polkadot/react-api';

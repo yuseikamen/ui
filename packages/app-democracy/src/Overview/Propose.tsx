@@ -7,7 +7,7 @@ import { ApiProps } from '@polkadot/react-api/types';
 
 import BN from 'bn.js';
 import React from 'react';
-import { createType } from '@polkadot/types';
+import { createType } from '@cennznet/types';
 import { Button, Extrinsic, InputBalance } from '@polkadot/react-components';
 import TxModal, { TxModalState, TxModalProps } from '@polkadot/react-components/TxModal';
 import { withApi, withMulti } from '@polkadot/react-api';

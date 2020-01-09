@@ -7,7 +7,7 @@ import { ExtraFees as State } from './types';
 
 import BN from 'bn.js';
 import React, { useEffect, useState } from 'react';
-import { Compact, UInt } from '@polkadot/types';
+import { Compact, UInt } from '@cennznet/types';
 
 interface Props {
   endowment: BN | Compact<UInt>;

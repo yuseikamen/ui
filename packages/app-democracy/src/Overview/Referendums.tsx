@@ -7,7 +7,7 @@ import { I18nProps } from '@polkadot/react-components/types';
 
 import React from 'react';
 import { ReferendumInfoExtended } from '@polkadot/api-derive/type';
-import { Option } from '@polkadot/types';
+import { Option } from '@cennznet/types';
 import { withCalls } from '@polkadot/react-api';
 import { Column } from '@polkadot/react-components';
 

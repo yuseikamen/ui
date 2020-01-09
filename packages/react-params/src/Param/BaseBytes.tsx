@@ -5,7 +5,7 @@
 import { Props as BaseProps, Size } from '../types';
 
 import React, { useEffect, useState } from 'react';
-import { Compact } from '@polkadot/types';
+import { Compact } from '@cennznet/types';
 import { Input } from '@polkadot/react-components';
 import { hexToU8a, isHex, u8aToHex } from '@polkadot/util';
 import { decodeAddress } from '@polkadot/util-crypto';

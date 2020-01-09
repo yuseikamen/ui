@@ -28,8 +28,9 @@ import { u8aToHex, u8aConcat } from '@polkadot/util';
 
 interface Props extends ApiProps, I18nProps {
   accountId: string;
+  assetId: string;
   allStashes?: string[];
-  balances_all?: DerivedBalances;
+  balances_all?: any;
   className?: string;
   recentlyOnline?: DerivedHeartbeats;
   staking_info?: DerivedStaking;
@@ -375,7 +376,7 @@ class Account extends React.PureComponent<Props, State> {
 
     // only show a "Bond Additional" button if this stash account actually doesn't bond everything already
     // staking_ledger.total gives the total amount that can be slashed (any active amount + what is being unlocked)
-    const canBondExtra = balances_all && balances_all.freeBalance.gtn(0);
+    const canBondExtra = balances_all && balances_all.gtn(0);
 
     return (
       <Menu
@@ -618,6 +619,7 @@ export default withMulti(
   translate,
   withCalls<Props>(
     ['derive.staking.info', { paramName: 'accountId' }],
-    ['derive.balances.all', { paramName: 'accountId' }]
+    // ['query.genericAsset.freeBalance', { paramName: 'accountId' }]
+    ['query.genericAsset.freeBalance', { paramName: ['assetId', 'accountId'] }],
   )
 );

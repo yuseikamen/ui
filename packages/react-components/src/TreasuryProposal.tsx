@@ -8,7 +8,7 @@ import { I18nProps } from '@polkadot/react-components/types';
 import React, { useContext, useEffect, useState } from 'react';
 import { InputAddress, Labelled, Static } from '@polkadot/react-components';
 import { ApiContext } from '@polkadot/react-api';
-import { Option } from '@polkadot/types';
+import { Option } from '@cennznet/types';
 import { formatBalance } from '@polkadot/util';
 
 import Inset, { InsetProps } from './Inset';

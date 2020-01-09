@@ -20,7 +20,7 @@ export interface Options {
   fallbacks?: string[];
   isMulti?: boolean;
   params?: any[];
-  paramName?: string;
+  paramName?: string | string[];
   paramPick?: (props: any) => any;
   paramValid?: boolean;
   propName?: string;

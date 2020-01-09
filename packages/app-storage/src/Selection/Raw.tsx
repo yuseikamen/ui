@@ -10,7 +10,7 @@ import { Button, Input } from '@polkadot/react-components';
 
 import translate from '../translate';
 import { u8aToU8a } from '@polkadot/util';
-import { Compact } from '@polkadot/types';
+import { Compact } from '@cennznet/types';
 
 interface Props extends ComponentProps, I18nProps {}
 

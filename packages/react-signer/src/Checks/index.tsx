@@ -7,20 +7,21 @@ import { I18nProps } from '@polkadot/react-components/types';
 import { DerivedFees, DerivedBalances, DerivedContractFees } from '@polkadot/api-derive/types';
 import { IExtrinsic } from '@polkadot/types/types';
 import { ExtraFees } from './types';
-
 import BN from 'bn.js';
 import React, { useContext, useState, useEffect } from 'react';
-import { Compact, UInt } from '@polkadot/types';
-import { ApiContext, withCalls } from '@polkadot/react-api';
+import { Compact, UInt } from '@cennznet/types';
+import { ApiContext, withCalls} from '@polkadot/react-api';
 import { Icon } from '@polkadot/react-components';
-import { compactToU8a, formatBalance } from '@polkadot/util';
-
+import { compactToU8a, stringToU8a, formatBalance } from '@polkadot/util';
+import { decodeAddress } from '@polkadot/keyring';
+import { u32 } from '@cennznet/types';
+import { xxhashAsHex, blake2AsHex } from '@polkadot/util-crypto';
 import translate from '../translate';
 import ContractCall from './ContractCall';
 import ContractDeploy from './ContractDeploy';
 import Proposal from './Proposal';
 import Transfer from './Transfer';
-import { MAX_SIZE_BYTES, MAX_SIZE_MB, ZERO_BALANCE, ZERO_FEES_BALANCES, ZERO_FEES_CONTRACT } from './constants';
+import { MAX_SIZE_BYTES, MAX_SIZE_MB, ZERO_FEES_BALANCES, ZERO_FEES_CONTRACT } from './constants';
 
 interface State {
   allFees: BN;
@@ -32,16 +33,26 @@ interface State {
   isRemovable: boolean;
   isReserved: boolean;
   overLimit: boolean;
+  balance: BN;
+  spendBalance: BN
 }
 
 interface Props extends I18nProps {
-  balances_fees?: DerivedFees;
-  balances_all?: DerivedBalances;
+  // balances_fees?: DerivedFees;
+ // balances_all?: any;
+  transactionByteFee?: BN,
+  transactionBaseFee?: BN,
   contract_fees?: DerivedContractFees;
+  token_balance?: any,
+  spending_balance?: any,
   accountId?: string | null;
+  accountKeyToken?: string | null,
+  accountKeySpending?: string | null,
+  assetId?: BN | number;
   extrinsic?: IExtrinsic | null;
   isSendable: boolean;
   onChange?: (hasAvailable: boolean) => void;
+  system_accountNonce?: BN,
   tip?: BN;
 }
 
@@ -50,6 +61,7 @@ const LENGTH_ERA = 2; // assuming mortals
 const LENGTH_SIGNATURE = 64; // assuming ed25519 or sr25519
 const LENGTH_VERSION = 1; // 0x80 & version
 const ZERO = new BN(0);
+const SIGNATURE_SIZE = LENGTH_ADDRESS + LENGTH_SIGNATURE + LENGTH_ERA;
 
 export const calcTxLength = (extrinsic?: IExtrinsic | null, nonce?: BN, tip?: BN): BN => {
   return new BN(
@@ -63,7 +75,7 @@ export const calcTxLength = (extrinsic?: IExtrinsic | null, nonce?: BN, tip?: BN
   );
 };
 
-export function FeeDisplay ({ accountId, balances_all = ZERO_BALANCE, balances_fees = ZERO_FEES_BALANCES, className, contract_fees = ZERO_FEES_CONTRACT, extrinsic, isSendable, onChange, t, tip }: Props): React.ReactElement<Props> | null {
+export function FeeDisplay ({ accountId, token_balance, spending_balance, transactionByteFee = new BN(0), transactionBaseFee = new BN(0), system_accountNonce = new BN(0), className, contract_fees = ZERO_FEES_CONTRACT, extrinsic, isSendable, onChange, t, tip, assetId }: Props): React.ReactElement<Props> | null {
   const { api } = useContext(ApiContext);
   const [state, setState] = useState<State>({
     allFees: ZERO,
@@ -72,24 +84,39 @@ export function FeeDisplay ({ accountId, balances_all = ZERO_BALANCE, balances_f
     hasAvailable: false,
     isRemovable: false,
     isReserved: false,
-    overLimit: false
+    overLimit: false,
+    balance: new BN(0),
+    spendBalance: new BN(0)
   });
   const [extra, setExtra] = useState<ExtraFees>({
     extraAmount: ZERO,
     extraFees: ZERO,
-    extraWarn: false
+    extraWarn: false,
   });
+  // let allTotal: BN,hasAvailable: boolean, isRemovable: boolean,isReserved: boolean,allWarn: boolean, overLimit: boolean;
 
   useEffect((): void => {
     if (!accountId || !extrinsic) {
       return;
     }
 
+   let tokenBalance = token_balance ? new BN(token_balance.unwrapOr(0)) : new BN(0);
+   let spendingBalance = spending_balance ? new BN(spending_balance.unwrapOr(0)) : new BN(0);
+   console.log('SpendingBalance:', spendingBalance.toNumber());
     const fn = api.findCall(extrinsic.callIndex);
     const extMethod = fn.method;
     const extSection = fn.section;
-    const txLength = calcTxLength(extrinsic, balances_all.accountNonce, tip);
-
+    const txLength = SIGNATURE_SIZE + compactToU8a(system_accountNonce).length + (
+      extrinsic
+        ? extrinsic.encodedLength
+        : 0
+    );
+    //const txLength = calcTxLength(extrinsic, balances_all.accountNonce, tip);
+    // const txLength = SIGNATURE_SIZE + compactToU8a(system_accountNonce).length + (
+    //   extrinsic
+    //     ? extrinsic.encodedLength
+    //     : 0
+    // );
     const isSameExtrinsic = state.extMethod === extMethod && state.extSection === extSection;
     const extraAmount = isSameExtrinsic
       ? extra.extraAmount
@@ -101,18 +128,21 @@ export function FeeDisplay ({ accountId, balances_all = ZERO_BALANCE, balances_f
       ? extra.extraWarn
       : false;
     const allFees = extraFees
-      .add(balances_fees.transactionBaseFee)
-      .add(balances_fees.transactionByteFee.mul(txLength));
+      .add(transactionBaseFee)
+      .add(transactionByteFee.muln(txLength));
 
-    const allTotal = extraAmount.add(allFees);
-    const hasAvailable = balances_all.availableBalance.gtn(0);
-    const isRemovable = balances_all.votingBalance.sub(allTotal).lt(balances_fees.existentialDeposit);
-    const isReserved = balances_all.freeBalance.isZero() && balances_all.reservedBalance.gtn(0);
-    const allWarn = extraWarn;
-    const overLimit = txLength.gten(MAX_SIZE_BYTES);
+     const allTotal = extraAmount.add(allFees);
+    // const hasAvailable = balances_all.availableBalance.gtn(0);
+    // const isRemovable = balances_all.votingBalance.sub(allTotal).lt(balances_fees.existentialDeposit);
+    // const isReserved = balances_all.freeBalance.isZero() && balances_all.reservedBalance.gtn(0);
+     const hasAvailable = spendingBalance.gte(allFees) && tokenBalance.gte(extraAmount);
+     const isRemovable = false; // TODO
+     const isReserved = false; // TODO
+     const allWarn = extraWarn;
+     const overLimit = txLength >= MAX_SIZE_BYTES;
 
     onChange && onChange(hasAvailable);
-
+  // }, [accountId, extra, extrinsic, tip]);
     setState({
       allFees,
       allTotal,
@@ -122,15 +152,23 @@ export function FeeDisplay ({ accountId, balances_all = ZERO_BALANCE, balances_f
       hasAvailable,
       isRemovable,
       isReserved,
-      overLimit
+      overLimit,
+      balance: tokenBalance,
+      spendBalance: spendingBalance
     });
-  }, [accountId, balances_all, balances_fees, extra, extrinsic, balances_all.accountNonce, tip]);
+   }, [accountId, extra, extrinsic, tip]);
 
   if (!accountId) {
     return null;
   }
+  console.log('Inside check... ****');
 
-  const { allFees, allTotal, allWarn, extMethod, extSection, hasAvailable, isRemovable, isReserved, overLimit } = state;
+//  const { allFees, allTotal, allWarn, extMethod, extSection, hasAvailable, isRemovable, isReserved, overLimit } = state;
+  // const { accountId, className, isSendable, t, assetId } = props;
+  const { allFees, allWarn, hasAvailable, isRemovable, isReserved, overLimit, balance, spendBalance, extMethod, extSection } = state;
+  // const { assetId } = props;
+  console.log('Balance:',balance.toNumber());
+  console.log('spendBalance:',spendBalance.toNumber());
   const feeClass = !hasAvailable || overLimit || isRemovable
     ? 'error'
     : allWarn
@@ -161,24 +199,18 @@ export function FeeDisplay ({ accountId, balances_all = ZERO_BALANCE, balances_f
           {t(`This transaction will be rejected by the node as it is greater than the maximum size of ${MAX_SIZE_MB}MB`)}
         </div>
       )}
-      {isRemovable && hasAvailable && balances_fees && (
-        <div>
-          <Icon name='ban' />
-          {t('Submitting this transaction will drop the account balance to below the existential amount ({{existentialDeposit}}), which can result in the account being removed from the chain state and its associated funds burned.',
-            {
-              replace: {
-                existentialDeposit: formatBalance(balances_fees.existentialDeposit)
-              }
-            }
-          )}
-        </div>
-      )}
-      {balances_fees && extrinsic && (
+      {
+        balance && assetId && <div title={balance.toString()}><Icon name='arrow right' />{`Asset ID: ${assetId.toString()} - Balance: ${formatBalance(balance)}`}</div>
+      }
+      <div title={spendBalance.toString()}><Icon name='arrow right' />{`CENTRAPAY - Balance: ${formatBalance(spendBalance)}`}</div>
+
+      {extrinsic && (
         <>
-          {(extSection === 'balances' && extMethod === 'transfer') && (
+          {(extSection === 'genericAsset' && extMethod === 'transfer') && (
             <Transfer
+              assetId={extrinsic.args[2]}
               amount={extrinsic.args[1]}
-              fees={balances_fees}
+              fees={{ ...ZERO_FEES_BALANCES, transactionBaseFee, transactionByteFee }}
               recipientId={extrinsic.args[0]}
               onChange={setExtra}
             />
@@ -186,7 +218,7 @@ export function FeeDisplay ({ accountId, balances_all = ZERO_BALANCE, balances_f
           {(extSection === 'democracy' && extMethod === 'propose') && (
             <Proposal
               deposit={extrinsic.args[1]}
-              fees={balances_fees}
+              fees={{ ...ZERO_FEES_BALANCES, transactionBaseFee, transactionByteFee }}
               onChange={setExtra}
             />
           )}
@@ -220,34 +252,70 @@ export function FeeDisplay ({ accountId, balances_all = ZERO_BALANCE, balances_f
         <Icon name='arrow right' />
         {t('Fees includes the transaction fee and the per-byte fee')}
       </div>
-      <div>
-        <Icon name='arrow right' />
-        {t('Fees totalling {{fees}} will be applied to the submission', {
-          replace: {
-            fees: formatBalance(allFees)
-          }
-        })}
-      </div>
-      <div>
-        <Icon name='arrow right' />
-        {t('{{total}} estimated total amount (fees + value)', {
-          replace: {
-            total: formatBalance(allTotal)
-          }
-        })}
-      </div>
-      <div>
-        <Icon name='dot circle outline' />
-        {t('Estimation does not account for the transaction weight')}
-      </div>
+      <div><Icon name='arrow right' />{t('Fees totalling {{fees}} unit of CENTRAPAY will be applied to the submission', {
+        replace: {
+          fees: formatBalance(allFees)
+        }
+      })}</div>
     </article>
   );
 }
 
+// const generateKey = (addr: string | null | undefined, token: any) => {
+//   if (!addr || !token) {
+//     return '0x';
+//   }
+//   const prefix = stringToU8a('GenericAsset FreeBalance');
+//   const assetIdEncoded = new u32(token.toBn ? token.toBn() : token).toU8a();
+//   const keyEncoded = new Uint8Array(prefix.length + assetIdEncoded.length);
+//   keyEncoded.set(prefix);
+//   keyEncoded.set(assetIdEncoded, prefix.length);
+//   const addrEncoded = xxhashAsHex(decodeAddress(addr), 128).substr(2);
+//   console.log('GENERATE KEY...');
+//   console.log('KEY:',blake2AsHex(keyEncoded, 256) + addrEncoded);
+//   return blake2AsHex(keyEncoded, 256) + addrEncoded;
+// };
+
+const getAssetId = (props: Props): BN | number => {
+  if (!props.extrinsic) {
+    return 0;
+  }
+  const { api } = useContext(ApiContext);
+  const fn = api.findCall(props.extrinsic.callIndex);
+  const extMethod = fn.method;
+  const extSection = fn.section;
+  console.log('EXT section:',extSection);
+  console.log('EXT method:',extMethod);
+  if (extSection !== 'genericAsset' || extMethod !== 'transfer') {
+    return 0;
+  }
+
+  const [assetId] = props.extrinsic.args;
+
+  return assetId as any;
+};
+
+// const mapProps = (props: Props): Props => {
+//   const assetId = getAssetId(props);
+//   return {
+//     ...props,
+//     accountKeyToken: generateKey(props.accountId, assetId),
+//     accountKeySpending: generateKey(props.accountId, 16001), // TODO: read from chain
+//     assetId
+//   };
+// };
+
+// const withKeys = (Component: React.ComponentType<Props>) => (props: Props) => <Component {...mapProps(props)}/>;
+
 export default translate(
+  // withKeys(
   withCalls<Props>(
-    'derive.balances.fees',
-    ['derive.balances.all', { paramName: 'accountId' }],
-    'derive.contracts.fees'
+    ['query.fees.transactionBaseFee', { propName: 'transactionBaseFee' }],
+    ['query.fees.transactionByteFee', { propName: 'transactionByteFee' }],
+    ['rpc.state.getStorage', { paramName: 'accountKeyToken', propName: 'token_balance' }],
+    ['rpc.state.getStorage', { paramName: 'accountKeySpending', propName: 'spending_balance' }],
+   // ['query.genericAsset.freeBalance', { paramName: ['assetId', 'accountId']  }],
+    ['query.system.accountNonce', { paramName: 'accountId' }]
   )(FeeDisplay)
+//  )
 );

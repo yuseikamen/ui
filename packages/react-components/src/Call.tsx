@@ -8,7 +8,7 @@ import { BareProps, I18nProps } from './types';
 import BN from 'bn.js';
 import React from 'react';
 import styled from 'styled-components';
-import { GenericCall, getTypeDef } from '@polkadot/types';
+import { GenericCall, getTypeDef } from '@cennznet/types';
 import Params from '@polkadot/react-params';
 import { formatBalance } from '@polkadot/util';
 

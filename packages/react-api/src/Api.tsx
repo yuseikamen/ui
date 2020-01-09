@@ -2,20 +2,21 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ProviderInterface } from '@polkadot/rpc-provider/types';
+// import { ProviderInterface } from '@polkadot/rpc-provider/types';
 import { QueueTxPayloadAdd, QueueTxMessageSetStatus } from '@polkadot/react-components/Status/types';
 import { ApiProps } from './types';
 
 import React from 'react';
-import ApiPromise from '@polkadot/api/promise';
+// import ApiPromise from '@cennznet/api/promise';
+import {Api as ApiPromise} from '@cennznet/api';
 import { isWeb3Injected, web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import defaults from '@polkadot/rpc-provider/defaults';
-import { WsProvider } from '@polkadot/rpc-provider';
+// import { WsProvider } from '@polkadot/rpc-provider';
 import { InputNumber } from '@polkadot/react-components/InputNumber';
 import keyring from '@polkadot/ui-keyring';
 import uiSettings from '@polkadot/ui-settings';
 import ApiSigner from '@polkadot/react-signer/ApiSigner';
-import { u32 as U32 } from '@polkadot/types';
+import { u32 as U32 } from '@cennznet/types';
 import { formatBalance, isTestChain } from '@polkadot/util';
 import addressDefaults from '@polkadot/util-crypto/address/defaults';
 
@@ -57,10 +58,10 @@ export default class Api extends React.PureComponent<Props, State> {
     super(props);
 
     const { queuePayload, queueSetTxStatus, url } = props;
-    const provider = new WsProvider(url);
+    // const provider = new WsProvider(url);
     const signer = new ApiSigner(queuePayload, queueSetTxStatus);
 
-    const setApi = (provider: ProviderInterface): void => {
+    const setApi = (provider: string | undefined): void => {
       api = this.createApi(provider, signer);
 
       this.setState({ api }, (): void => {
@@ -68,9 +69,9 @@ export default class Api extends React.PureComponent<Props, State> {
       });
     };
     const setApiUrl = (url: string = defaults.WS_URL): void =>
-      setApi(new WsProvider(url));
+      setApi(url);
 
-    api = this.createApi(provider, signer);
+    api = this.createApi(url, signer);
 
     this.state = {
       api,
@@ -82,13 +83,13 @@ export default class Api extends React.PureComponent<Props, State> {
     } as unknown as State;
   }
 
-  private createApi (provider: ProviderInterface, signer: ApiSigner): ApiPromise {
-    return new ApiPromise({
-      provider,
-      signer,
+  private createApi (provider: string | undefined, signer: ApiSigner): ApiPromise {
+    return new ApiPromise(
+      {provider, signer,
       typesChain,
       typesSpec
-    });
+      }
+    ) as any as ApiPromise;
   }
 
   public componentDidMount (): void {
@@ -145,8 +146,9 @@ export default class Api extends React.PureComponent<Props, State> {
       : '<unknown>';
     const isDevelopment = isTestChain(systemChain);
 
-    console.log('api: found chain', systemChain, JSON.stringify(properties));
-
+   // console.log('api: found chain', systemChain, JSON.stringify(properties));
+   // console.log('*********************');
+   // console.log(JSON.stringify(api.consts));
     // first setup the UI helpers
     formatBalance.setDefaults({
       decimals: tokenDecimals,

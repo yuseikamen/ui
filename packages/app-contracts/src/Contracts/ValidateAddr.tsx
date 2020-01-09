@@ -8,7 +8,7 @@ import { I18nProps } from '@polkadot/react-components/types';
 import { ApiProps } from '@polkadot/react-api/types';
 
 import React, { useEffect, useState } from 'react';
-import { Option } from '@polkadot/types';
+import { Option } from '@cennznet/types';
 import { withCalls } from '@polkadot/react-api';
 import { InfoForInput } from '@polkadot/react-components';
 import keyring from '@polkadot/ui-keyring';

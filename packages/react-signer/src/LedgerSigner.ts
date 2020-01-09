@@ -6,7 +6,7 @@ import { Signer, SignerResult } from '@polkadot/api/types';
 import { SignerPayloadJSON } from '@polkadot/types/types';
 
 import { getLedger } from '@polkadot/react-api';
-import { createType } from '@polkadot/types';
+import { createType } from '@cennznet/types';
 
 export class LedgerSigner implements Signer {
   public async signPayload (payload: SignerPayloadJSON): Promise<SignerResult> {

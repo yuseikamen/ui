@@ -16,6 +16,7 @@ function onChange ({ onChange }: Props): (_?: string | null) => void {
 
     if (value) {
       try {
+      //  console.log('!!!!!!!!!!!!!!!!!!!!!!!!');
         keyring.decodeAddress(value);
 
         isValid = true;

@@ -11,20 +11,21 @@ import React from 'react';
 
 import { withCalls } from '@polkadot/react-api';
 import { formatBalance } from '@polkadot/util';
+import { Balance } from '@polkadot/types/interfaces';
 
 interface Props extends BareProps, CallProps {
   children?: React.ReactNode;
   label?: React.ReactNode;
-  params?: AccountId | AccountIndex | Address | string | Uint8Array | null;
-  balances_all?: DerivedBalances;
+  params?: any [];
+  genericAsset_totalBalance?: Balance,
 }
 
-export function BalanceDisplay ({ children, className, label = '', balances_all }: Props): React.ReactElement<Props> {
+export function BalanceDisplay ({ children, className, label = '', genericAsset_totalBalance }: Props): React.ReactElement<Props> {
   return (
     <div className={className}>
       {label}{
-        balances_all
-          ? formatBalance(balances_all.freeBalance)
+      genericAsset_totalBalance
+          ? genericAsset_totalBalance
           : '-'
       }{children}
     </div>
@@ -32,5 +33,6 @@ export function BalanceDisplay ({ children, className, label = '', balances_all 
 }
 
 export default withCalls<Props>(
-  ['derive.balances.all', { paramName: 'params' }]
+   ['query.genericAsset.freeBalance', { paramName: 'params' }]
+    // ['query.genericAsset.freeBalance', { paramName: ['assetId', 'accountId']}],
 )(BalanceDisplay);

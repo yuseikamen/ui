@@ -5,7 +5,7 @@
 import { Props } from '../types';
 
 import React, { useState } from 'react';
-import { Compact } from '@polkadot/types';
+import { Compact } from '@cennznet/types';
 import { Button } from '@polkadot/react-components';
 
 import BaseBytes from './BaseBytes';

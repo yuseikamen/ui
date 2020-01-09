@@ -23,9 +23,9 @@ console.log('The minimum validator count: ' + minimumValidatorCount);
 if (validators && validators.length > 0) {
   // Retrieve the balances for all validators
   console.log('Validators');
-
+  const CENNZ = 16000;
   const validatorBalances = await Promise.all(
-    validators.map(authorityId => api.query.balances.freeBalance(authorityId))
+    validators.map(authorityId => api.query.genericAsset.freeBalance(CENNZ, authorityId))
   );
 
   validators.forEach((authorityId, index) => {
@@ -66,14 +66,15 @@ export const storageListenToBalanceChange: Snippet = {
   code: `// You may leave this example running and make a transfer
 // of any value from or to Alice address in the 'Transfer' App
 const ALICE = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
+const CPAY = 16001;
 
 // Retrieve the initial balance.
-let previous = await api.query.balances.freeBalance(ALICE);
+let previous = await api.query.genericAsset.freeBalance(CPAY, ALICE);
 
 console.log('ALICE has a balance of ' + previous);
 
 // Subscribe and listen to balance changes
-api.query.balances.freeBalance(ALICE, (balance) => {
+api.query.genericAsset.freeBalance(CPAY, ALICE, (balance) => {
   // Calculate the delta
   const change = balance.sub(previous);
   // Only display positive value changes (Since we are pulling 'previous' above already,
@@ -85,22 +86,22 @@ api.query.balances.freeBalance(ALICE, (balance) => {
 });`
 };
 
-export const storageListenToMultipleBalancesChange: Snippet = {
-  value: 'storageListenToMultipleBalancesChange',
-  text: 'Listen to multiple balances changes',
-  label: { color: 'blue', children: 'Storage', size: 'tiny' },
-  code: `// You may leave this example running and make a transfer
-// of any value from or to Alice/Bob address in the 'Transfer' App
-const ALICE = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
-const BOB = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty';
-
-console.log('Tracking balances for:', [ALICE, BOB])
-
-// Subscribe and listen to several balance changes
-api.query.balances.freeBalance.multi([ALICE, BOB], (balances) => {
-  console.log('Change detected, new balances: ', balances)
-});`
-};
+// export const storageListenToMultipleBalancesChange: Snippet = {
+//   value: 'storageListenToMultipleBalancesChange',
+//   text: 'Listen to multiple balances changes',
+//   label: { color: 'blue', children: 'Storage', size: 'tiny' },
+//   code: `// You may leave this example running and make a transfer
+// // of any value from or to Alice/Bob address in the 'Transfer' App
+// const ALICE = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
+// const BOB = '5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty';
+//
+// console.log('Tracking balances for:', [ALICE, BOB])
+//
+// // Subscribe and listen to several balance changes
+// api.query.balances.freeBalance.multi([ALICE, BOB], (balances) => {
+//   console.log('Change detected, new balances: ', balances)
+// });`
+// };
 
 export const storageRetrieveInfoOnQueryKeys: Snippet = {
   value: 'storageRetrieveInfoOnQueryKeys',
@@ -108,27 +109,28 @@ export const storageRetrieveInfoOnQueryKeys: Snippet = {
   label: { color: 'blue', children: 'Storage', size: 'tiny' },
   code: `// This example set shows how to make queries and retrieve info on query keys
 const ALICE = '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY';
+const CPAY = 16001;
 
 // retrieve the balance, once-off at the latest block
-const currBalance = await api.query.balances.freeBalance(ALICE);
+const currBalance = await api.query.genericAsset.freeBalance(CPAY, ALICE);
 
 console.log('Alice has a current balance of', currBalance);
 
 // retrieve balance updates with an optional value callback
-const balanceUnsub = await api.query.balances.freeBalance(ALICE, (balance) => {
+const balanceUnsub = await await api.query.genericAsset.freeBalance(CPAY, ALICE, (balance) => {
   console.log('Alice has an updated balance of', balance);
 });
 
 // retrieve the balance at a block hash in the past
 const header = await api.rpc.chain.getHeader();
 const prevHash = await api.rpc.chain.getBlockHash(header.blockNumber.subn(42));
-const prevBalance = await api.query.balances.freeBalance.at(prevHash, ALICE);
+const prevBalance = await await api.query.genericAsset.freeBalance.at(prevHash, CPAY, ALICE);
 
 console.log('Alice had a balance of', prevBalance, '(42 blocks ago)');
 
 // useful in some situations - the value hash and storage entry size
-const currHash = await api.query.balances.freeBalance.hash(ALICE);
-const currSize = await api.query.balances.freeBalance.size(ALICE);
+const currHash = await api.query.genericAsset.freeBalance.hash(CPAY, ALICE);
+const currSize = await api.query.genericAsset.freeBalance.size(CPAY, ALICE);
 
 console.log('Alice balance entry has a value hash of', currHash, 'with a size of', currSize);`
 };

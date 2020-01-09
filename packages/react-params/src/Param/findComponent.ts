@@ -6,7 +6,7 @@ import { TypeDef, TypeDefInfo } from '@polkadot/types/types';
 import { Props, ComponentMap } from '../types';
 
 import BN from 'bn.js';
-import { createType, getTypeDef } from '@polkadot/types';
+import { createType, getTypeDef } from '@cennznet/types';
 
 import Account from './Account';
 import Amount from './Amount';

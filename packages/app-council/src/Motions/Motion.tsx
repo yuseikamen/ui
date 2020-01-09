@@ -7,7 +7,7 @@ import { I18nProps } from '@polkadot/react-components/types';
 
 import BN from 'bn.js';
 import React from 'react';
-import { Option } from '@polkadot/types';
+import { Option } from '@cennznet/types';
 
 import { ActionItem, InputAddress, Labelled, Voting } from '@polkadot/react-components';
 import { withCalls, withMulti } from '@polkadot/react-api';

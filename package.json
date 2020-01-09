@@ -13,11 +13,11 @@
     "@polkadot/api": "^0.96.0-beta.39",
     "@polkadot/api-contract": "^0.96.0-beta.39",
     "@polkadot/keyring": "^1.7.0-beta.5",
-    "@polkadot/types": "^0.96.0-beta.39",
     "@polkadot/util": "^1.7.0-beta.5",
     "@polkadot/util-crypto": "^1.7.0-beta.5",
     "babel-core": "^7.0.0-bridge.0",
-    "typescript": "^3.7.2"
+    "typescript": "^3.7.2",
+    "@cennznet/types": "/Users/karishma/WebstormProjects/cennznet-js-new/cennznet-js/packages/types/build/cennznet-types-v0.20.7-dev.1.tgz"
   },
   "scripts": {
     "analyze": "yarn run build && cd packages/apps && yarn run source-map-explorer build/main.*.js",

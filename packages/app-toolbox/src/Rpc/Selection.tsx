@@ -11,7 +11,7 @@ import React from 'react';
 import rpc from '@polkadot/jsonrpc';
 import { Button, InputRpc, TxComponent } from '@polkadot/react-components';
 import Params from '@polkadot/react-params';
-import { getTypeDef } from '@polkadot/types';
+import { getTypeDef } from '@cennznet/types';
 import { isNull } from '@polkadot/util';
 
 import translate from './translate';
