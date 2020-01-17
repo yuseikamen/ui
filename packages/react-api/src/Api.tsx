@@ -8,6 +8,7 @@ import { ApiProps } from './types';
 
 import React from 'react';
 import ApiPromise from '@polkadot/api/promise';
+import Types from '@cennznet/types/injects';
 import { isWeb3Injected, web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import defaults from '@polkadot/rpc-provider/defaults';
 import { WsProvider } from '@polkadot/rpc-provider';
@@ -46,14 +47,14 @@ interface InjectedAccountExt {
 const DEFAULT_DECIMALS = createType(registry, 'u32', 12);
 const DEFAULT_SS58 = createType(registry, 'u32', addressDefaults.prefix);
 const injectedPromise = web3Enable('polkadot-js/apps');
-let api: ApiPromise;
+let api: any;
 
 export { api };
 
 export default class Api extends React.PureComponent<Props, State> {
-  public state: State = {} as unknown as State;
+  public state: State = ({} as unknown) as State;
 
-  constructor (props: Props) {
+  constructor(props: Props) {
     super(props);
 
     const { queuePayload, queueSetTxStatus, url } = props;
@@ -67,32 +68,35 @@ export default class Api extends React.PureComponent<Props, State> {
         this.subscribeEvents();
       });
     };
-    const setApiUrl = (url: string = defaults.WS_URL): void =>
-      setApi(new WsProvider(url));
+    const setApiUrl = (url: string = defaults.WS_URL): void => setApi(new WsProvider(url));
 
     api = this.createApi(provider, signer);
 
-    this.state = {
+    this.state = ({
       api,
       isApiConnected: false,
       isApiReady: false,
       isSubstrateV2: true,
       isWaitingInjected: isWeb3Injected,
       setApiUrl
-    } as unknown as State;
+    } as unknown) as State;
   }
 
-  private createApi (provider: ProviderInterface, signer: ApiSigner): ApiPromise {
+  private createApi(provider: ProviderInterface, signer: ApiSigner) {
+    const types = { ...Types };
+    console.log('types', types);
+
     return new ApiPromise({
       provider,
       registry,
       signer,
+      types,
       typesChain,
       typesSpec
     });
   }
 
-  public componentDidMount (): void {
+  public componentDidMount(): void {
     this.subscribeEvents();
 
     injectedPromise
@@ -100,7 +104,7 @@ export default class Api extends React.PureComponent<Props, State> {
       .catch((error: Error) => console.error(error));
   }
 
-  private subscribeEvents (): void {
+  private subscribeEvents(): void {
     const { api } = this.state;
 
     api.on('connected', (): void => {
@@ -111,39 +115,41 @@ export default class Api extends React.PureComponent<Props, State> {
       this.setState({ isApiConnected: false });
     });
 
-    api.on('ready', async (): Promise<void> => {
-      try {
-        await this.loadOnReady(api);
-      } catch (error) {
-        console.error('Unable to load chain', error);
+    api.on(
+      'ready',
+      async (): Promise<void> => {
+        try {
+          await this.loadOnReady(api);
+        } catch (error) {
+          console.error('Unable to load chain', error);
+        }
       }
-    });
+    );
   }
 
-  private async loadOnReady (api: ApiPromise): Promise<void> {
+  private async loadOnReady(api: ApiPromise): Promise<void> {
     const [properties, _systemChain, _systemName, _systemVersion, injectedAccounts] = await Promise.all([
       api.rpc.system.properties(),
       api.rpc.system.chain(),
       api.rpc.system.name(),
       api.rpc.system.version(),
       web3Accounts().then((accounts): InjectedAccountExt[] =>
-        accounts.map(({ address, meta }): InjectedAccountExt => ({
-          address,
-          meta: {
-            ...meta,
-            name: `${meta.name} (${meta.source === 'polkadot-js' ? 'extension' : meta.source})`
-          }
-        }))
+        accounts.map(
+          ({ address, meta }): InjectedAccountExt => ({
+            address,
+            meta: {
+              ...meta,
+              name: `${meta.name} (${meta.source === 'polkadot-js' ? 'extension' : meta.source})`
+            }
+          })
+        )
       )
     ]);
-    const ss58Format = uiSettings.prefix === -1
-      ? properties.ss58Format.unwrapOr(DEFAULT_SS58).toNumber()
-      : uiSettings.prefix;
+    const ss58Format =
+      uiSettings.prefix === -1 ? properties.ss58Format.unwrapOr(DEFAULT_SS58).toNumber() : uiSettings.prefix;
     const tokenSymbol = properties.tokenSymbol.unwrapOr('DEV').toString();
     const tokenDecimals = properties.tokenDecimals.unwrapOr(DEFAULT_DECIMALS).toNumber();
-    const systemChain = _systemChain
-      ? _systemChain.toString()
-      : '<unknown>';
+    const systemChain = _systemChain ? _systemChain.toString() : '<unknown>';
     const isDevelopment = isTestChain(systemChain);
 
     console.log('api: found chain', systemChain, JSON.stringify(properties));
@@ -156,13 +162,16 @@ export default class Api extends React.PureComponent<Props, State> {
     TokenUnit.setAbbr(tokenSymbol);
 
     // finally load the keyring
-    keyring.loadAll({
-      addressPrefix: ss58Format,
-      genesisHash: api.genesisHash,
-      isDevelopment,
-      ss58Format,
-      type: 'ed25519'
-    }, injectedAccounts);
+    keyring.loadAll(
+      {
+        addressPrefix: ss58Format,
+        genesisHash: api.genesisHash,
+        isDevelopment,
+        ss58Format,
+        type: 'ed25519'
+      },
+      injectedAccounts
+    );
 
     const defaultSection = Object.keys(api.tx)[0];
     const defaultMethod = Object.keys(api.tx[defaultSection])[0];
@@ -185,8 +194,21 @@ export default class Api extends React.PureComponent<Props, State> {
     });
   }
 
-  public render (): React.ReactNode {
-    const { api, apiDefaultTx, apiDefaultTxSudo, isApiConnected, isApiReady, isDevelopment, isSubstrateV2, isWaitingInjected, setApiUrl, systemChain, systemName, systemVersion } = this.state;
+  public render(): React.ReactNode {
+    const {
+      api,
+      apiDefaultTx,
+      apiDefaultTxSudo,
+      isApiConnected,
+      isApiReady,
+      isDevelopment,
+      isSubstrateV2,
+      isWaitingInjected,
+      setApiUrl,
+      systemChain,
+      systemName,
+      systemVersion
+    } = this.state;
 
     return (
       <ApiContext.Provider

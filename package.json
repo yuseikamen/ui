@@ -1,5 +1,6 @@
 {
   "version": "0.39.0-beta.30",
+  "name": "cennznet-ui",
   "private": true,
   "engines": {
     "node": ">=10.13.0",
@@ -34,8 +35,8 @@
     "start": "cd packages/apps && webpack --config webpack.config.js"
   },
   "dependencies": {
-    "@cennznet/api": "^0.20.7",
-    "@cennznet/types": "^0.20.7"
+    "@cennznet/api": "file:.yalc/@cennznet/api",
+    "@cennznet/types": "file:.yalc/@cennznet/types"
   },
   "devDependencies": {
     "@babel/core": "^7.7.7",

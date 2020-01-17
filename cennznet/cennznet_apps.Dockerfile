@@ -9,9 +9,9 @@ RUN apt-get install -y nodejs
 RUN npm install yarn yalc -g
 
 WORKDIR /api.js
-RUN git clone -b yalc --single-branch https://github.com/benxgao/api.js.git .
+RUN git clone -b alpha.0-test --single-branch https://github.com/cennznet/api.js.git .
 RUN ls -l
-RUN yarn --pure-lockfile
+RUN yarn
 RUN chmod +x ./scripts/*
 RUN ./scripts/yalc_publish.sh
 
@@ -19,8 +19,9 @@ WORKDIR /apps
 COPY . /apps
 RUN ls -l
 
-RUN yalc add @cennznet/api @cennznet/types
-RUN yarn --pure-lockfile
+RUN yalc add @cennznet/api @cennznet/types --no-pure
+# @cennznet/crml-attestation @cennznet/crml-cennzx-spot @cennznet/crml-generic-asset @cennznet/util @cennznet/wallet
+RUN yarn
 RUN NODE_ENV=production yarn build
 
 FROM ubuntu:18.04
