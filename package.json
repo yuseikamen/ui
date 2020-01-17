@@ -36,8 +36,8 @@
     "start": "cd packages/apps && webpack --config webpack.config.js"
   },
   "dependencies": {
-    "@cennznet/api": "^0.20.7",
-    "@cennznet/types": "^0.20.7"
+    "@cennznet/api": "file:.yalc/@cennznet/api",
+    "@cennznet/types": "file:.yalc/@cennznet/types"
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",
