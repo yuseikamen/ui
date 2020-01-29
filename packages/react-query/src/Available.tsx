@@ -26,7 +26,7 @@ interface Props extends BareProps, CallProps {
 
 function AvailableDisplay ({ genericAsset_totalBalance, children, className, label = '' }: Props): React.ReactElement<Props> {
   console.log('**************');
-  console.log('Available balance:', genericAsset_totalBalance);
+  console.log('Available balance:', genericAsset_totalBalance ? genericAsset_totalBalance.toString(): '');
   // console.log('Inside available balance params are::', props.params);
   return (
     <div className={className}>

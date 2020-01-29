@@ -12,6 +12,7 @@
   "dependencies": {
     "@babel/runtime": "^7.7.1",
     "@polkadot/react-components": "^0.37.0-beta.62",
-    "@polkadot/react-qr": "^0.47.0-beta.3"
+    "@polkadot/react-qr": "^0.47.0-beta.3",
+    "@cennznet/wallet": "^0.20.7"
   }
 }

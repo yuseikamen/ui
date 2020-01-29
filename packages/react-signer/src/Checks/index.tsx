@@ -310,8 +310,8 @@ const getAssetId = (props: Props): BN | number => {
 export default translate(
   // withKeys(
   withCalls<Props>(
-    ['query.fees.transactionBaseFee', { propName: 'transactionBaseFee' }],
-    ['query.fees.transactionByteFee', { propName: 'transactionByteFee' }],
+   // ['query.fees.transactionBaseFee', { propName: 'transactionBaseFee' }],
+   // ['query.fees.transactionByteFee', { propName: 'transactionByteFee' }],
     ['rpc.state.getStorage', { paramName: 'accountKeyToken', propName: 'token_balance' }],
     ['rpc.state.getStorage', { paramName: 'accountKeySpending', propName: 'spending_balance' }],
    // ['query.genericAsset.freeBalance', { paramName: ['assetId', 'accountId']  }],

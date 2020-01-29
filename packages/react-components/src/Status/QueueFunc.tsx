@@ -12,7 +12,8 @@ import { createType } from '@cennznet/types';
 
 import { QueueProvider } from './Context';
 import { SubmittableResult } from '@polkadot/api';
-import { SubmittableExtrinsic } from '@polkadot/api/promise/types';
+import {SubmittableExtrinsic} from "@cennznet/api/types";
+// import { SubmittableExtrinsic } from '@polkadot/api/promise/types';
 
 export interface Props extends BareProps {
   children: React.ReactNode;

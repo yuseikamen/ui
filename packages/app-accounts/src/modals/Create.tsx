@@ -18,6 +18,7 @@ import keyring from '@polkadot/ui-keyring';
 import uiSettings from '@polkadot/ui-settings';
 import { isHex, u8aToHex } from '@polkadot/util';
 import { keyExtractSuri, mnemonicGenerate, mnemonicValidate, randomAsU8a } from '@polkadot/util-crypto';
+// import {SimpleKeyring, Wallet} from '@cennznet/wallet';
 
 import translate from '../translate';
 import CreateConfirmation from './CreateConfirmation';
@@ -65,6 +66,10 @@ function rawValidate (seed: string): boolean {
 }
 
 function addressFromSeed (phrase: string, derivePath: string, pairType: KeypairType): string {
+  // const simpleKeyring: SimpleKeyring = new SimpleKeyring();
+  // const wallet = new Wallet();
+  // await wallet.createNewVault('passphrase');
+  // await wallet.addKeyring(simpleKeyring);
   return keyring
     .createFromUri(`${phrase.trim()}${derivePath}`, {}, pairType)
     .address;

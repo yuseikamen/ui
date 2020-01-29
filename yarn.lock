@@ -922,30 +922,15 @@
     lodash "^4.17.13"
     to-fast-properties "^2.0.0"
 
-"@cennznet/api@^0.20.7":
-  version "0.20.7"
-  resolved "https://registry.yarnpkg.com/@cennznet/api/-/api-0.20.7.tgz#3ec2dfc6a8ae77b316e65304516a77a654cc62e1"
-  integrity sha512-X4a902Mu8hlmeAn7++s1utrVgkpPrXqO9cIH/Cmfk0pXED0zcIulo4yIXVGo3AnIXrOPSLTWlGD/umqwAltpyw==
+"@cennznet/api@1.0.0-alpha.0", "@cennznet/api@^1.0.0-alpha.0":
+  version "1.0.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@cennznet/api/-/api-1.0.0-alpha.0.tgz#9b6e713ef139e5b73d8fde4fd116680c3e7e357d"
+  integrity sha512-68UwFn7mscF8wAu+madWmIdEGGGDa3uF2W/ufb9g0VDHB8uLqSvvnijc3jDHYpCzwqBqlZew+S+qomYuuVh2AA==
   dependencies:
-    "@cennznet/crml-attestation" "^0.20.7"
-    "@cennznet/crml-cennzx-spot" "^0.20.7"
-    "@cennznet/crml-generic-asset" "^0.20.7"
-    "@cennznet/types" "^0.20.7"
-    "@plugnet/api" "^0.90.104"
-    "@plugnet/api-metadata" "^0.90.104"
-    "@plugnet/rpc-core" "^0.90.104"
-    "@plugnet/rpc-provider" "^0.90.104"
-    "@plugnet/types" "^0.90.104"
-    eventemitter3 "^4.0.0"
-
-"@cennznet/api@file:../../cennznet-js-new/cennznet-js/packages/api/build/cennznet-api-v0.20.7-dev.1.tgz":
-  version "0.20.7-dev.1"
-  resolved "file:../../cennznet-js-new/cennznet-js/packages/api/build/cennznet-api-v0.20.7-dev.1.tgz#cba97f47df533bfde9ac141c91ddad6fe4ff93ae"
-  dependencies:
-    "@cennznet/crml-attestation" "^0.20.7"
-    "@cennznet/crml-cennzx-spot" "^0.20.7"
-    "@cennznet/crml-generic-asset" "^0.20.7"
-    "@cennznet/types" "^0.20.7"
+    "@cennznet/crml-attestation" "^1.0.0-alpha.0"
+    "@cennznet/crml-cennzx-spot" "^1.0.0-alpha.0"
+    "@cennznet/crml-generic-asset" "^1.0.0-alpha.0"
+    "@cennznet/types" "^1.0.0-alpha.0"
     "@polkadot/api" "^0.96.1"
     "@polkadot/api-metadata" "0.96.1"
     "@polkadot/rpc-core" "^0.96.1"
@@ -953,47 +938,62 @@
     "@polkadot/types" "^0.96.1"
     eventemitter3 "^4.0.0"
 
-"@cennznet/crml-attestation@^0.20.7":
-  version "0.20.7"
-  resolved "https://registry.yarnpkg.com/@cennznet/crml-attestation/-/crml-attestation-0.20.7.tgz#acbd6cb923acb4389181f4685fc086d27716e954"
-  integrity sha512-IcobLkwYVJKae/o3ngBwA1m43U74Flrt33cpf2EVSVSrRMLdQ45ejWR+e8UWpi6ekwNWCvnZI7Sy7dbBQjvnCA==
-
-"@cennznet/crml-cennzx-spot@^0.20.7":
-  version "0.20.7"
-  resolved "https://registry.yarnpkg.com/@cennznet/crml-cennzx-spot/-/crml-cennzx-spot-0.20.7.tgz#0bd69facc1fa436670ec7afed1d5085a930552f0"
-  integrity sha512-cN3rzYJLmtZLRQldnK71VpOqx7RUQBw/Alc183l3oQzPcAKv2rKQ/tdpNOt0QokHXWfunZFf/joEJ3pRbT0k2A==
+"@cennznet/crml-attestation@^1.0.0-alpha.0":
+  version "1.0.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@cennznet/crml-attestation/-/crml-attestation-1.0.0-alpha.0.tgz#31cf591c5564a52d56c78ef4a0c9034ce268a4c6"
+  integrity sha512-K7g/XOjJrz8onznpuquGmNWO+jcsOFrWFwvsMQ/GIQqJjVcsLw7uOL14khKP3wSsHx1+cm310b2v62WqIPa0Aw==
   dependencies:
-    "@cennznet/api" "^0.20.7"
-    "@cennznet/crml-generic-asset" "^0.20.7"
-    "@cennznet/types" "^0.20.7"
-    "@cennznet/util" "^0.20.7"
+    "@cennznet/api" "^1.0.0-alpha.0"
+    "@cennznet/types" "^1.0.0-alpha.0"
+    "@cennznet/util" "^1.0.0-alpha.0"
 
-"@cennznet/crml-generic-asset@^0.20.7":
-  version "0.20.7"
-  resolved "https://registry.yarnpkg.com/@cennznet/crml-generic-asset/-/crml-generic-asset-0.20.7.tgz#0675b76fb85f63dc70c9d4301fafc1e6bdc1104b"
-  integrity sha512-4+V1Y98w1iOr/NAB9JieA0AJ3xLRYaIBqMe06AA572G+wx7EM8ZOw35/g5eypJUWYGezLXF9D6ysPI4yYND4Ew==
+"@cennznet/crml-cennzx-spot@^1.0.0-alpha.0":
+  version "1.0.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@cennznet/crml-cennzx-spot/-/crml-cennzx-spot-1.0.0-alpha.0.tgz#f2cdd1830a75a996e0592f0525faa12aee6a56ae"
+  integrity sha512-otJkbLWQ2jAYwRSQfss1DwrSKBAeutSFW9g44oGHa8ONCnkV59b3Vfx4VB/WAwHXyFknTuBOAsSnmyB6ebEqMA==
   dependencies:
-    "@cennznet/api" "^0.20.7"
-    "@cennznet/types" "^0.20.7"
-    "@cennznet/util" "^0.20.7"
+    "@cennznet/api" "^1.0.0-alpha.0"
+    "@cennznet/crml-generic-asset" "^1.0.0-alpha.0"
+    "@cennznet/types" "^1.0.0-alpha.0"
+    "@cennznet/util" "^1.0.0-alpha.0"
 
-"@cennznet/types@/Users/karishma/WebstormProjects/cennznet-js-new/cennznet-js/packages/types/build/cennznet-types-v0.20.7-dev.1.tgz", "@cennznet/types@^0.20.7":
-  version "0.20.7-dev.1"
-  resolved "/Users/karishma/WebstormProjects/cennznet-js-new/cennznet-js/packages/types/build/cennznet-types-v0.20.7-dev.1.tgz#527f8c481454cd13220499bb6d232ef8a1a4b9cb"
+"@cennznet/crml-generic-asset@^1.0.0-alpha.0":
+  version "1.0.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@cennznet/crml-generic-asset/-/crml-generic-asset-1.0.0-alpha.0.tgz#46b8d28e00f088b75c4db540b4e2be633a1bfc95"
+  integrity sha512-yVgSAsYWKzhc6P4/O+jVAJjOAwiCceA09Ztd4qHDkAjrc5UqxPbNLku0cKonVLa61In9R1ei5vRsYc2pGgZsFA==
   dependencies:
-    "@cennznet/util" "^0.20.7"
+    "@cennznet/api" "^1.0.0-alpha.0"
+    "@cennznet/types" "^1.0.0-alpha.0"
+    "@cennznet/util" "^1.0.0-alpha.0"
+
+"@cennznet/types@^1.0.0-alpha.0":
+  version "1.0.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@cennznet/types/-/types-1.0.0-alpha.0.tgz#09094ff8b1eeff7f0e11593f02eba84179bfff7c"
+  integrity sha512-G5gvJme6QBIb/V0neK9JJqLnnggz+ZS039gDEILkHL62msOA4YOEJS39swFyPQOvgG+ptZjo1tuVhaRAotzpeA==
+  dependencies:
+    "@cennznet/util" "^1.0.0-alpha.0"
     "@polkadot/types" "^0.96.1"
     "@polkadot/util" "^1.6.1"
     memoizee "^0.4.14"
     typescript "^2.9.2"
 
-"@cennznet/util@^0.20.7":
-  version "0.20.7"
-  resolved "https://registry.yarnpkg.com/@cennznet/util/-/util-0.20.7.tgz#5e07c456e49f38158473dcc403bc3869db6d2745"
-  integrity sha512-qs6SoTMZ6yO2Yy1l8RS0/4+UWwDBp4ih5tv2vA4l/EYo6vAyWPIVsfgzrIhY7rkDecU+56MK73Lcp3LRusJZyg==
+"@cennznet/util@^1.0.0-alpha.0":
+  version "1.0.0-alpha.0"
+  resolved "https://registry.yarnpkg.com/@cennznet/util/-/util-1.0.0-alpha.0.tgz#d4472ba87a651baf0b06896db7d32d28ad40e01e"
+  integrity sha512-R+VdNVQ6dPrgMrr1zo3n7jYQmyy4EkFN3sNJBNATnWk8eij5D5PFeLEs7kFNphVx7eKc3E+cuaSPyr9flrT4gw==
   dependencies:
-    "@plugnet/util" "^1.1.100"
-    "@plugnet/util-crypto" "^1.1.100"
+    "@polkadot/util" "^1.6.1"
+    "@polkadot/util-crypto" "^1.6.1"
+
+"@cennznet/wallet@^0.20.7":
+  version "0.20.7"
+  resolved "https://registry.yarnpkg.com/@cennznet/wallet/-/wallet-0.20.7.tgz#df23e7e893b5ff6bb4c059ef54334b963698694b"
+  integrity sha512-w5OLT4NnY7xewuSxqTvxIfOj0fFFe5Cdku2hJ59S4Xf5+Pe1Zaa8tsXVCzfGw4OlfJuQLcbP+6DPK9w+cxPGsw==
+  dependencies:
+    "@plugnet/api" "^0.90.104"
+    "@plugnet/types" "^0.90.104"
+    "@plugnet/wallet" "^0.20.0"
+    reflect-metadata "^0.1.13"
 
 "@cnakazawa/watch@^1.0.3":
   version "1.0.3"
@@ -2156,6 +2156,15 @@
   dependencies:
     "@babel/runtime" "^7.5.5"
 
+"@plugnet/keyring@^1.1.100":
+  version "1.1.100"
+  resolved "https://registry.yarnpkg.com/@plugnet/keyring/-/keyring-1.1.100.tgz#90c51c56c3ff663b8ba735d4b9233a482aa29675"
+  integrity sha512-yFR2WMtycEeSQLY2W+0FyMwfmExLk/VpBFkPwKVvuWpv3wV6JrEJ202XlA7epWHC8bY0wrpET/HB3g5ctugJdg==
+  dependencies:
+    "@babel/runtime" "^7.5.5"
+    "@plugnet/util" "^1.1.100"
+    "@plugnet/util-crypto" "^1.1.100"
+
 "@plugnet/rpc-core@^0.90.104":
   version "0.90.104"
   resolved "https://registry.yarnpkg.com/@plugnet/rpc-core/-/rpc-core-0.90.104.tgz#c8da425b51629d084cc3934d64f3bb0e23822e9a"
@@ -2227,6 +2236,18 @@
     chalk "^2.4.2"
     ip-regex "^4.1.0"
     moment "^2.24.0"
+
+"@plugnet/wallet@^0.20.0":
+  version "0.20.0"
+  resolved "https://registry.yarnpkg.com/@plugnet/wallet/-/wallet-0.20.0.tgz#67b7c4fcecd8a171ce494e0d79901db70fad54be"
+  integrity sha512-AM5TKHVMxwBSghHJHkm5wV0R2+TLlwg9qlSyudUSxEXtzm2+P1NH/xuOUCcV+zhBYdAQk4K58hfwZ2wCPB7jLQ==
+  dependencies:
+    "@plugnet/keyring" "^1.1.100"
+    "@plugnet/util" "^1.1.100"
+    bip39 "^2.6.0"
+    hdkey "^1.1.1"
+    reflect-metadata "^0.1.13"
+    tweetnacl "^1.0.1"
 
 "@plugnet/wasm-crypto@^0.13.100":
   version "0.13.100"
@@ -2504,7 +2525,7 @@
     "@types/color" "^3.0.0"
     color "^3.1.2"
 
-"@polkadot/util-crypto@^1.7.0-beta.5", "@polkadot/util-crypto@^1.7.1":
+"@polkadot/util-crypto@^1.6.1", "@polkadot/util-crypto@^1.7.0-beta.5", "@polkadot/util-crypto@^1.7.1":
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/@polkadot/util-crypto/-/util-crypto-1.7.1.tgz#6cb1ed1f7ecbea3b41100231830817e7fd116dc6"
   integrity sha512-g0JCciJLJXbkc/Q+2QuJgCgS0Xfl7tO97ALdsI00bgSDA7zlh2zhjpx03Ve47hMndmn7K8ClIGrj4nxHx/95Tw==
@@ -4145,7 +4166,7 @@ bindings@^1.4.0, bindings@^1.5.0:
   dependencies:
     file-uri-to-path "1.0.0"
 
-bip39@^2.5.0:
+bip39@^2.5.0, bip39@^2.6.0:
   version "2.6.0"
   resolved "https://registry.yarnpkg.com/bip39/-/bip39-2.6.0.tgz#9e3a720b42ec8b3fbe4038f1e445317b6a99321c"
   integrity sha512-RrnQRG2EgEoqO24ea+Q/fftuPUZLmrEM3qNhhGsA3PbaXaCW791LTzPuVyx/VprXQcTbPJ3K3UeTna8ZnVl2sg==
@@ -4347,6 +4368,11 @@ browserslist@^4.0.0, browserslist@^4.3.4, browserslist@^4.6.0, browserslist@^4.6
     caniuse-lite "^1.0.30001015"
     electron-to-chromium "^1.3.322"
     node-releases "^1.1.42"
+
+bs58@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/bs58/-/bs58-2.0.1.tgz#55908d58f1982aba2008fa1bed8f91998a29bf8d"
+  integrity sha1-VZCNWPGYKrogCPob7Y+RmYopv40=
 
 bs58@^4.0.1:
   version "4.0.1"
@@ -4898,6 +4924,14 @@ codeflask@^1.4.0:
     "@types/prismjs" "^1.9.1"
     prismjs "^1.14.0"
 
+coinstring@^2.0.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/coinstring/-/coinstring-2.3.0.tgz#cdb63363a961502404a25afb82c2e26d5ff627a4"
+  integrity sha1-zbYzY6lhUCQEolr7gsLibV/2J6Q=
+  dependencies:
+    bs58 "^2.0.1"
+    create-hash "^1.1.1"
+
 collapse-white-space@^1.0.2:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/collapse-white-space/-/collapse-white-space-1.0.5.tgz#c2495b699ab1ed380d29a1091e01063e75dbbe3a"
@@ -5345,7 +5379,7 @@ create-ecdh@^4.0.0:
     bn.js "^4.1.0"
     elliptic "^6.0.0"
 
-create-hash@^1.1.0, create-hash@^1.1.2, create-hash@^1.2.0:
+create-hash@^1.1.0, create-hash@^1.1.1, create-hash@^1.1.2, create-hash@^1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/create-hash/-/create-hash-1.2.0.tgz#889078af11a63756bcfb59bd221996be3a9ef196"
   integrity sha512-z00bCGNHDG8mHAkP7CtT1qVu+bFQUPjYq/4Iv3C3kWjTFV10zIjfSoeqXo9Asws8gwSHDGj/hl2u4OGIjapeCg==
@@ -5748,7 +5782,7 @@ debug@3.1.0, debug@~3.1.0:
   dependencies:
     ms "2.0.0"
 
-debug@^3.0.0, debug@^3.1.0, debug@^3.1.1, debug@^3.2.5, debug@^3.2.6:
+debug@^3.0.0, debug@^3.1.0, debug@^3.1.1, debug@^3.2.5:
   version "3.2.6"
   resolved "https://registry.yarnpkg.com/debug/-/debug-3.2.6.tgz#e83d17de16d8a7efb7717edbe5fb10135eee629b"
   integrity sha512-mel+jf7nrtEl5Pn1Qx46zARXKDpBbvzezse7p7LqINmdoIk8PYP5SySaxEmYv6TZ0JyEKA1hsCId6DIhgITtWQ==
@@ -5971,7 +6005,7 @@ detect-indent@^5.0.0:
   resolved "https://registry.yarnpkg.com/detect-indent/-/detect-indent-5.0.0.tgz#3871cc0a6a002e8c3e5b3cf7f336264675f06b9d"
   integrity sha1-OHHMCmoALow+Wzz38zYmRnXwa50=
 
-detect-libc@^1.0.2, detect-libc@^1.0.3:
+detect-libc@^1.0.3:
   version "1.0.3"
   resolved "https://registry.yarnpkg.com/detect-libc/-/detect-libc-1.0.3.tgz#fa137c4bd698edf55cd5cd02ac559f91a4c4ba9b"
   integrity sha1-+hN8S9aY7fVc1c0CrFWfkaTEups=
@@ -8150,6 +8184,15 @@ hash.js@^1.0.0, hash.js@^1.0.3:
     inherits "^2.0.3"
     minimalistic-assert "^1.0.1"
 
+hdkey@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/hdkey/-/hdkey-1.1.1.tgz#c2b3bfd5883ff9529b72f2f08b28be0972a9f64a"
+  integrity sha512-DvHZ5OuavsfWs5yfVJZestsnc3wzPvLWNk6c2nRUfo6X+OtxypGt20vDDf7Ba+MJzjL3KS1og2nw2eBbLCOUTA==
+  dependencies:
+    coinstring "^2.0.0"
+    safe-buffer "^5.1.1"
+    secp256k1 "^3.0.1"
+
 he@1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/he/-/he-1.1.1.tgz#93410fd21b009735151f8868c2f271f3427e23fd"
@@ -8516,7 +8559,7 @@ i18next@*, i18next@^19.0.0:
   dependencies:
     "@babel/runtime" "^7.3.1"
 
-iconv-lite@0.4.24, iconv-lite@^0.4.24, iconv-lite@^0.4.4, iconv-lite@^0.4.5, iconv-lite@~0.4.13:
+iconv-lite@0.4.24, iconv-lite@^0.4.24, iconv-lite@^0.4.5, iconv-lite@~0.4.13:
   version "0.4.24"
   resolved "https://registry.yarnpkg.com/iconv-lite/-/iconv-lite-0.4.24.tgz#2022b4b25fbddc21d2f524974a474aafe733908b"
   integrity sha512-v3MXnZAcvnywkTUEZomIActle7RXXeedOR31wwl7VlyoXO4Qi9arvSenNQWne1TcRwhCL1HwLI21bEqdpj8/rA==
@@ -11111,15 +11154,6 @@ nearley@^2.7.10:
     randexp "0.4.6"
     semver "^5.4.1"
 
-needle@^2.2.1:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/needle/-/needle-2.4.0.tgz#6833e74975c444642590e15a750288c5f939b57c"
-  integrity sha512-4Hnwzr3mi5L97hMYeNl8wRW/Onhy4nUKR/lVemJ8gJedxxUyBLm9kkrDColJvoSfwi0jCNhD+xCdOtiGDQiRZg==
-  dependencies:
-    debug "^3.2.6"
-    iconv-lite "^0.4.4"
-    sax "^1.2.4"
-
 negotiator@0.6.2:
   version "0.6.2"
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.2.tgz#feacf7ccf525a77ae9634436a64883ffeca346fb"
@@ -11257,22 +11291,6 @@ node-notifier@^5.4.2:
     shellwords "^0.1.1"
     which "^1.3.0"
 
-node-pre-gyp@*:
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/node-pre-gyp/-/node-pre-gyp-0.14.0.tgz#9a0596533b877289bcad4e143982ca3d904ddc83"
-  integrity sha512-+CvDC7ZttU/sSt9rFjix/P05iS43qHCOOGzcr3Ry99bXG7VX953+vFyEuph/tfqoYu8dttBkE86JSKBO2OzcxA==
-  dependencies:
-    detect-libc "^1.0.2"
-    mkdirp "^0.5.1"
-    needle "^2.2.1"
-    nopt "^4.0.1"
-    npm-packlist "^1.1.6"
-    npmlog "^4.0.2"
-    rc "^1.2.7"
-    rimraf "^2.6.1"
-    semver "^5.3.0"
-    tar "^4.4.2"
-
 node-releases@^1.1.42:
   version "1.1.43"
   resolved "https://registry.yarnpkg.com/node-releases/-/node-releases-1.1.43.tgz#2c6ca237f88ce11d49631f11190bb01f8d0549f2"
@@ -11401,7 +11419,7 @@ npm-normalize-package-bin@^1.0.0, npm-normalize-package-bin@^1.0.1:
     semver "^5.6.0"
     validate-npm-package-name "^3.0.0"
 
-npm-packlist@^1.1.6, npm-packlist@^1.4.4:
+npm-packlist@^1.4.4:
   version "1.4.7"
   resolved "https://registry.yarnpkg.com/npm-packlist/-/npm-packlist-1.4.7.tgz#9e954365a06b80b18111ea900945af4f88ed4848"
   integrity sha512-vAj7dIkp5NhieaGZxBJB8fF4R0078rqsmhJcAfXZ6O7JJhjhPK96n5Ry1oZcfLXgfun0GWTZPOxaEyqv8GBykQ==
@@ -11432,7 +11450,7 @@ npm-run-path@^4.0.0:
   dependencies:
     path-key "^3.0.0"
 
-npmlog@^4.0.1, npmlog@^4.0.2, npmlog@^4.1.2:
+npmlog@^4.0.1, npmlog@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/npmlog/-/npmlog-4.1.2.tgz#08a7f2a8bf734604779a9efa4ad5cc717abb954b"
   integrity sha512-2uUqazuKlTaSI/dC8AzicUck7+IrEaOnN/e0jd3Xtt1KcGpwx30v50mL7oPyr/h9bL3E4aZccVwpwP+5W9Vjkg==
@@ -13779,6 +13797,11 @@ reduce@^1.0.1:
   dependencies:
     object-keys "^1.1.0"
 
+reflect-metadata@^0.1.13:
+  version "0.1.13"
+  resolved "https://registry.yarnpkg.com/reflect-metadata/-/reflect-metadata-0.1.13.tgz#67ae3ca57c972a2aa1642b10fe363fe32d49dc08"
+  integrity sha512-Ts1Y/anZELhSsjMcU605fU9RE4Oi3p5ORujwbIKXfWa+0Zxs510Qrmrce5/Jowq3cHSZSJqBjypxmHarc+vEWg==
+
 reflect.ownkeys@^0.2.0:
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/reflect.ownkeys/-/reflect.ownkeys-0.2.0.tgz#749aceec7f3fdf8b63f927a04809e90c5c0b3460"
@@ -14164,7 +14187,7 @@ rimraf@2.6.3, rimraf@~2.6.2:
   dependencies:
     glob "^7.1.3"
 
-rimraf@^2.5.4, rimraf@^2.6.1, rimraf@^2.6.2, rimraf@^2.6.3:
+rimraf@^2.5.4, rimraf@^2.6.2, rimraf@^2.6.3:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/rimraf/-/rimraf-2.7.1.tgz#35797f13a7fdadc566142c29d4f07ccad483e3ec"
   integrity sha512-uWjbaKIK3T1OSVptzX7Nl6PvQ3qAGtKEtVRjRuazjfL3Bx5eI409VZSqgND+4UNnmzLVdPj9FqFJNPqBZFve4w==
@@ -14230,10 +14253,17 @@ rxjs-compat@^6.5.3:
   resolved "https://registry.yarnpkg.com/rxjs-compat/-/rxjs-compat-6.5.3.tgz#18440949b2678bf87a78a754009676b2c49183dc"
   integrity sha512-BIJX2yovz3TBpjJoAZyls2QYuU6ZiCaZ+U96SmxQpuSP/qDUfiXPKOVLbThBB2WZijNHkdTTJXKRwvv5Y48H7g==
 
-rxjs@^6.4.0, rxjs@^6.5.2, rxjs@^6.5.3:
+rxjs@^6.4.0, rxjs@^6.5.3:
   version "6.5.3"
   resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.3.tgz#510e26317f4db91a7eb1de77d9dd9ba0a4899a3a"
   integrity sha512-wuYsAYYFdWTAnAaPoKGNhfpWwKZbJW+HgAJ+mImp+Epl7BG8oNWBCTyRM8gba9k4lk8BgWdoYm21Mo/RYhhbgA==
+  dependencies:
+    tslib "^1.9.0"
+
+rxjs@^6.5.2:
+  version "6.5.4"
+  resolved "https://registry.yarnpkg.com/rxjs/-/rxjs-6.5.4.tgz#e0777fe0d184cec7872df147f303572d414e211c"
+  integrity sha512-naMQXcgEo3csAEGvw/NydRA0fuS2nDZJiw1YUWFKU7aPPAPGZEsD4Iimit96qwCieH6y614MCLYwdkrWx7z/7Q==
   dependencies:
     tslib "^1.9.0"
 
@@ -14324,7 +14354,7 @@ sdp@^2.10.0, sdp@^2.6.0:
   resolved "https://registry.yarnpkg.com/sdp/-/sdp-2.11.0.tgz#8debe3eedb7979945ab3ce353012dd21c8ecbc11"
   integrity sha512-3goRWORJWhZyNQWsAH3X0Z4pb4MhZFBRT/665m+LzYmmp2E9w2ifTbPl1J2EejOSrTJ10Kr3obY0yHZEN11Iaw==
 
-secp256k1@^3.7.0:
+secp256k1@^3.0.1, secp256k1@^3.7.0:
   version "3.8.0"
   resolved "https://registry.yarnpkg.com/secp256k1/-/secp256k1-3.8.0.tgz#28f59f4b01dbee9575f56a47034b7d2e3b3b352d"
   integrity sha512-k5ke5avRZbtl9Tqx/SA7CbY3NF6Ro+Sj9cZxezFzuBlLDmyqPiL8hJJ+EmzD8Ig4LUDByHJ3/iPOVoRixs/hmw==
@@ -15349,7 +15379,7 @@ tar-stream@^2.0.0:
     inherits "^2.0.3"
     readable-stream "^3.1.1"
 
-tar@^4.4.10, tar@^4.4.12, tar@^4.4.2, tar@^4.4.8:
+tar@^4.4.10, tar@^4.4.12, tar@^4.4.8:
   version "4.4.13"
   resolved "https://registry.yarnpkg.com/tar/-/tar-4.4.13.tgz#43b364bc52888d555298637b10d60790254ab525"
   integrity sha512-w2VwSrBoHa5BsSyH+KxEqeQBAllHhccyMFVHtGtdMpF4W7IRWfZjFiQceJPChOeTsSDVUpER2T8FA93pr0L+QA==

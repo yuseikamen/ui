@@ -22,8 +22,9 @@ import { withApi, withMulti, withObservable } from '@polkadot/react-api';
 import keyring from '@polkadot/ui-keyring';
 import { assert, isFunction } from '@polkadot/util';
 import { format } from '@polkadot/util/logger';
+import {SimpleKeyring, Wallet} from '@cennznet/wallet';
+// import ledgerSigner from './LedgerSigner';
 
-import ledgerSigner from './LedgerSigner';
 import PasswordCheck from './PasswordCheck';
 import Transaction from './Transaction';
 import Qr from './Qr';
@@ -465,7 +466,8 @@ class Signer extends React.PureComponent<Props, State> {
 
   private async sendExtrinsic (queueTx: QueueTx, password?: string): Promise<void> {
     const { isV2, showTip, tip } = this.state;
-
+    console.log('Inside send extrinsic..');
+    console.log('isV2', isV2);
     const { accountId, extrinsic, payload, isUnsigned } = queueTx;
 
     if (!isUnsigned) {
@@ -494,11 +496,12 @@ class Signer extends React.PureComponent<Props, State> {
 
     assert(submittable, 'Expected an extrinsic to be supplied to sendExtrinsic');
     console.log("Submittable:", submittable);
+    console.log('isUnsigned:::', isUnsigned);
     return isUnsigned
       // eslint-disable-next-line @typescript-eslint/unbound-method
       ? this.makeExtrinsicCall(submittable, queueTx, submittable.send)
       // eslint-disable-next-line @typescript-eslint/unbound-method
-      : this.makeExtrinsicCall(submittable, queueTx, submittable.signAndSend, keyring.getPair(accountId as string));
+      : this.makeExtrinsicCall(submittable, queueTx, submittable.signAndSend, accountId);
   }
 
   private async submitRpc ({ method, section }: RpcMethod, values: any[]): Promise<QueueTxResult> {
@@ -525,37 +528,51 @@ class Signer extends React.PureComponent<Props, State> {
     }
   }
 
-  private async makeExtrinsicCall (extrinsic: SubmittableExtrinsic, { id, txFailedCb, txSuccessCb, txStartCb, txUpdateCb }: QueueTx, extrinsicCall: (...params: any[]) => any, pair?: KeyringPair): Promise<void> {
+  private async makeExtrinsicCall (extrinsic: SubmittableExtrinsic, { id, txFailedCb, txSuccessCb, txStartCb, txUpdateCb }: QueueTx, extrinsicCall: (...params: any[]) => any, accountId?: string): Promise<void> {
     const { api, queueSetTxStatus } = this.props;
     const { isV2, showTip, tip } = this.state;
 
     console.log('makeExtrinsicCall: extrinsic ::', extrinsic.toHex());
-
+   // console.log('Param value:',params);
+    const simpleKeyring: SimpleKeyring = new SimpleKeyring();
+    simpleKeyring.addFromUri('//cennznet-js-test');
+    simpleKeyring.addFromUri('//Alice');
+    simpleKeyring.addFromUri('//Bob');
+    simpleKeyring.addFromUri('//Charlie');
+    simpleKeyring.addFromUri('//Dave');
+    simpleKeyring.addFromUri('//Eve');
+    simpleKeyring.addFromUri('//Ferdie');
+    const wallet = new Wallet();
+    await wallet.createNewVault('passphrase');
+    await wallet.addKeyring(simpleKeyring);
+    api.setSigner(wallet);
     const params = [];
 
-    if (pair) {
-      const { address, meta: { isExternal, isHardware, isInjected, source } } = pair;
+    if (accountId) {
+      //const { address, meta: { isExternal, isHardware, isInjected, source } } = pair;
 
       queueSetTxStatus(id, 'signing');
-
+      console.log("inside pair...");
+     // console.log('address:', address);
+     // console.log('Is external:', isExternal);
       // set the signer
-      if (isHardware) {
-        api.setSigner(ledgerSigner);
-        params.push(address);
-      } else if (isExternal) {
-        queueSetTxStatus(id, 'qr');
-        api.setSigner({ signPayload: this.signQrPayload });
-        params.push(address);
-      } else if (isInjected) {
-        const injected = await web3FromSource(source);
-
-        assert(injected, `Unable to find a signer for ${address}`);
-
-        api.setSigner(injected.signer);
-        params.push(address);
-      } else {
-        params.push(pair);
-      }
+      // if (isHardware) {
+      //  // api.setSigner(ledgerSigner);
+      //   params.push(address);
+      // } else if (isExternal) {
+      //   queueSetTxStatus(id, 'qr');
+      //  // api.setSigner({ signPayload: this.signQrPayload });
+      //   params.push(address);
+      // } else if (isInjected) {
+      //   const injected = await web3FromSource(source);
+      //
+      //   assert(injected, `Unable to find a signer for ${address}`);
+      //
+      //  // api.setSigner(injected.signer);
+      //   params.push(address);
+      // } else {
+        params.push(accountId);
+      // }
     }
 
     if (showTip && isV2 && tip) {
@@ -568,7 +585,10 @@ class Signer extends React.PureComponent<Props, State> {
 
     try {
       // eslint-disable-next-line @typescript-eslint/require-await
+      console.log('Extrinsic:', extrinsic);
+      console.log('Params:', params);
       const unsubscribe = await extrinsicCall.apply(extrinsic, [...params, async (result: SubmittableResult): Promise<void> => {
+        console.log("*********",result);
         if (!result || !result.status) {
           return;
         }

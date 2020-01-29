@@ -12,7 +12,7 @@ import { createType } from '@cennznet/types';
 
 import { QueueProvider } from './Context';
 import { SubmittableResult } from '@polkadot/api';
-import { SubmittableExtrinsic } from '@polkadot/api/promise/types';
+import { SubmittableExtrinsic } from '@cennznet/api/types';
 import { STATUS_COMPLETE } from './constants';
 
 export interface Props extends BareProps {
