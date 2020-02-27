@@ -12,6 +12,7 @@ import addressbook from './addressbook';
 import claims from './claims';
 import contracts from './contracts';
 import council from './council';
+import example from './example';
 // import dashboard from './dashboard';
 import democracy from './democracy';
 import explorer from './explorer';
@@ -42,6 +43,7 @@ const routes: Routes = appSettings.uiMode === 'light'
     staking,
     democracy,
     council,
+    example,
     // TODO Not sure about the inclusion of treasury, parachains & society here
     null,
     settings
@@ -71,7 +73,8 @@ const routes: Routes = appSettings.uiMode === 'light'
     settings,
     toolbox,
     js,
-    template
+    template,
+    example
   );
 
 const setup: Routing = {
