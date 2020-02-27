@@ -102,7 +102,6 @@ export default function useCall <T> (fn: TrackFn | undefined | null, params: Cal
   const mounted = useIsMountedRef();
   const tracker = useRef<Tracker>({ isActive: false, count: 0, serialized: null, subscriber: null });
   const [value, setValue] = useState<T | undefined>(options.defaultValue);
-
   // initial effect, we need an unsubscription
   useEffect((): () => void => {
     return (): void => {

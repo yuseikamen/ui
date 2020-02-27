@@ -5,8 +5,9 @@
 import { BareProps } from '@polkadot/react-api/types';
 
 import React from 'react';
-import { useApi, useCall } from '@polkadot/react-hooks';
+// import { useApi, useCall } from '@polkadot/react-hooks';
 import FormatBalance from './FormatBalance';
+import BN from 'bn.js';
 
 interface Props extends BareProps {
   children?: React.ReactNode;

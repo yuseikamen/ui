@@ -5,7 +5,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { AccountIndex, Bubble, InputAddress } from '@polkadot/react-components';
-import { Balance, Nonce } from '@polkadot/react-query';
+import { GenericAsset, Nonce } from '@polkadot/react-query';
 
 interface Props {
   className?: string;
@@ -14,7 +14,7 @@ interface Props {
 
 function AccountSelector ({ className, onChange }: Props): React.ReactElement<Props> {
   const [accountId, setAccountId] = useState<string | null>(null);
-
+  const CENNZ = '16000';
   useEffect((): void => onChange(accountId), [accountId]);
 
   return (
@@ -30,7 +30,7 @@ function AccountSelector ({ className, onChange }: Props): React.ReactElement<Pr
           <AccountIndex value={accountId} />
         </Bubble>
         <Bubble color='yellow' icon='adjust' label='balance'>
-          <Balance params={accountId} />
+          <GenericAsset params={[CENNZ, accountId]} />
         </Bubble>
         <Bubble color='yellow' icon='target' label='transactions'>
           <Nonce params={accountId} />
