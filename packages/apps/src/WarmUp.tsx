@@ -4,10 +4,13 @@
 
 import React, { useEffect, useState } from 'react';
 import { useApi, useCall } from '@polkadot/react-hooks';
+import BN from 'bn.js';
 
 function WarmUp (): React.ReactElement {
   const { api, isApiReady } = useApi();
-  const fees = useCall<unknown>(isApiReady && api.derive.balances?.fees, []);
+  // Commented for easy tracking while rebasing'
+  // const fees = useCall<unknown>(isApiReady && api.derive.balances?.fees, []);
+  const fees = new BN(0);
   const indexes = useCall<unknown>(isApiReady && api.derive.accounts?.indexes, []);
   const registrars = useCall<unknown>(isApiReady && api.query.identity?.registrars, []);
   const staking = null; // useCall<unknown>(isApiReady && api.derive.staking?.overview, []);
