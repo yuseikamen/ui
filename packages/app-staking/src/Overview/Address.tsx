@@ -118,7 +118,8 @@ export default function Address ({ address, className, filter, filterName, hasQu
   const { t } = useTranslation();
   const { api } = useApi();
   // FIXME Any horrors, caused by derive type mismatches
-  const info = useCall<DeriveAccountInfo>(api.derive.accounts.info as any, [address]);
+  // const info = useCall<DeriveAccountInfo>(api.derive.accounts.info as any, [address]);
+  const info = useCall<any>(api.query.system.account as any, [address]);
   const stakingInfo = useCall<DerivedStakingQuery>(api.derive.staking.query as any, [address]);
   const [{ commission, hasNominators, isNominatorMe, nominators, stakeOwn, stakeOther }, setStakingState] = useState<StakingState>({ hasNominators: false, isNominatorMe: false, nominators: [] });
   const [isExpanded, setIsExpanded] = useState(false);

@@ -35,7 +35,8 @@ interface Props {
 function Account ({ address, className, filter, isFavorite, toggleFavorite }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const api = useApi();
-  const info = useCall<DeriveAccountInfo>(api.api.derive.accounts.info as any, [address]);
+  // const info = useCall<DeriveAccountInfo>(api.api.derive.accounts.info as any, [address]);
+  const info = useCall<any>(api.api.query.system.account as any, [address]);
   const recoveryInfo = useCall<RecoveryConfig | null>(api.api.query.recovery?.recoverable, [address], {
     transform: (opt: Option<RecoveryConfig>): RecoveryConfig | null =>
       opt.unwrapOr(null)

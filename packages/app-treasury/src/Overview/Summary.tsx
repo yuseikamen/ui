@@ -12,6 +12,7 @@ import { FormatBalance } from '@polkadot/react-query';
 import { formatNumber, stringToU8a } from '@polkadot/util';
 
 import { useTranslation } from '../translate';
+import BN from "bn.js";
 
 const TREASURY_ACCOUNT = stringToU8a('modlpy/trsry'.padEnd(32, '\0'));
 
@@ -25,8 +26,8 @@ export default function Summary ({ approvalCount, proposalCount }: Props): React
   const { api } = useApi();
   const bestNumber = useCall<Balance>(api.derive.chain.bestNumber as any, []);
   const spendPeriod = api.consts.treasury.spendPeriod;
-  const treasuryBalance = useCall<DerivedBalancesAccount>(api.derive.balances.account as any, [TREASURY_ACCOUNT]);
-
+  // const treasuryBalance = useCall<DerivedBalancesAccount>(api.derive.balances.account as any, [TREASURY_ACCOUNT]);
+  const treasuryBalance = { freeBalance: new BN(0) };
   const value = treasuryBalance?.freeBalance.gtn(0)
     ? treasuryBalance.freeBalance.toString()
     : null;

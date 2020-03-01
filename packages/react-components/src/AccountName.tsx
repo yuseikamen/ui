@@ -69,7 +69,10 @@ function AccountName ({ children, className, defaultName, label, onClick, overri
   const { allAccounts } = useAccounts();
   const [isJudgementOpen, toggleJudgement] = useToggle();
   const registrars = useCall<Option<RegistrarInfo>[]>(api.query.identity?.registrars, []);
-  const info = useCall<DeriveAccountInfo>(api.derive.accounts.info as any, [value]);
+   const info = useCall<DeriveAccountInfo>(api.derive.accounts.info as any, [value]);
+  //const info = useCall<any>(api.query.system.account as any, [value]);
+  console.log('------------------------INFO-----------------------------------');
+  console.log(info);
   const [accountId, setAccountId] = useState<string | null>(null);
   const [isRegistrar, setIsRegistrar] = useState(false);
   const [judgementAccountId, setJudgementAccountId] = useState<string | null>(null);

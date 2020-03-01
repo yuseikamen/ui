@@ -4,13 +4,13 @@
 
 import { BareProps } from '@polkadot/react-api/types';
 // import { DerivedBalancesAll } from '@polkadot/api-derive/types';
-import { Address, Balance } from '@polkadot/types/interfaces';
+import { Address } from '@polkadot/types/interfaces';
 
 import React from 'react';
 import { useApi, useCall } from '@polkadot/react-hooks';
 
 import FormatBalance from './FormatBalance';
-import BN from "bn.js";
+import BN from 'bn.js';
 
 interface Props extends BareProps {
   children?: React.ReactNode;
@@ -24,8 +24,7 @@ export default function BalanceDisplay ({ children, className, label, params }: 
   console.log('type of Params:', typeof params);
   console.log('Params: 16000 5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY');
   console.log('API:', api);
-  const freeBalance = useCall<BN>(api.query.genericAsset.freeBalance as any, params);
- // const freeBalance = useCall<BN>(api.query.genericAsset.freeBalance, ['16000', '5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY']);
+  const freeBalance = useCall<BN>(api.query.genericAsset.freeBalance as any, params as any);
   console.log('^^R%%$%$%$%', freeBalance?.toString());
   // console.log(freeBalance.toString());
   return (

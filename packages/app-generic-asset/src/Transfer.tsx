@@ -74,7 +74,7 @@ function Transfer ({ assets, className, onClose, recipientId: propRecipientId, s
           help={t('The account you will send funds from.')}
           isDisabled={!!propSenderId}
           label={t('send from account')}
-          labelExtra={<Available label={transferrable} params={senderId} />}
+          labelExtra={<Available label={transferrable} params={[assetId, senderId]} />}
           onChange={setSenderId}
           type='account'
         />
@@ -83,7 +83,7 @@ function Transfer ({ assets, className, onClose, recipientId: propRecipientId, s
           help={t('Select a contact or paste the address you want to send funds to.')}
           isDisabled={!!propRecipientId}
           label={t('send to address')}
-          labelExtra={<Available label={transferrable} params={recipientId} />}
+          labelExtra={<Available label={transferrable} params={[assetId, recipientId]} />}
           onChange={setRecipientId}
           type='allPlus'
         />

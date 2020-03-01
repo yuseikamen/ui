@@ -15,7 +15,7 @@ export default ([
       isHidden: false,
       needsAccounts: true,
       needsApi: [
-        'tx.balances.transfer'
+        'tx.genericAsset.transfer'
       ]
     },
     i18n: {

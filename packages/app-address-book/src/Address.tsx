@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { DeriveAccountInfo } from '@polkadot/api-derive/types';
+// import { DeriveAccountInfo } from '@polkadot/api-derive/types';
 import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import { ActionStatus } from '@polkadot/react-components/Status/types';
 
@@ -32,7 +32,8 @@ const isEditable = true;
 function Address ({ address, className, filter, isFavorite, toggleFavorite }: Props): React.ReactElement<Props> | null {
   const { t } = useTranslation();
   const api = useApi();
-  const info = useCall<DeriveAccountInfo>(api.api.derive.accounts.info as any, [address]);
+  // const info = useCall<DeriveAccountInfo>(api.api.derive.accounts.info as any, [address]);
+  const info = useCall<any>(api.api.query.system.account as any, [address]);
   const [tags, setTags] = useState<string[]>([]);
   const [accName, setAccName] = useState('');
   const [current, setCurrent] = useState<KeyringAddress | null>(null);

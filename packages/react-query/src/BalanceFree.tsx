@@ -3,13 +3,14 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { BareProps } from '@polkadot/react-api/types';
-import { DerivedBalancesAll } from '@polkadot/api-derive/types';
+// import { DerivedBalancesAll } from '@polkadot/api-derive/types';
 import { AccountId, AccountIndex, Address } from '@polkadot/types/interfaces';
 
 import React from 'react';
 import { useApi, useCall } from '@polkadot/react-hooks';
 
 import FormatBalance from './FormatBalance';
+import BN from 'bn.js';
 
 interface Props extends BareProps {
   children?: React.ReactNode;
@@ -19,13 +20,14 @@ interface Props extends BareProps {
 
 export default function BalanceFree ({ children, className, label, params }: Props): React.ReactElement<Props> {
   const { api } = useApi();
-  const allBalances = useCall<DerivedBalancesAll>(api.derive.balances.all as any, [params]);
+  // const allBalances = useCall<DerivedBalancesAll>(api.derive.balances.all as any, [params]);
+  const freeBalance = useCall<BN>(api.query.genericAsset.freeBalance as any, [params]);
 
   return (
     <FormatBalance
       className={className}
       label={label}
-      value={allBalances?.freeBalance}
+      value={freeBalance}
     >
       {children}
     </FormatBalance>

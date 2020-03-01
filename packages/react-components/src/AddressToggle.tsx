@@ -22,7 +22,8 @@ interface Props {
 
 function AddressToggle ({ address, className, filter, onChange, value }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
-  const info = useCall<DeriveAccountInfo>(api.derive.accounts.info as any, [address]);
+  // const info = useCall<DeriveAccountInfo>(api.derive.accounts.info as any, [address]);
+  const info = useCall<any>(api.query.system.account as any, [value]);
   const [isFiltered, setIsFiltered] = useState(false);
 
   useEffect((): void => {

@@ -15,6 +15,7 @@ interface Props {
 export default function Transfer ({ accountId }: Props): React.ReactElement<Props> {
   const [amount, setAmount] = useState<BN | undefined | null>(null);
   const [recipientId, setRecipientId] = useState<string | null>(null);
+  const assetId = 16000;
 
   return (
     <section>
@@ -35,7 +36,7 @@ export default function Transfer ({ accountId }: Props): React.ReactElement<Prop
               accountId={accountId}
               icon='send'
               label='make transfer'
-              params={[recipientId, amount]}
+              params={[assetId, recipientId, amount]}
               tx='genericAsset.transfer'
               withSpinner
             />

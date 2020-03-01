@@ -631,7 +631,8 @@ class Signer extends React.PureComponent<Props, State> {
       } = pair;
 
       queueSetTxStatus(id, 'signing');
-
+      console.log('After queue set tx status as signing');
+      console.log('IsExternal:',isHardware);
       // set the signer
       if (isHardware) {
         api.setSigner(ledgerSigner);
@@ -651,7 +652,6 @@ class Signer extends React.PureComponent<Props, State> {
         params.push(pair);
       }
     }
-
     if (showTip && isV2 && tip) {
       params.push({ tip } as Partial<SignerOptions>);
     }
@@ -661,6 +661,10 @@ class Signer extends React.PureComponent<Props, State> {
     }
 
     try {
+      console.log('Before unsubscribe:');
+      console.log('Extrinsic call:',extrinsicCall);
+      console.log(extrinsic);
+      console.log(params);
       const unsubscribe = await extrinsicCall.apply(extrinsic, [
         ...params,
         // eslint-disable-next-line @typescript-eslint/require-await
