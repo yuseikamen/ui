@@ -18,7 +18,7 @@ describe('e2e transactions', () => {
     api = await ApiPromise.create({
       provider: new WsProvider('ws://localhost:9944'),
       types: {
-        ...CENNZRuntimeTypes
+        ...CENNZRuntimeTypes as any
       },
       registry
     });
