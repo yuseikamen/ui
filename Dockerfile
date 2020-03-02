@@ -9,7 +9,7 @@ RUN apt-get install -y nodejs
 
 WORKDIR /apps
 COPY . .
-
+#COPY /Users/karishma/WebstormProjects/cennznet-js-new/cennznet-js/packages/types/cennznet-types-v0.20.7-dev.2.tgz .
 RUN npm install yarn -g
 RUN yarn
 RUN NODE_ENV=production yarn build:www
