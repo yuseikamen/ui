@@ -2153,11 +2153,11 @@
   dependencies:
     "@types/node" ">= 8"
 
-"@plugnet/plug-api-types@https://github.com/plugblockchain/plug-api-types#test":
+"@plugnet/plug-api-types@https://github.com/plugblockchain/plug-api-types#test_plug":
   version "0.0.0"
-  resolved "https://github.com/plugblockchain/plug-api-types#e3b5ab86019dc4112234b9538e1b3fd7d083a3c0"
+  resolved "https://github.com/plugblockchain/plug-api-types#bbb37d820d7ce12906d50283a76069df0644952b"
   dependencies:
-    "@polkadot/types" "^1.1.1"
+    "@polkadot/types" "1.4.0-beta.16"
     "@polkadot/util" "^2.3.1"
     f "^1.4.0"
 
@@ -2374,7 +2374,7 @@
   dependencies:
     "@types/chrome" "^0.0.95"
 
-"@polkadot/types@1.4.0-beta.16", "@polkadot/types@^1.1.1":
+"@polkadot/types@1.4.0-beta.16":
   version "1.4.0-beta.16"
   resolved "https://registry.yarnpkg.com/@polkadot/types/-/types-1.4.0-beta.16.tgz#8446432fda47003f4eec8a43efcd7c5f41c8b666"
   integrity sha512-cDcNKwgagV0dZGNYJjpKBcFDFYTuCQSmbDh69XuJe1E0YZtqTiXp8irWdb5hixjPhEQZ8mxQv8VxYs8G7Stptg==
