@@ -1,7 +1,8 @@
 # CENNZnet ui
 
-[Get started to run cennznet-ui in your local](cennznet/README.md)
-[Developement: How to publish cennznet-ui docker image](cennznet/docs/PUBLISH.md)
+- [Get started to run cennznet-ui in your local](cennznet/README.md)
+- [Development: ](cennznet/docs/DEVELOPMENT.md)
+- [Developement: How to publish cennznet-ui docker image](cennznet/docs/PUBLISH.md)
 
 ## cennznet-ui dependencies
 
