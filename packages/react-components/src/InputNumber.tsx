@@ -161,11 +161,17 @@ function inputToBn (input: string, si: SiDef | null, props: Props): [BN, boolean
 //   }`;
 // }
 
+function amountWithCommas (n: string) {
+  n = n.replace(/,/g, '');
+  const parts = n.split('.');
+  return `${parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')}${parts[1] ? '.' + parts[1] : ''}`;
+}
+
 function getValuesFromString (value: string, si: SiDef | null, props: Props): [string, BN, boolean] {
   const [valueBn, isValid] = inputToBn(value, si, props);
 
   return [
-    value,
+    amountWithCommas(value),
     valueBn,
     isValid
   ];
@@ -177,7 +183,7 @@ function getValuesFromBn (valueBn: BN, si: SiDef | null): [string, BN, boolean] 
     : valueBn.toString();
 
   return [
-    value,
+    amountWithCommas(value),
     valueBn,
     true
   ];
@@ -231,8 +237,7 @@ export default function InputNumber (props: Props): React.ReactElement<Props> {
     if (event.key.length === 1 && !isPreKeyDown) {
       const { selectionStart: i, selectionEnd: j, value } = event.target as HTMLInputElement;
       const newValue = `${value.substring(0, i || 0)}${event.key}${value.substring(j || 0)}`;
-
-      if (!getRegex(isDecimal || !!si).test(newValue)) {
+      if (!getRegex(isDecimal || !!si).test(newValue.replace(/,/g, ''))) {
         event.preventDefault();
       }
     }
@@ -246,8 +251,7 @@ export default function InputNumber (props: Props): React.ReactElement<Props> {
 
   const _onPaste = (event: React.ClipboardEvent<Element>): void => {
     const { value: newValue } = event.target as HTMLInputElement;
-
-    if (!getRegex(isDecimal || !!si).test(newValue)) {
+    if (!getRegex(isDecimal || !!si).test(newValue.replace(/,/g, ''))) {
       event.preventDefault();
     }
   };
