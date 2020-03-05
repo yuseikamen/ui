@@ -161,17 +161,21 @@ function inputToBn (input: string, si: SiDef | null, props: Props): [BN, boolean
 //   }`;
 // }
 
-function amountWithCommas (n: string) {
-  n = n.replace(/,/g, '');
-  const parts = n.split('.');
-  return `${parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',')}${parts[1] ? '.' + parts[1] : ''}`;
-}
-
 function getValuesFromString (value: string, si: SiDef | null, props: Props): [string, BN, boolean] {
   const [valueBn, isValid] = inputToBn(value, si, props);
 
+  let formatedValue = value;
+  // Sometimes the value is already formatted, avoid formatting in those cases
+  const regex = RegExp('^\\d{1,3}(,\\d{3})*(\\.\\d+)?$');
+  // Format only if required
+  if (!regex.exec(value)) {
+    const defaultValue = valueBn
+      ? formatBalance(valueBn, { forceUnit: '-', withSi: false }).replace(',', ',')
+      : valueBn;
+    formatedValue = defaultValue.split('.')[0];
+  }
   return [
-    amountWithCommas(value),
+    formatedValue,
     valueBn,
     isValid
   ];
@@ -183,7 +187,7 @@ function getValuesFromBn (valueBn: BN, si: SiDef | null): [string, BN, boolean] 
     : valueBn.toString();
 
   return [
-    amountWithCommas(value),
+    value,
     valueBn,
     true
   ];
