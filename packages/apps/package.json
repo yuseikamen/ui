@@ -19,5 +19,10 @@
     "@polkadot/react-signer": "0.40.0-beta.45",
     "@polkadot/ui-assets": "^0.52.0-beta.2",
     "query-string": "^6.10.1"
+  },
+  "devDependencies": {
+    "less": "2.7.3",
+    "less-loader": "^5.0.0",
+    "semantic-ui-less": "^2.4.1"
   }
 }
