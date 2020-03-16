@@ -17,6 +17,9 @@ import ChainInfo from './ChainInfo';
 import Item from './Item';
 import NodeInfo from './NodeInfo';
 
+import SideBar from './SideBar';
+import { SideBarItem, SideBarItemLink } from './SideBarItem';
+
 interface Props {
   className?: string;
   collapse: () => void;
@@ -26,7 +29,7 @@ interface Props {
   toggleMenu: () => void;
 }
 
-function SideBar ({ className, collapse, handleResize, isCollapsed, isMenuOpen, toggleMenu }: Props): React.ReactElement<Props> {
+function SideBarContainer ({ className, collapse, handleResize, isCollapsed, isMenuOpen, toggleMenu }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const [modals, setModals] = useState<Record<string, boolean>>(
     routing.routes.reduce((result: Record<string, boolean>, route): Record<string, boolean> => {
@@ -71,7 +74,7 @@ function SideBar ({ className, collapse, handleResize, isCollapsed, isMenuOpen, 
       {modals.network && (
         <NetworkModal onClose={_toggleModal('network')}/>
       )}
-      <div className='apps--SideBar'>
+      <SideBar>
         <Menu
           secondary
           vertical
@@ -116,26 +119,24 @@ function SideBar ({ className, collapse, handleResize, isCollapsed, isMenuOpen, 
                   )
                   : null
               ))}
-              <Menu.Item className='apps--SideBar-Item'>
-                <a
-                  className='apps--SideBar-Item-NavLink'
+              <SideBarItem>
+                <SideBarItemLink
                   href='https://github.com/polkadot-js/apps'
                   rel='noopener noreferrer'
                   target='_blank'
                 >
                   <Icon name='github' /><span className='text'>{t('GitHub')}</span>
-                </a>
-              </Menu.Item>
-              <Menu.Item className='apps--SideBar-Item'>
-                <a
-                  className='apps--SideBar-Item-NavLink'
+                </SideBarItemLink>
+              </SideBarItem>
+              <SideBarItem>
+                <SideBarItemLink
                   href='https://wiki.polkadot.network'
                   rel='noopener noreferrer'
                   target='_blank'
                 >
                   <Icon name='book' /><span className='text'>{t('Wiki')}</span>
-                </a>
-              </Menu.Item>
+                </SideBarItemLink>
+              </SideBarItem>
             </details>
             <Menu.Divider hidden />
             {
@@ -162,14 +163,14 @@ function SideBar ({ className, collapse, handleResize, isCollapsed, isMenuOpen, 
             onClick={collapse}
           />
         </Responsive>
-      </div>
+      </SideBar>
     </Responsive>
   );
 }
 
 const sideBorderWidth = '0.65rem';
 
-export default React.memo(styled(SideBar)`
+export default React.memo(styled(SideBarContainer)`
   .apps--SideBar-Advanced {
     margin-top: 1rem;
     color: #f5f5f5;
@@ -188,7 +189,7 @@ export default React.memo(styled(SideBar)`
   }
 
   .apps--SideBar {
-    align-items: center;
+    /* align-items: center;
     background: #4f4f4f;
     box-sizing: border-box;
     display: flex;
@@ -196,7 +197,7 @@ export default React.memo(styled(SideBar)`
     height: auto;
     position: relative;
     transition: left 0.3s linear;
-    width: 100%;
+    width: 100%; */
 
     .apps--SideBar-border {
       border-top: ${sideBorderWidth} solid transparent;
@@ -231,7 +232,7 @@ export default React.memo(styled(SideBar)`
     }
 
     .apps--SideBar-Item {
-      align-self: flex-end;
+      /* align-self: flex-end;
       flex-grow: 0;
       padding: 0 !important;
       position: relative;

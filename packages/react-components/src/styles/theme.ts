@@ -19,16 +19,16 @@ const colorBtnText = '#f9f9f9';
 const colorLink = '#2e86ab';
 
 export default css`
-  .theme--default {
-    a {
+  a {
+    color: ${colorLink};
+
+    &:hover,
+    a:visited {
       color: ${colorLink};
-
-      &:hover,
-      a:visited {
-        color: ${colorLink};
-      }
     }
+  }
 
+  .theme--default {
     .ui.button,
     .ui.buttons .button {
       background-color: ${colorBtnDefault};

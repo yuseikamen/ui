@@ -60,5 +60,9 @@
     "webpack": "^4.42.0",
     "webpack-cli": "^3.3.11",
     "webpack-plugin-serve": "^0.12.1"
+  },
+  "dependencies": {
+    "merge-options": "^2.0.0",
+    "polished": "^3.4.4"
   }
 }
