@@ -23,12 +23,12 @@ const SideBar = styled.div.attrs({
   position: relative;
   transition: left 0.3s linear;
 
-  &.collapsed {
-    width: 4.4rem;
+  .collapsed & {
+    width: 5rem;
   }
 
-  &.expanded {
-    width: 13rem;
+  .expanded & {
+    width: 15rem;
   }
 `;
 

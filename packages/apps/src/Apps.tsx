@@ -105,7 +105,7 @@ export default styled(Apps)`
   flex-direction: row;
   min-height: 100vh;
 
-  &.theme--default {
+  /* &.theme--default {
     a.apps--SideBar-Item-NavLink {
       color: #f5f5f5;
       display: block;
@@ -129,7 +129,7 @@ export default styled(Apps)`
         color: #3f3f3f;
       }
     }
-  }
+  } */
 
   &.collapsed .apps--SideBar {
     text-align: center;

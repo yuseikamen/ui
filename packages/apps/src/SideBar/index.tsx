@@ -217,11 +217,11 @@ export default styled(SideBarContainer)`
       /* align-self: flex-end;
       flex-grow: 0;
       padding: 0 !important;
-      width: inherit; */
+      width: inherit;
 
       .text {
         padding-left: 0.5rem;
-      }
+      }*/
     }
 
     .apps--SideBar-logo {

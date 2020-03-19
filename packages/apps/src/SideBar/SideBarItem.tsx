@@ -2,6 +2,7 @@ import { Menu } from '@polkadot/react-components';
 import { NavLink } from 'react-router-dom';
 
 import styled from 'styled-components';
+import { colors } from '../../../../styled-theming';
 
 const SideBarItem = styled(Menu.Item).attrs({
   className: 'apps--SideBar-Item'
@@ -10,7 +11,6 @@ const SideBarItem = styled(Menu.Item).attrs({
   flex-grow: 0;
   padding: 0 !important;
   position: relative;
-  width: inherit;
 
   .text {
     padding-left: 0.5rem;
@@ -25,11 +25,12 @@ const SideBarItem = styled(Menu.Item).attrs({
   }
 
   .collapsed & {
-    margin-left: 5px;
+    margin: 0 0 0 2rem;
+    max-width: 2.9rem;
 
-      .text {
-        display: none;
-      }
+    .text {
+      display: none;
+    }
   }
 `;
 
@@ -51,29 +52,30 @@ const SideBarItemLink = styled.a.attrs({
 
 const SideBarItemNavLink = styled(NavLink).attrs({
   className: 'apps--SideBar-Item-NavLink',
-  activeClassName: 'apps--SideBar-Item-NavLink-active ui--highlight--border'
+  activeClassName: 'apps--SideBar-Item-NavLink-active'
 })`
   color: #f5f5f5;
   display: block;
   padding: 0.75em 0.75em;
   white-space: nowrap;
+  border-radius: 1.6rem;
+
+  .expanded & {
+    width: 12rem;
+  }
 
   &:hover {
     background: #5f5f5f;
-    border-radius: 0.28571429rem 0 0 0.28571429rem;
     color: #eee;
-    margin-right: 0.25rem;
   }
 
   &.apps--SideBar-Item-NavLink-active {
     background: #fafafa;
-    border-radius: 0.28571429rem 0 0 0.28571429rem;
     color: #3f3f3f;
 
     &:hover {
       background: #fafafa;
       color: #3f3f3f;
-      margin-right: 0;
     }
   }
 `;
