@@ -9,7 +9,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Responsive } from 'semantic-ui-react';
 import routing from '@polkadot/apps-routing';
-import { Button, ChainImg, Icon, Menu, media } from '@polkadot/react-components';
+import { ChainImg, Icon, Menu, media } from '@polkadot/react-components';
 import { useCall, useApi } from '@polkadot/react-hooks';
 import { classes } from '@polkadot/react-components/util';
 import { BestNumber, Chain } from '@polkadot/react-query';
@@ -20,6 +20,7 @@ import NetworkModal from '../modals/Network';
 
 import SideBar from './SideBar';
 import { SideBarItem, SideBarItemLink } from './SideBarItem';
+import SideBarCollapseButton from './SideBarCollapseButton';
 
 interface Props {
   className?: string;
@@ -52,6 +53,7 @@ function SideBarContainer ({ className, collapse, handleResize, isCollapsed, isM
       onUpdate={handleResize}
       className={classes(className, 'apps--SideBar-Wrapper', isCollapsed ? 'collapsed' : 'expanded')}
     >
+      <SideBarCollapseButton {...{ collapse, isCollapsed }} />
       <ChainImg
         className={`toggleImg ${isMenuOpen ? 'closed' : 'open delayed'}`}
         onClick={toggleMenu}
@@ -155,17 +157,6 @@ function SideBarContainer ({ className, collapse, handleResize, isCollapsed, isM
                 : <NodeInfo />
             }
           </div>
-          <Responsive
-            minWidth={SIDEBAR_MENU_THRESHOLD}
-            className={`apps--SideBar-collapse ${isCollapsed ? 'collapsed' : 'expanded'}`}
-          >
-            <Button
-              icon={`angle double ${isCollapsed ? 'right' : 'left'}`}
-              isBasic
-              isCircular
-              onClick={collapse}
-            />
-          </Responsive>
         </Menu>
         <Responsive minWidth={SIDEBAR_MENU_THRESHOLD}>
           <div
@@ -179,7 +170,7 @@ function SideBarContainer ({ className, collapse, handleResize, isCollapsed, isM
 }
 
 export default styled(SideBarContainer)`
-.apps--SideBar-Advanced {
+  .apps--SideBar-Advanced {
     margin-top: 1rem;
     color: #f5f5f5;
   }
@@ -187,14 +178,6 @@ export default styled(SideBarContainer)`
   position: relative;
   transition: width 0.3s linear;
   z-index: 300;
-
-  &.collapsed {
-    width: 4.2rem;
-  }
-
-  &.expanded {
-    width: 12rem;
-  }
 
   .apps--SideBar {
     /* align-items: center;
@@ -273,7 +256,7 @@ export default styled(SideBarContainer)`
       }
     }
 
-    .apps--SideBar-collapse {
+    /* .apps--SideBar-collapse {
       background: #4f4f4f;
       bottom: 0;
       left: 0;
@@ -290,7 +273,7 @@ export default styled(SideBarContainer)`
         margin: 0;
         transition: transform 0.15s;
       }
-    }
+    } */
 
     .apps--SideBar-toggle {
       height: 100%;

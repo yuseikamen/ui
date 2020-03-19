@@ -22,7 +22,14 @@ const SideBar = styled.div.attrs({
   height: auto;
   position: relative;
   transition: left 0.3s linear;
-  width: 100%;
+
+  &.collapsed {
+    width: 4.4rem;
+  }
+
+  &.expanded {
+    width: 13rem;
+  }
 `;
 
 SideBar.defaultProps = {
