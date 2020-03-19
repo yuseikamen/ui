@@ -30,7 +30,7 @@ const SideBarItem = styled(Menu.Item).attrs({
 
   .collapsed & {
     margin: 0 !important;
-    max-width: 2.9rem;
+    width: 3rem;
 
     .text {
       display: none;
@@ -49,14 +49,14 @@ const SideBarItemLink = styled.a.attrs({
   className: 'apps--SideBar-Item-NavLink'
 })`
   border-radius: 1.6rem;
-  color: #f5f5f5;
+  color: ${colors.textMuted};
   display: block;
   padding: 0.75rem;
   white-space: nowrap;
 
   &:hover {
-    background: #5f5f5f;
-    color: #eee;
+    background: ${colors.N700};
+    color: ${colors.N100};
     margin-right: 0.25rem;
   }
 `;
@@ -66,24 +66,19 @@ const SideBarItemNavLink = styled(NavLink).attrs({
   activeClassName: 'apps--SideBar-Item-NavLink-active'
 })`
   border-radius: 1.6rem;
-  color: #f5f5f5;
+  color: ${colors.textMuted};
   display: block;
   padding: 0.75em;
   white-space: nowrap;
 
   &:hover {
-    background: #5f5f5f;
-    color: #eee;
+    background: ${colors.N700};
+    color: ${colors.N100};
   }
 
   &.apps--SideBar-Item-NavLink-active {
-    background: #fafafa;
-    color: #3f3f3f;
-
-    &:hover {
-      background: #fafafa;
-      color: #3f3f3f;
-    }
+    background: ${colors.N1000};
+    color: ${colors.N0};
   }
 `;
 

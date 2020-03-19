@@ -11,6 +11,7 @@ interface Props {
 }
 
 const SideBarHeaderContainer = styled.div`
+  align-items: center;
   color: ${colors.N0};
   cursor: pointer;
   display: flex;
@@ -18,10 +19,13 @@ const SideBarHeaderContainer = styled.div`
   height: 3rem;
   line-height: 1rem;
   margin: 1rem 0 2rem;
-  width: 100%;
 
   .info {
     margin-left: 0.5rem;
+  }
+
+  .expanded & {
+    width: 100%;
   }
 
   .collapsed & {
@@ -34,8 +38,8 @@ const SideBarHeaderContainer = styled.div`
   }
 
   img {
-    height: 2.75rem;
-    width: 2.75rem;
+    height: 2.5rem;
+    width: 2.5rem;
   }
 `;
 
