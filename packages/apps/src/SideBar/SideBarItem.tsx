@@ -48,14 +48,14 @@ const SideBarItemDivider = styled.div`
 const SideBarItemLink = styled.a.attrs({
   className: 'apps--SideBar-Item-NavLink'
 })`
+  border-radius: 1.6rem;
   color: #f5f5f5;
   display: block;
-  padding: 0.75em 0.75em;
+  padding: 0.75rem;
   white-space: nowrap;
 
   &:hover {
     background: #5f5f5f;
-    border-radius: 0.28571429rem 0 0 0.28571429rem;
     color: #eee;
     margin-right: 0.25rem;
   }
@@ -65,11 +65,11 @@ const SideBarItemNavLink = styled(NavLink).attrs({
   className: 'apps--SideBar-Item-NavLink',
   activeClassName: 'apps--SideBar-Item-NavLink-active'
 })`
+  border-radius: 1.6rem;
   color: #f5f5f5;
   display: block;
   padding: 0.75em;
   white-space: nowrap;
-  border-radius: 1.6rem;
 
   &:hover {
     background: #5f5f5f;

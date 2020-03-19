@@ -1,6 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Button } from '@polkadot/react-components';
+import { colors } from '../../../../styled-theming';
 
 interface Props {
   collapse: () => void;

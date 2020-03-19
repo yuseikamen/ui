@@ -12,7 +12,6 @@ import routing from '@polkadot/apps-routing';
 import { ChainImg, Icon, Menu, media } from '@polkadot/react-components';
 import { useCall, useApi } from '@polkadot/react-hooks';
 import { classes } from '@polkadot/react-components/util';
-import { BestNumber, Chain } from '@polkadot/react-query';
 import { useTranslation } from '../translate';
 import Item from './Item';
 import NodeInfo from './NodeInfo';
@@ -22,6 +21,7 @@ import SideBar from './SideBar';
 import { SideBarItem, SideBarItemDivider, SideBarItemLink } from './SideBarItem';
 import SideBarCollapseButton from './SideBarCollapseButton';
 import { SideBarAdvancedContainer, SideBarAdvancedSummary } from './SideBarAdvanced';
+import SideBarHeader from './SideBarHeader';
 import SideBarScroll from './SideBarScroll';
 
 interface Props {
@@ -81,20 +81,7 @@ function SideBarContainer ({ className, collapse, handleResize, isCollapsed, isM
           vertical
         >
           <SideBarScroll>
-            <div
-              className='apps--SideBar-logo'
-              onClick={_toggleModal('network')}
-            >
-              <ChainImg />
-              <div className='info'>
-                <Chain className='chain' />
-                {runtimeVersion && (
-                  <div className='runtimeVersion'>{t('version {{version}}', { replace: { version: runtimeVersion.specVersion.toNumber() } })}</div>
-                )}
-                <BestNumber label='#' />
-              </div>
-            </div>
-
+            <SideBarHeader {...{ _toggleModal, runtimeVersion }} />
             {routing.routes.map((route, index): React.ReactNode => (
               route && !route.isAdvanced
                 ? (
@@ -183,7 +170,7 @@ export default styled(SideBarContainer)`
     height: auto;
     position: relative;
     transition: left 0.3s linear;
-    width: 100%; */
+    width: 100%;
 
     .ui.vertical.menu {
       display: flex;
@@ -195,7 +182,7 @@ export default styled(SideBarContainer)`
     }
 
     .apps--SideBar-Scroll {
-      /* align-items: center;
+      align-items: center;
       display: flex;
       flex-direction: column;
       height: 100vh;
@@ -206,18 +193,18 @@ export default styled(SideBarContainer)`
       &::-webkit-scrollbar {
         display: none;
         width: 0px;
-      } */
+      }
     }
 
     .apps--SideBar-Item {
-      /* align-self: flex-end;
+      align-self: flex-end;
       flex-grow: 0;
       padding: 0 !important;
       width: inherit;
 
       .text {
         padding-left: 0.5rem;
-      }*/
+      }
     }
 
     .apps--SideBar-logo {
@@ -252,7 +239,7 @@ export default styled(SideBarContainer)`
       }
     }
 
-    /* .apps--SideBar-collapse {
+    .apps--SideBar-collapse {
       background: #4f4f4f;
       bottom: 0;
       left: 0;
