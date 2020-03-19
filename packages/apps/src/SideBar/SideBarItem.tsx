@@ -9,8 +9,8 @@ const SideBarItem = styled(Menu.Item).attrs({
 })`
   align-self: flex-end;
   flex-grow: 0;
+  margin: 0;
   padding: 0 !important;
-  position: relative;
 
   .text {
     padding-left: 0.5rem;
@@ -29,7 +29,7 @@ const SideBarItem = styled(Menu.Item).attrs({
   }
 
   .collapsed & {
-    margin: 0 0 0 2rem;
+    margin: 0 !important;
     max-width: 2.9rem;
 
     .text {

@@ -21,6 +21,7 @@ import NetworkModal from '../modals/Network';
 import SideBar from './SideBar';
 import { SideBarItem, SideBarItemDivider, SideBarItemLink } from './SideBarItem';
 import SideBarCollapseButton from './SideBarCollapseButton';
+import { SideBarAdvancedContainer, SideBarAdvancedSummary } from './SideBarAdvanced';
 import SideBarScroll from './SideBarScroll';
 
 interface Props {
@@ -111,11 +112,8 @@ function SideBarContainer ({ className, collapse, handleResize, isCollapsed, isM
                 : null
             ))}
             <SideBarItemDivider />
-            <details
-              className='apps--SideBar-Advanced'
-            >
-              <summary>{t('  Advanced')}</summary>
-              <Menu.Divider hidden/>
+            <SideBarAdvancedContainer>
+              <SideBarAdvancedSummary>{t('Advanced')}</SideBarAdvancedSummary>
               {routing.routes.map((route, index): React.ReactNode => (
                 route && route.isAdvanced
                   ? (
@@ -138,7 +136,8 @@ function SideBarContainer ({ className, collapse, handleResize, isCollapsed, isM
                   rel='noopener noreferrer'
                   target='_blank'
                 >
-                  <Icon name='github' /><span className='text'>{t('GitHub')}</span>
+                  <Icon name='github' />
+                  <span className='text'>{t('GitHub')}</span>
                 </SideBarItemLink>
               </SideBarItem>
               <SideBarItem>
@@ -147,11 +146,11 @@ function SideBarContainer ({ className, collapse, handleResize, isCollapsed, isM
                   rel='noopener noreferrer'
                   target='_blank'
                 >
-                  <Icon name='book' /><span className='text'>{t('Wiki')}</span>
+                  <Icon name='book' />
+                  <span className='text'>{t('Wiki')}</span>
                 </SideBarItemLink>
               </SideBarItem>
-            </details>
-            <Menu.Divider hidden />
+            </SideBarAdvancedContainer>
             {
               isCollapsed
                 ? undefined
@@ -171,10 +170,6 @@ function SideBarContainer ({ className, collapse, handleResize, isCollapsed, isM
 }
 
 export default styled(SideBarContainer)`
-  .apps--SideBar-Advanced {
-    margin-top: 1rem;
-    color: #f5f5f5;
-  }
   display: flex;
   position: relative;
   transition: width 0.3s linear;

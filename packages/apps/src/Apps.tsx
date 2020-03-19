@@ -132,7 +132,7 @@ export default styled(Apps)`
   } */
 
   &.collapsed .apps--SideBar {
-    text-align: center;
+    /* text-align: center;
 
     .divider {
       display: none;
@@ -144,7 +144,7 @@ export default styled(Apps)`
       .text {
         display: none;
       }
-    }
+    } */
 
     .apps--SideBar-logo {
       margin: 0.875rem auto;
@@ -160,9 +160,9 @@ export default styled(Apps)`
       }
     }
 
-    .apps--SideBar-collapse .ui.basic.secondary.button {
+    /* .apps--SideBar-collapse .ui.basic.secondary.button {
       left: 0.66rem;
-    }
+    } */
   }
 
   /* &.expanded .apps--SideBar {
