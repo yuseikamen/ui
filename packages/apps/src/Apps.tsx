@@ -165,13 +165,13 @@ export default styled(Apps)`
     }
   }
 
-  &.expanded .apps--SideBar {
+  /* &.expanded .apps--SideBar {
     text-align: left;
 
     .apps--SideBar-Scroll {
       padding-left: 0.75rem;
     }
-  }
+  } */
 
   &.fixed {
     .apps--SideBar-Wrapper {

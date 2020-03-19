@@ -19,8 +19,9 @@ import NodeInfo from './NodeInfo';
 import NetworkModal from '../modals/Network';
 
 import SideBar from './SideBar';
-import { SideBarItem, SideBarItemLink } from './SideBarItem';
+import { SideBarItem, SideBarItemDivider, SideBarItemLink } from './SideBarItem';
 import SideBarCollapseButton from './SideBarCollapseButton';
+import SideBarScroll from './SideBarScroll';
 
 interface Props {
   className?: string;
@@ -78,7 +79,7 @@ function SideBarContainer ({ className, collapse, handleResize, isCollapsed, isM
           secondary
           vertical
         >
-          <div className='apps--SideBar-Scroll'>
+          <SideBarScroll>
             <div
               className='apps--SideBar-logo'
               onClick={_toggleModal('network')}
@@ -109,7 +110,7 @@ function SideBarContainer ({ className, collapse, handleResize, isCollapsed, isM
                 )
                 : null
             ))}
-            <Menu.Divider hidden={false}/>
+            <SideBarItemDivider />
             <details
               className='apps--SideBar-Advanced'
             >
@@ -156,7 +157,7 @@ function SideBarContainer ({ className, collapse, handleResize, isCollapsed, isM
                 ? undefined
                 : <NodeInfo />
             }
-          </div>
+          </SideBarScroll>
         </Menu>
         <Responsive minWidth={SIDEBAR_MENU_THRESHOLD}>
           <div
@@ -199,7 +200,7 @@ export default styled(SideBarContainer)`
     }
 
     .apps--SideBar-Scroll {
-      align-items: center;
+      /* align-items: center;
       display: flex;
       flex-direction: column;
       height: 100vh;
@@ -210,7 +211,7 @@ export default styled(SideBarContainer)`
       &::-webkit-scrollbar {
         display: none;
         width: 0px;
-      }
+      } */
     }
 
     .apps--SideBar-Item {

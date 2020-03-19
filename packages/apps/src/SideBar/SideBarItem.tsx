@@ -24,6 +24,10 @@ const SideBarItem = styled(Menu.Item).attrs({
     z-index: 1;
   }
 
+  .expanded & {
+    width: 100%;
+  }
+
   .collapsed & {
     margin: 0 0 0 2rem;
     max-width: 2.9rem;
@@ -32,6 +36,13 @@ const SideBarItem = styled(Menu.Item).attrs({
       display: none;
     }
   }
+`;
+
+const SideBarItemDivider = styled.div`
+  background: ${colors.textMuted};
+  height: 1px;
+  margin: 0.5rem 0;
+  width: 100%;
 `;
 
 const SideBarItemLink = styled.a.attrs({
@@ -56,13 +67,9 @@ const SideBarItemNavLink = styled(NavLink).attrs({
 })`
   color: #f5f5f5;
   display: block;
-  padding: 0.75em 0.75em;
+  padding: 0.75em;
   white-space: nowrap;
   border-radius: 1.6rem;
-
-  .expanded & {
-    width: 12rem;
-  }
 
   &:hover {
     background: #5f5f5f;
@@ -82,6 +89,7 @@ const SideBarItemNavLink = styled(NavLink).attrs({
 
 export {
   SideBarItem,
+  SideBarItemDivider,
   SideBarItemNavLink,
   SideBarItemLink
 };
