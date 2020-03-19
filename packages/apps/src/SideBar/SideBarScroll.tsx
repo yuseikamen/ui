@@ -14,10 +14,10 @@ const SideBarScroll = styled.div.attrs({
   scrollbar-width: none;
   user-select: none;
 
-  /* &::-webkit-scrollbar {
+  &::-webkit-scrollbar {
     display: none;
     width: 0px;
-  } */
+  }
 `;
 
 export default SideBarScroll;

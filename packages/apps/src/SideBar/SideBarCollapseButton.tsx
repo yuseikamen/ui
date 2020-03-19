@@ -12,18 +12,27 @@ const StyledButton = styled(Button).attrs({
   isBasic: true,
   isCircular: true
 })`
+  height: 2rem;
+  margin: 0;
   position: absolute;
   right: -1.5rem;
   top: 2rem;
+  transition: transform 0.15s;
   width: 2rem;
-  height: 2rem;
   z-index: 100;
 
-  background: white !important;
-  color: #3f3f3f !important;
-  box-shadow: 0 0 0 1px #eee inset !important;
-  margin: 0;
-  transition: transform 0.15s;
+  /* This is not a good css rule name convention, here is just for hacking to override default styles */
+  .expanded &.ui.circular.button, .collapsed &.ui.circular.button {
+    background: ${colors.N200} !important;
+    box-shadow: none !important;
+    color: ${colors.N900} !important;
+  }
+
+  i {
+    position: absolute;
+    left: 7px;
+    top: 8px;
+  }
 `;
 
 function SideBarCollapseButton ({ collapse, isCollapsed }: Props): React.ReactElement<Props> {

@@ -71,6 +71,10 @@ const SideBarItemNavLink = styled(NavLink).attrs({
   padding: 0.75em;
   white-space: nowrap;
 
+  i.icon {
+    width: 1.5rem;
+  }
+
   &:hover {
     background: ${colors.N700};
     color: ${colors.N100};

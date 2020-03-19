@@ -38,8 +38,8 @@ const SideBarHeaderContainer = styled.div`
   }
 
   img {
-    height: 2.5rem;
-    width: 2.5rem;
+    height: 3rem;
+    width: 3rem;
   }
 `;
 
