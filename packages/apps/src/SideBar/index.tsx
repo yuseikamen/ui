@@ -29,9 +29,10 @@ interface Props {
   isCollapsed: boolean;
   isMenuOpen: boolean;
   toggleMenu: () => void;
+  isAdvance: boolean;
 }
 
-function SideBarContainer ({ className, collapse, handleResize, isCollapsed, isMenuOpen, toggleMenu }: Props): React.ReactElement<Props> {
+function SideBarContainer ({ className, collapse, handleResize, isCollapsed, isMenuOpen, toggleMenu, isAdvance }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const runtimeVersion = useCall<RuntimeVersion | undefined>(api.rpc.state.subscribeRuntimeVersion, []);
