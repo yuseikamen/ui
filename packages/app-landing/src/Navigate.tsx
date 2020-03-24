@@ -130,9 +130,9 @@ export default styled(Navigate)`
 
   .grid-container {
     margin-left: 78px;
-    //max-width: 998px;
+    max-width: 1236px;
     display: grid;
-    grid-template-columns: repeat(auto-fit, 290px);
+    grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
     grid-gap: 24px;
 
     .feature-not-supported {

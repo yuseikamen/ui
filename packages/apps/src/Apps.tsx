@@ -26,7 +26,7 @@ interface SidebarState {
   isMenu: boolean;
   isMenuOpen: boolean;
   transition: SideBarTransition;
-  isAdvance: boolean; // This is used when user from landing page choses is open advanced option (expand it), we need to pass the information to sidebar about it
+  isAdvanceOpen: boolean; // This is used when user from landing page choses is open advanced option (expand it), we need to pass the information to sidebar about it
 }
 
 function WarmUp (): React.ReactElement {
@@ -55,7 +55,7 @@ function Apps ({ className }: Props): React.ReactElement<Props> {
     transition: SideBarTransition.COLLAPSED,
     ...store.get('sidebar', {}),
     isMenu: window.innerWidth < SIDEBAR_MENU_THRESHOLD,
-    isAdvance: false
+    isAdvanceOpen: false
   });
   const { isCollapsed, isMenu, isMenuOpen } = sidebar;
   const location = useLocation();
@@ -98,7 +98,7 @@ function Apps ({ className }: Props): React.ReactElement<Props> {
           isCollapsed={isCollapsed}
           isMenuOpen={isMenuOpen}
           toggleMenu={_toggleMenu}
-          isAdvance={openAdvance}
+          isAdvanceOpen={openAdvance}
         />
         <Signer>
           <Content />
