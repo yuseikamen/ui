@@ -4,8 +4,7 @@
 
 import { Routes } from './types';
 
-import LandingPage from '@polkadot/app-landing';
-// import LandingPage from '../../app-landing/src/index';
+import LandingPage from '@cennznet/app-landing';
 
 export default ([
   {
