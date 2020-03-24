@@ -97,7 +97,7 @@ function SideBarContainer ({ className, collapse, handleResize, isCollapsed, isM
                 : null
             ))}
             <SideBarItemDivider />
-            <SideBarAdvancedContainer onToggle={() =>{ setIsOpen(prevOpen => !prevOpen )}}  open={isOpen}>
+            <SideBarAdvancedContainer open={isOpen}>
               <SideBarAdvancedSummary><span>{t('Advanced')}</span></SideBarAdvancedSummary>
               {routing.routes.map((route, index): React.ReactNode => (
                 route && route.isAdvanced
