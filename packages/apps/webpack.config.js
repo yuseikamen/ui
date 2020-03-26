@@ -168,7 +168,7 @@ function createWebpack ({ alias = {}, context, name = 'index' }) {
       new HtmlWebpackPlugin({
         inject: true,
         template: path.join(context, `${hasPublic ? 'public/' : ''}${name}.html`),
-        PAGE_TITLE: 'CENNZnet/Substrate Portal'
+        PAGE_TITLE: 'CENNZnet Portal'
       }),
       new webpack.optimize.SplitChunksPlugin(),
       new MiniCssExtractPlugin({
