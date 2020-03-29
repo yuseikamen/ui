@@ -17,10 +17,10 @@ export default ([
       ]
     },
     i18n: {
-      defaultValue: 'Generic Asset'
+      defaultValue: 'Send assets'
     },
     icon: 'cubes',
-    name: 'generic-asset',
+    name: 'send-assets',
     isAdvanced: false
   }
 ] as Routes);
