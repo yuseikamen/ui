@@ -6,6 +6,7 @@ import { ApiState } from './types';
 
 import React, { useContext, useEffect, useState } from 'react';
 import ApiPromise from '@polkadot/api/promise';
+import Types from '@cennznet/types/injects';
 import { isWeb3Injected, web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { WsProvider } from '@polkadot/rpc-provider';
 import { StatusContext } from '@polkadot/react-components/Status';
@@ -42,7 +43,7 @@ interface InjectedAccountExt {
 const DEFAULT_DECIMALS = createType(registry, 'u32', 12);
 const DEFAULT_SS58 = createType(registry, 'u32', addressDefaults.prefix);
 const injectedPromise = web3Enable('polkadot-js/apps');
-let api: ApiPromise;
+let api: any;
 
 export { api };
 
