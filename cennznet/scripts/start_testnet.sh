@@ -6,5 +6,11 @@ if [ -z "$(docker network ls | grep "cennznet_apps_testnet" | awk '/ / { print $
   docker network create --driver bridge cennznet_apps_testnet
 fi
 
-docker-compose up -d --build
+if [ -z "$(docker ps -a | grep "node_alice")" ]; then
+  docker-compose up -d --build
+else
+  docker-compose build cennznet_apps
+  docker-compose up -d
+fi
+
 docker-compose logs -f

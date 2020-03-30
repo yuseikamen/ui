@@ -6,7 +6,6 @@ import { ApiState } from './types';
 
 import React, { useContext, useEffect, useState } from 'react';
 import ApiPromise from '@polkadot/api/promise';
-import Types from '@cennznet/types/injects';
 import { isWeb3Injected, web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { WsProvider } from '@polkadot/rpc-provider';
 import { StatusContext } from '@polkadot/react-components/Status';
