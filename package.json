@@ -10,14 +10,15 @@
     "packages/*"
   ],
   "resolutions": {
-    "@polkadot/api": "^1.1.1",
+    "@polkadot/api": "1.8.1",
     "@polkadot/api-contract": "^1.4.0-beta.16",
     "@polkadot/keyring": "2.3.1",
-    "@polkadot/types": "^1.1.1",
+    "@polkadot/types": "1.8.1",
     "@polkadot/util": "^2.3.1",
     "@polkadot/util-crypto": "^2.4.1",
     "babel-core": "^7.0.0-bridge.0",
-    "typescript": "^3.8.1"
+    "typescript": "^3.8.1",
+    "@cennznet/api-types": "https://github.com/cennznet/api-types#1.0.0"
   },
   "scripts": {
     "analyze": "yarn run build && cd packages/apps && yarn run source-map-explorer build/main.*.js",

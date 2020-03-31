@@ -6,8 +6,13 @@ import { Option } from '../types';
 
 export default [
   {
+    info: 'cennznet_azalea',
+    text: 'CENNZnet MainNet (UNfrastructure)',
+    value: 'wss://cennznet.unfrastructure.io/public/ws'
+  },
+  {
     info: 'local',
     text: 'Local Node (Own, 127.0.0.1:9944)',
     value: 'ws://127.0.0.1:9944/'
-  }
+  },
 ].map((option): Option => ({ ...option, withI18n: true }));

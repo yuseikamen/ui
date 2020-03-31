@@ -1,7 +1,7 @@
 import { Keyring, ApiPromise, WsProvider } from '@polkadot/api';
 import { cryptoWaitReady } from '@polkadot/util-crypto';
 import { TypeRegistry } from '@polkadot/types';
-import CENNZRuntimeTypes from '@cennznet/types/injects';
+import CENNZRuntimeTypes from '@cennznet/api-types/dist/injects';
 
 describe('e2e transactions', () => {
   let api: ApiPromise;
@@ -14,12 +14,9 @@ describe('e2e transactions', () => {
     const keyring = new Keyring({ type: 'sr25519' });
     alice = keyring.addFromUri('//Alice');
     bob = keyring.addFromUri('//Bob');
-
+    registry.register(CENNZRuntimeTypes);
     api = await ApiPromise.create({
       provider: new WsProvider('ws://localhost:9944'),
-      types: {
-        ...CENNZRuntimeTypes
-      },
       registry
     });
   });
