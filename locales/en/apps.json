@@ -12,6 +12,5 @@
   "version {{version}}": "version {{version}}",
   "GitHub": "GitHub",
   "Wiki": "Wiki",
-  "Reload": "Reload",
-  "Advanced": "Advanced"
+  "Reload": "Reload"
 }
