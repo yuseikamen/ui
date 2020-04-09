@@ -15,10 +15,13 @@ import { createType } from '@polkadot/types';
 import { formatBalance, isTestChain } from '@polkadot/util';
 import { setSS58Format } from '@polkadot/util-crypto';
 import addressDefaults from '@polkadot/util-crypto/address/defaults';
+import CENNZRuntimeTypes from '@cennznet/types/injects';
 
 import ApiContext from './ApiContext';
 import registry from './typeRegistry';
-import {Api as ApiPromise} from '@cennznet/api';
+// import {Api as ApiPromise} from '@cennznet/api';
+import ApiPromise from '@polkadot/api/promise';
+import cennznetRpc from './cennznetRpcDecoration';
 
 interface Props {
   children: React.ReactNode;
@@ -123,7 +126,14 @@ export default function Api ({ children, url }: Props): React.ReactElement<Props
   useEffect((): void => {
     const signer = new ApiSigner(queuePayload, queueSetTxStatus);
 
-    api = new ApiPromise({ provider: url, registry, signer });
+    // api = new ApiPromise({ provider: url, registry, signer });
+    api = new ApiPromise({
+      // provider,
+      registry,
+      rpc: cennznetRpc,
+      signer,
+      types: { ...(CENNZRuntimeTypes as any) }
+    });
 
     api.on('connected', (): void => setIsApiConnected(true));
     api.on('disconnected', (): void => setIsApiConnected(false));

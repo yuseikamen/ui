@@ -6,10 +6,11 @@ import { DropdownOption, DropdownOptions } from '../../util/types';
 
 import React from 'react';
 import ApiPromise from '@polkadot/api/promise';
-import map from '../CennznetJsonRpc';
+// import map from '../CennznetJsonRpc';
+import cennznetJsonRpc from '../cennznetJsonRpc';
 
 export default function createOptions (api: ApiPromise, sectionName: string): DropdownOptions {
-  const section = map[sectionName];
+  const section = cennznetJsonRpc[sectionName];
 
   if (!section || Object.keys((api.rpc as any)[sectionName]).length === 0) {
     return [];
@@ -25,7 +26,7 @@ export default function createOptions (api: ApiPromise, sectionName: string): Dr
     })
     .map((value): DropdownOption => {
       const { description, params } = section.methods[value];
-      const inputs = params.map(({ name }: { name : string }): string => name).join(', ');
+      const inputs = params.map(({ name }: { name: string }): string => name).join(', ');
 
       return {
         className: 'ui--DropdownLinked-Item',
