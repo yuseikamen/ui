@@ -1,0 +1,29 @@
+import { StorageEntryBase } from '@polkadot/api/types';
+import { ConstValue } from '@polkadot/react-components/InputConsts/types';
+import { RawParams } from '@polkadot/react-params/types';
+export declare type StorageEntryPromise = StorageEntryBase<'promise', any>;
+interface Base {
+    isConst: boolean;
+}
+interface IdQuery extends Base {
+    id: number;
+}
+export interface PartialModuleQuery extends Base {
+    key: StorageEntryPromise;
+    params: RawParams;
+}
+export declare type StorageModuleQuery = PartialModuleQuery & IdQuery;
+export interface PartialRawQuery extends Base {
+    key: Uint8Array;
+}
+export declare type StorageRawQuery = PartialRawQuery & IdQuery;
+export interface PartialConstQuery extends Base {
+    key: ConstValue;
+}
+export declare type ConstQuery = PartialConstQuery & IdQuery;
+export declare type QueryTypes = StorageModuleQuery | StorageRawQuery | ConstQuery;
+export declare type ParitalQueryTypes = PartialModuleQuery | PartialRawQuery | PartialConstQuery;
+export interface ComponentProps {
+    onAdd: (query: ParitalQueryTypes) => void;
+}
+export {};
