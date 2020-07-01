@@ -51,7 +51,7 @@ function WarmUp (): React.ReactElement {
   );
 }
 
-function Apps ({ className, onStatusChange }: any): React.ReactElement<Props> {
+function Apps ({ className }: any): React.ReactElement<Props> {
   const [sidebar, setSidebar] = useState<SidebarState>({
     isCollapsed: false,
     isMenuOpen: false,
@@ -73,9 +73,9 @@ function Apps ({ className, onStatusChange }: any): React.ReactElement<Props> {
   }
 
   const { hasAccounts } = useAccounts();
-  const [isAccountCheckingModalOpen, setAccountCheckingModalOpen] = useState(true);
-  const [isCreateOpen, setIsCreateOpen] = useState(false);
-  const [isImportOpen, setIsImportOpen] = useState(false);
+  const [isAccountCheckModalOpen, setAccountCheckModalOpen] = useState(true);
+  const [isAccountCreateModalOpen, setAccountCreateModalOpen] = useState(false);
+  const [isAccountImportModalOpen, setIsAccountImportModalOpen] = useState(false);
 
   // const advancedInput = useRef(null);
   const _setSidebar = (update: Partial<SidebarState>): void =>
@@ -96,43 +96,34 @@ function Apps ({ className, onStatusChange }: any): React.ReactElement<Props> {
     });
   };
 
-  const _toggleAccountCheckingModal = (): void => setAccountCheckingModalOpen(!isAccountCheckingModalOpen);
+  const onAccountCheckingModalClose = (): void => setAccountCheckModalOpen(!isAccountCheckModalOpen);
+  const onAccountCreateModalClose = (): void => setAccountCreateModalOpen(!isAccountCreateModalOpen);
+  const onAccountImportModalClose = (): void => setIsAccountImportModalOpen(!isAccountImportModalOpen);
 
-  const _toggleCreate = (): void => {
-    setIsCreateOpen(!isCreateOpen);
-    // setAccountCheckingModalOpen(!isAccountCheckingModalOpen);
-  };
-
-  const _toggleImport = (): void => {
-    setIsImportOpen(!isImportOpen);
-    // setAccountCheckingModalOpen(!isAccountCheckingModalOpen);
-  };
-
-  // const onStatusChange = (): void => {
-  //   console.log('object');
-  // };
+  const onStatusChange = (): void =>
+    setAccountCheckModalOpen(!isAccountCheckModalOpen);
 
   return (
     <>
       <GlobalStyle />
       <div className={`apps--Wrapper ${isCollapsed ? 'collapsed' : 'expanded'} ${isMenu && 'fixed'} ${isMenuOpen && 'menu-open'} theme--default ${className}`}>
-        {isCreateOpen && (
+        {isAccountCreateModalOpen && (
           <CreateModal
-            onClose={_toggleCreate}
+            onClose={onAccountCreateModalClose}
             onStatusChange={onStatusChange}
           />
         )}
-        {isImportOpen && (
+        {isAccountImportModalOpen && (
           <ImportModal
-            onClose={_toggleImport}
+            onClose={onAccountImportModalClose}
             onStatusChange={onStatusChange}
           />
         )}
-        {isAccountCheckingModalOpen && hasAccounts && (
+        {isAccountCheckModalOpen && !hasAccounts && (
           <AccountCheckingModal
-            onClose={_toggleAccountCheckingModal}
-            onCreateAccount={_toggleCreate}
-            onImportAccount={_toggleImport}
+            onClose={onAccountCheckingModalClose}
+            onCreateAccount={onAccountCreateModalClose}
+            onImportAccount={onAccountImportModalClose}
           />
         )}
         <MenuOverlay {...{ _handleResize, isMenuOpen }} />
