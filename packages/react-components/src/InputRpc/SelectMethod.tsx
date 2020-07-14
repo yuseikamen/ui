@@ -9,7 +9,7 @@ import { BareProps } from '../types';
 import React from 'react';
 
 // import map from './CennznetJsonRpc';
-import cennznetJsonRpc from './cennznetJsonRpc';
+import jsonRpcDecorator from './jsonRpcDecorator';
 
 import Dropdown from '../Dropdown';
 import { classes } from '../util';
@@ -23,7 +23,7 @@ interface Props extends BareProps {
 
 function transform ({ value }: Props): (method: string) => RpcMethod {
   return function (method: string): RpcMethod {
-    return cennznetJsonRpc[value.section].methods[method];
+    return jsonRpcDecorator[value.section].methods[method];
   };
 }
 

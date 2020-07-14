@@ -7,10 +7,10 @@ import { DropdownOption, DropdownOptions } from '../../util/types';
 import React from 'react';
 import ApiPromise from '@polkadot/api/promise';
 // import map from '../CennznetJsonRpc';
-import cennznetJsonRpc from '../cennznetJsonRpc';
+import jsonRpcDecorator from '../jsonRpcDecorator';
 
 export default function createOptions (api: ApiPromise, sectionName: string): DropdownOptions {
-  const section = cennznetJsonRpc[sectionName];
+  const section = jsonRpcDecorator[sectionName];
 
   if (!section || Object.keys((api.rpc as any)[sectionName]).length === 0) {
     return [];

@@ -16,7 +16,7 @@ import SelectMethod from './SelectMethod';
 import SelectSection from './SelectSection';
 import methodOptions from './options/method';
 import sectionOptions from './options/section';
-import cennznetJsonRpc from './cennznetJsonRpc';
+import jsonRpcDecorator from './jsonRpcDecorator';
 
 interface Props {
   className?: string;
@@ -52,7 +52,7 @@ export default function InputRpc ({ className, defaultValue, help, label, onChan
     const optionsMethod = methodOptions(api, section);
 
     setOptionsMethod(optionsMethod);
-    _onMethodChange(cennznetJsonRpc[section].methods[optionsMethod[0].value]);
+    _onMethodChange(jsonRpcDecorator[section].methods[optionsMethod[0].value]);
   };
 
   return (
