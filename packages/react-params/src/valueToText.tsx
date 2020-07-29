@@ -8,6 +8,7 @@ import React from 'react';
 import { classes } from '@polkadot/react-components/util';
 import { isNull, isUndefined, u8aToHex } from '@polkadot/util';
 import { Option, Raw } from '@polkadot/types';
+import formatGenericAssetBalance from './util';
 
 interface DivProps {
   className?: string;
@@ -39,6 +40,8 @@ export default function valueToText (type: string, value: any, swallowError = tr
     return div({}, '<unknown>');
   }
 
+  // const formatedBalance = formatGenericAssetBalance(JSON.stringify(value.toString()));
+
   return div(
     {},
     ['Bytes', 'Raw', 'Option<Keys>', 'Keys'].includes(type)
@@ -53,6 +56,7 @@ export default function valueToText (type: string, value: any, swallowError = tr
             : value.toString()
           : (value instanceof Option) && value.isNone
             ? '<none>'
-            : JSON.stringify(value.toHuman())
+            : JSON.stringify(value.toString())
+            // : formatGenericAssetBalance(JSON.stringify(value.toString()))
   );
 }
