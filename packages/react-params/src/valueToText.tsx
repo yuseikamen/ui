@@ -40,7 +40,9 @@ export default function valueToText (type: string, value: any, swallowError = tr
     return div({}, '<unknown>');
   }
 
-  // const formatedBalance = formatGenericAssetBalance(JSON.stringify(value.toString()));
+  const formatedBalance = formatGenericAssetBalance(value.toString());
+  console.log('value.toString()', value.toString());
+  console.log('formatedBalance', formatedBalance);
 
   return div(
     {},
@@ -56,7 +58,7 @@ export default function valueToText (type: string, value: any, swallowError = tr
             : value.toString()
           : (value instanceof Option) && value.isNone
             ? '<none>'
-            : JSON.stringify(value.toString())
-            // : formatGenericAssetBalance(JSON.stringify(value.toString()))
+            // : JSON.stringify(value.toHuman())
+            : formatedBalance
   );
 }
