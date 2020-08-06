@@ -11,7 +11,7 @@ export default ([
   {
     Component: Doughnut,
     display: {
-      isHidden: false,
+      isHidden: !process.env.DOUGHNUT_SUPPORT,
       needsAccounts: true,
       needsApi: []
     },
