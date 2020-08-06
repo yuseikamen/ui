@@ -22,6 +22,9 @@ interface Props extends BareProps {
 function formatGenericAssetBalance (value: Compact<any> | BN | string, symbol: string): React.ReactNode {
   const [prefix, postfix] = formatBalance(value, { forceUnit: '-', withSi: false }).split('.');
 
+  console.log('FormatBalance prefix', prefix);
+  console.log('FormatBalance postfix', `0000${postfix || ''}`.slice(-4));
+
   return <>{prefix}.<span className='balance-postfix'>{`0000${postfix || ''}`.slice(-4)}</span> {symbol}</>;
 }
 
