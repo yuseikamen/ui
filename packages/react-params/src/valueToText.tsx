@@ -9,7 +9,8 @@ import { classes } from '@polkadot/react-components/util';
 import { isNull, isUndefined, u8aToHex } from '@polkadot/util';
 import { Option, Raw } from '@polkadot/types';
 import { SPENDING_ASSET_NAME } from '@polkadot/app-generic-asset/assetsRegistry';
-import formatGenericAssetBalance from './util';
+// import formatGenericAssetBalance from './util';
+import getFormattedBalance from '../../react-components/src/util/getFormatedBalance';
 
 interface DivProps {
   className?: string;
@@ -41,7 +42,7 @@ export default function valueToText (type: string, value: any, swallowError = tr
     return div({}, '<unknown>');
   }
 
-  const formatedBalance = formatGenericAssetBalance(value.toString(), SPENDING_ASSET_NAME);
+  const formatedBalance = getFormattedBalance(JSON.stringify(value.toHuman()));
   console.log('value.toString()', value.toString());
   console.log('formatedBalance', formatedBalance);
 

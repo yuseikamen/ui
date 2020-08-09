@@ -1,11 +1,13 @@
 import { formatBalance } from '@polkadot/util';
 
-const formatGenericAssetBalance = (variables: {value: any, symbol: string, power?: number}): string => {
-  const { value, symbol, power = 4 } = variables;
+const formatGenericAssetBalance = (value: any, symbol: string, power?: number = 4): string => {
   const [prefixAfterSplitting, postfixAfterSplitting] = formatBalance(value, {
     forceUnit: '-',
     withSi: false
   }).split('.');
+
+  console.log('prefixAfterSplitting', prefixAfterSplitting);
+  console.log('postfixAfterSplitting', postfixAfterSplitting);
 
   const integerPart = prefixAfterSplitting;
 
