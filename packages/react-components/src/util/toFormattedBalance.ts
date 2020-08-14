@@ -36,7 +36,6 @@ const toFormattedBalance = (args: Arguments): string => {
     const scalingSize = Math.pow(10, 1 - fixedPoint);
     const valuePart = (valueAsBN.toNumber() * scalingSize).toFixed(fixedPoint);
 
-
     return `${valuePart}${unitPart}`;
   }
 
