@@ -4,7 +4,7 @@
 
 import { I18nProps } from '@polkadot/react-components/types';
 import { ComponentMap, ParamDef, RawParam, RawParams, RawParamOnChangeValue } from './types';
-
+import BN from 'bn.js';
 import React from 'react';
 import styled from 'styled-components';
 import { ErrorBoundary } from '@polkadot/react-components';
@@ -115,6 +115,9 @@ class Params extends React.PureComponent<Props, State> {
     }
 
     const { isValid = false, value } = newValue;
+
+    console.log('index', index);
+    console.log('newValue', BN.isBN(newValue) ? newValue.toNumber() : value);
 
     this.setState(
       (prevState: State): Pick<State, never> => ({

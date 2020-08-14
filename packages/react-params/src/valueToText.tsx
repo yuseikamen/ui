@@ -8,7 +8,7 @@ import { Keys, ValidatorId } from '@polkadot/types/interfaces';
 import { classes, toFormattedBalance } from '@polkadot/react-components/util';
 import { isNull, isUndefined, u8aToHex } from '@polkadot/util';
 import { Option, Raw } from '@polkadot/types';
-import Available from '@polkadot/app-generic-asset/Available';
+import GenericAssetBalance from '@polkadot/react-components/GenericAssetBalance';
 
 interface DivProps {
   className?: string;
