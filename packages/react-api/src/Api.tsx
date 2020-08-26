@@ -125,7 +125,17 @@ export default function Api ({ children, url }: Props): React.ReactElement<Props
     const provider = new WsProvider(url);
     const signer = new ApiSigner(queuePayload, queueSetTxStatus);
 
-    api = new ApiPromise({ provider, registry, signer, types: { ...PlugRuntimeTypes as any } });
+    api = new ApiPromise({ provider, registry, signer, types: { ...PlugRuntimeTypes as any,
+      "StorageHasherV11": {
+        "Blake2_128": null,
+        "Blake2_256": null,
+        "Blake2_128Concat": null,
+        "Twox128": null,
+        "Twox256": null,
+        "Twox64Concat": null,
+        "Identity": null
+      }
+    } });
 
     api.on('connected', (): void => setIsApiConnected(true));
     api.on('disconnected', (): void => setIsApiConnected(false));
