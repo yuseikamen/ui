@@ -23,5 +23,8 @@
   "Make Transfer": "Make Transfer",
   "transferrable ": "transferrable ",
   "transferrable": "transferrable",
-  "all available": "all available"
+  "all available": "all available",
+  "Select the asset you want to transfer.": "Select the asset you want to transfer.",
+  "asset": "asset",
+  "Enter the amount you want to transfer.": "Enter the amount you want to transfer."
 }

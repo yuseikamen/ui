@@ -890,6 +890,9 @@
   "password + your keystore file (download next step)": "",
   " to unlock your CENNZnet account.": "",
   "Back it up on paper or hard drive.": "",
+  "Select the asset you want to transfer.": "",
+  "asset": "",
+  "Enter the amount you want to transfer.": "",
   "Support": "",
   "Click to copy public address": ""
 }
