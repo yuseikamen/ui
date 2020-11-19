@@ -95,7 +95,7 @@ export const link = B500;
 export const linkHover = B600;
 export const popUpBackground = '#1B1C1D';
 /*
- * NOTICE: this file only contains basic color defination of basic elements like border,
+ * NOTICE: this file only contains basic color definition of basic elements like border,
  * text, link, etc.
  *
  * For application/ components resuable colors, theme/index.js is the file to be considered.

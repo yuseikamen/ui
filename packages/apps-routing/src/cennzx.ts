@@ -4,21 +4,21 @@
 
 import { Routes } from './types';
 
-import Parachains from '@polkadot/app-parachains';
+import { faRandom } from '@fortawesome/free-solid-svg-icons';
+import CennzX from '@cennznet/app-cennzx';
 
 export default ([
   {
-    Component: Parachains,
+    Component: CennzX,
     display: {
-      needsApi: [
-        'query.parachains.code'
-      ]
+      isHidden: false,
+      needsAccounts: true,
     },
     i18n: {
-      defaultValue: 'Parachains'
+      defaultValue: 'CENNZX'
     },
-    icon: 'chain',
-    name: 'parachains',
+    icon: faRandom,
+    name: 'CENNZX',
     isAdvanced: false
   }
 ] as Routes);

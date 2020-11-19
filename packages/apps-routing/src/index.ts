@@ -6,6 +6,7 @@ import { Routing, Routes } from './types';
 
 import appSettings from '@polkadot/ui-settings';
 
+import cennzx from './cennzx';
 import template from './123code';
 import accounts from './accounts';
 import claims from './claims';
@@ -13,7 +14,6 @@ import explorer from './explorer';
 import extrinsics from './extrinsics';
 import genericAsset from './generic-asset';
 import js from './js';
-import parachains from './parachains';
 import settings from './settings';
 import society from './society';
 import storage from './storage';
@@ -27,11 +27,11 @@ const routes: Routes = appSettings.uiMode === 'light'
     landing,
     accounts,
     genericAsset,
+    cennzx,
     explorer,
     claims,
     transfer,
     null,
-    // TODO Not sure about the inclusion of treasury, parachains & society here
     null,
     settings
   )
@@ -39,11 +39,11 @@ const routes: Routes = appSettings.uiMode === 'light'
     landing,
     accounts,
     genericAsset,
+    cennzx,
     explorer,
     claims,
     transfer,
     null,
-    parachains,
     society,
     null,
     storage,
