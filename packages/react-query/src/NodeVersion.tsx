@@ -20,7 +20,7 @@ export default function NodeVersion ({ children, className, label, style }: Prop
       className={className}
       style={style}
     >
-      {label || ''}{systemVersion}{children}
+      {label || ''}{systemVersion.slice(0, 10)}{children}
     </div>
   );
 }

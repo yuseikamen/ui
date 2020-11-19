@@ -17,7 +17,7 @@ export default function CennzX ({ className }: Props): React.ReactElement<Props>
   return (
     // in all apps, the main wrapper is setup to allow the padding
     // and margins inside the application. (Just from a consistent pov)
-    <main className={className}>
+    <main className={className} style={{ margin: "auto", minWidth: "55%", maxWidth: "80%", justifyContent: "center", marginTop: "5%" }}>
       <Card>
         <Transfer accountId={accountId}/>
       </Card>
