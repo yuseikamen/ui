@@ -31,6 +31,7 @@ interface Props extends BareProps {
   maxLength?: number;
   maxValue?: BN;
   onChange?: (value?: BN) => void;
+  onClick?: () => void;
   onEnter?: () => void;
   onEscape?: () => void;
   placeholder?: string;
@@ -149,7 +150,7 @@ function isNewPropsValue (propsValue: BN | string, value: string, valueBn: BN): 
 
 export default function InputNumber (props: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
-  const { bitLength = DEFAULT_BITLENGTH, className, defaultValue = ZERO, help, isDecimal, isFull, isSi, isDisabled, isError = false, maxLength, maxValue, onChange, onEnter, onEscape, placeholder, style, value: propsValue } = props;
+  const { bitLength = DEFAULT_BITLENGTH, className, defaultValue = ZERO, help, isDecimal, isFull, isSi, isDisabled, isError = false, maxLength, maxValue, onChange, onEnter, onClick, onEscape, placeholder, style, value: propsValue } = props;
 
   const [si] = useState<SiDef | null>(isSi ? formatBalance.findSi('-') : null);
   const [isPreKeyDown, setIsPreKeyDown] = useState(false);
@@ -216,6 +217,7 @@ export default function InputNumber (props: Props): React.ReactElement<Props> {
       isFull={isFull}
       maxLength={maxLength || maxValueLength}
       onChange={_onChange}
+      onClick={onClick}
       onEnter={onEnter}
       onEscape={onEscape}
       onKeyDown={_onKeyDown}

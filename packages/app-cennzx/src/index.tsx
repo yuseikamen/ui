@@ -8,18 +8,16 @@ import { AppProps as Props } from '@polkadot/react-components/types';
 import Card from '@polkadot/react-components/Card'
 // external imports (including those found in the packages/*
 // of this repo)
-import React, { useState } from 'react';
-import Transfer from './Transfer';
+import React from 'react';
+import Swap from './Swap';
 
 export default function CennzX ({ className }: Props): React.ReactElement<Props> {
-  const [accountId, setAccountId] = useState<string | null>(null);
-
   return (
     // in all apps, the main wrapper is setup to allow the padding
     // and margins inside the application. (Just from a consistent pov)
     <main className={className} style={{ margin: "auto", minWidth: "55%", maxWidth: "80%", justifyContent: "center", marginTop: "5%" }}>
       <Card>
-        <Transfer accountId={accountId}/>
+        <Swap/>
       </Card>
     </main>
   );

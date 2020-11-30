@@ -11,8 +11,7 @@ export default ([
   {
     Component: CennzX,
     display: {
-      isHidden: false,
-      needsAccounts: true,
+      needsApi: []
     },
     i18n: {
       defaultValue: 'CENNZX'

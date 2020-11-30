@@ -23,6 +23,7 @@ interface Props extends BareProps {
   labelExtra?: React.ReactNode;
   maxValue?: BN;
   onChange?: (value?: BN) => void;
+  onClick?: () => void;
   onEnter?: () => void;
   onEscape?: () => void;
   placeholder?: string;
@@ -34,15 +35,15 @@ interface Props extends BareProps {
 
 const DEFAULT_BITLENGTH = BitLengthOption.CHAIN_SPEC as BitLength;
 
-function InputBalance ({ autoFocus, className, defaultValue, help, isDisabled, isError, isFull, isZeroable, label, labelExtra, maxValue, onChange, onEnter, onEscape, placeholder, style, value, withEllipsis, withLabel, withMax }: Props): React.ReactElement<Props> {
-  const formattedDefaultValue =  defaultValue ? toFormattedBalance({ value: defaultValue }) : '0';
+function InputBalance ({ autoFocus, className, defaultValue, help, isDisabled, isError, isFull, isZeroable, label, labelExtra, maxValue, onChange, onEnter, onEscape, placeholder, style, value, withEllipsis, withLabel, withMax, onClick}: Props): React.ReactElement<Props> {
+  const formattedDefaultValue = defaultValue ? toFormattedBalance({ value: defaultValue }) : "";
 
   return (
     <InputNumber
       autoFocus={autoFocus}
       className={`ui--InputBalance ${className}`}
       bitLength={DEFAULT_BITLENGTH}
-      defaultValue={formattedDefaultValue}
+      defaultValue={defaultValue}
       help={help}
       isDisabled={isDisabled}
       isError={isError}
@@ -52,6 +53,7 @@ function InputBalance ({ autoFocus, className, defaultValue, help, isDisabled, i
       label={label}
       labelExtra={labelExtra}
       maxValue={maxValue}
+      onClick={onClick}
       onChange={onChange}
       onEnter={onEnter}
       onEscape={onEscape}
