@@ -873,6 +873,7 @@
   "validators/nominators": "",
   "(Advanced) Select the signature scheme for this account.": "",
   "Advanced": "",
+  "Send": "",
   "Address book": "",
   "Welcome to CENNZnet": "",
   "You don't have any accounts": "",
@@ -890,9 +891,12 @@
   "password + your keystore file (download next step)": "",
   " to unlock your CENNZnet account.": "",
   "Back it up on paper or hard drive.": "",
+  "Send from account": "",
+  "Send to address": "",
   "Select the asset you want to transfer.": "",
-  "asset": "",
+  "Asset type": "",
   "Enter the amount you want to transfer.": "",
+  "Send amount": "",
   "Support": "",
   "Click to copy public address": ""
 }
