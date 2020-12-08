@@ -2,19 +2,18 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
+import { AssetId, Balance, Bytes, Codec } from '@cennznet/types';
 import { SubmittableExtrinsic } from '@polkadot/api/promise/types';
+import FormatBalance from '@polkadot/app-generic-asset/FormatBalance';
+import { withMulti } from '@polkadot/react-api/hoc';
+import { Dropdown, InputAddress, InputBalance, Modal, TxButton } from '@polkadot/react-components';
 import { I18nProps } from '@polkadot/react-components/types';
-import { Balance } from '@polkadot/types/interfaces';
-import BN from 'bn.js';
-import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import { InputAddress, InputBalance, TxButton, Dropdown, Modal } from '@polkadot/react-components';
-import { useApi, useCall } from '@polkadot/react-hooks';
-import Available from '../../../app-generic-asset/src/Available';
+import { useApi } from '@polkadot/react-hooks';
 import Checks from '@polkadot/react-signer/Checks';
-import { withMulti, withObservable } from '@polkadot/react-api/hoc';
 import { u8aToString } from '@polkadot/util';
-import assetRegistry, { AssetsSubjectInfo } from '../../../app-generic-asset/src/assetsRegistry';
+import BN from 'bn.js';
+import React, { useEffect, useMemo, useState } from 'react';
+import styled from 'styled-components';
 import translate from '../../../app-generic-asset/src/translate';
 
 interface Props extends I18nProps {
@@ -22,7 +21,11 @@ interface Props extends I18nProps {
   onClose: () => void;
   recipientId?: string;
   senderId?: string;
-  assets?: AssetsSubjectInfo;
+}
+
+interface AssetInfo {
+  id: AssetId;
+  symbol: Bytes;
 }
 
 interface Option {
@@ -30,43 +33,52 @@ interface Option {
   value: string;
 }
 
-function TransferWithType ({ assets, className, onClose, recipientId: propRecipientId, senderId: propSenderId, t }: Props): React.ReactElement<Props> {
+function TransferWithType ({ className, onClose, recipientId: propRecipientId, senderId: propSenderId, t }: Props): React.ReactElement<Props> {
   const { api } = useApi();
   const [assetId, setAssetId] = useState('0');
-  const [amount, setAmount] = useState<BN | undefined>(new BN(0));
+  const [assetBalance, setAssetBalance] = useState<BN>(new BN(0));
+  const [assetName, setAssetName] = useState<string>('');
+  // The BN value for transaction (no decimal)
+  const [amount, setAmount] = useState<BN | undefined>(undefined);
   const [extrinsic, setExtrinsic] = useState<SubmittableExtrinsic | null>(null);
   const [hasAvailable, setHasAvailable] = useState(true);
-  const [hasBalance, setHasBalance] = useState(false);
   const [options, setOptions] = useState<Option[]>([]);
   const [recipientId, setRecipientId] = useState(propRecipientId || null);
   const [senderId, setSenderId] = useState(propSenderId || null);
-  let id = assetId;
-  let user = senderId;
-  const assetBalance = useCall<Balance>(api.query.genericAsset.freeBalance as any, [id, user]);
 
-  const retrivedAssetList = useCall<any>(
+  // Query registered assets on first load
+  useEffect((): void => {
     // @ts-ignore
-    api.rpc.genericAsset.registeredAssets as any,
-    []
-  );
+    api.rpc.genericAsset.registeredAssets().then(
+      (assets: Array<[AssetId, AssetInfo]>) => {
+        const dropdownOptions: Option[] = assets && assets.length > 0 && assets.map(([id, info]) => {
+          return {
+            text: u8aToString(info.symbol),
+            value: id.toString(),
+          } as Option;
+        }) || [];
 
-  const dropdownOptions = retrivedAssetList && retrivedAssetList.length > 0 && retrivedAssetList.map((asset: any) => {
-    const [assetId, assetInfo] = asset;
+        setOptions(dropdownOptions);
+        setAssetId(dropdownOptions[0].value || "0");
+        setAssetName(dropdownOptions[0].text || "?");
+      });
+  }, []);
 
-    return {
-      text: u8aToString(assetInfo.symbol),
-      value: assetId.toString()
-    };
-  });
+  // Query balances on assetId or senderId change
+  useMemo((): void => {
+    // @ts-ignore
+    api.query.genericAsset.freeBalance(assetId, senderId!).then(
+      (balance: Codec) => setAssetBalance((balance as Balance).toBn())
+    );
+  }, [assetId]);
 
   useEffect((): void => {
-    setOptions(dropdownOptions || []);
-  }, [retrivedAssetList]);
-
-  useEffect((): void => {
-    setHasBalance((assetBalance !== undefined) && !assetBalance.isZero());
-    setHasAvailable((amount !== undefined) && !amount.isZero());
-  }, [assetBalance, amount]);
+    if (amount !== undefined && !amount!.isZero()) {
+      setHasAvailable(amount.lte(assetBalance));
+    } else {
+      setHasAvailable(true);
+    }
+  }, [assetId, amount, assetBalance]);
 
   // create an extrinsic if we have correct values
   useEffect((): void => {
@@ -75,12 +87,18 @@ function TransferWithType ({ assets, className, onClose, recipientId: propRecipi
         ? api.tx.genericAsset.transfer(assetId, recipientId, amount)
         : null
     );
-  }, [amount, assetId, recipientId, senderId]);
+  }, [amount, assetId, recipientId]);
 
-  const transferrable = <span className='label'>{t('transferrable')}</span>;
+  // When assetId is selected, update assetName also
+  function setAsset(assetId: string): void {
+    setAssetId(assetId);
+    setAssetName(options.find(x => x.value == assetId)?.text || "?");
+  }
+
+  const notEnoughTransferrable = <span style={{ color: "#9f3a38" }}>{t('not enough transferrable')}</span>;
 
   return (
-    <Modal className='app--accounts-Modal' header={t('Send funds')}>
+    <Modal style={{ marginTop: "8rem", minWidth: "50%", maxWidth: "600px" }} header={t('Send funds')}>
       <Modal.Content>
         <div className={className}>
           <InputAddress
@@ -88,8 +106,13 @@ function TransferWithType ({ assets, className, onClose, recipientId: propRecipi
             help={t('The account you will send funds from.')}
             isDisabled={!!propSenderId}
             label={t('Send from account')}
-            labelExtra={<Available label={transferrable} params={senderId} />}
-            isError={!hasBalance}
+            labelExtra={
+              <FormatBalance
+                className={className}
+                value={assetBalance}
+                symbol={assetName}
+              />
+            }
             onChange={setSenderId}
             type='account'
           />
@@ -100,24 +123,23 @@ function TransferWithType ({ assets, className, onClose, recipientId: propRecipi
             )}
             isDisabled={!!propRecipientId}
             label={t('Send to address')}
-            labelExtra={
-              <Available label={transferrable} params={recipientId} />
-            }
             onChange={setRecipientId}
             type='allPlus'
           />
           <Dropdown
             help={t('Select the asset you want to transfer.')}
             label={t('Asset type')}
-            onChange={setAssetId}
+            onChange={setAsset}
             options={options}
             value={assetId}
           />
           <InputBalance
             help={t('Enter the amount you want to transfer.')}
             isError={!hasAvailable}
-            label={t('Send amount')}
+            label={<span>{t('Send amount')}</span>}
+            labelExtra={!hasAvailable && notEnoughTransferrable}
             onChange={setAmount}
+            isZeroable={true}
           />
           <Checks
             accountId={senderId}
@@ -134,7 +156,7 @@ function TransferWithType ({ assets, className, onClose, recipientId: propRecipi
           icon='send'
           isDisabled={!hasAvailable}
           isPrimary
-          label={t('Make Transfer')}
+          label={t('Send')}
           onStart={onClose}
         />
       </Modal.Actions>
@@ -163,6 +185,5 @@ export default withMulti(
       flex-basis: 10rem;
     }
   `,
-  translate,
-  withObservable(assetRegistry.subject, { propName: 'assets' })
+  translate
 );
