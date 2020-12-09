@@ -8,7 +8,7 @@ pipeline {
     }
     
     stages {
-        stage('Test') {
+        stage('Deploy to Dev S3') {
             steps {
                 sh 'ls -l /var/www/html'
 		sh 'id'
@@ -19,6 +19,7 @@ pipeline {
 		sh 'mkdir /root/.aws/ && cp aws.config /root/.aws/config'
 		sh 'aws --profile dev sts get-caller-identity'
 		sh 'aws --profile dev s3 ls s3://cennznet-ui.centrality.me/'
+		sh 'aws --profile dev s3 cp --recursive /var/www/html s3://cennznet-ui.centrality.me/'
             }
         }
     }
