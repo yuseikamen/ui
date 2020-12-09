@@ -13,7 +13,7 @@ pipeline {
                 sh 'ls -l /var/www/html'
 		sh 'id'
 		sh 'ls /root'
-		sh 'apt-get install -y curl unzip'
+		sh 'apt-get install -y curl unzip less'
 		sh 'cd /tmp && rm -f *.zip && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && unzip awscliv2.zip && pwd && ls -l && ./aws/install && aws --version'
 		sh 'aws sts get-caller-identity'
             }
