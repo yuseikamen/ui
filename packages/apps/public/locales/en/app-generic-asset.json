@@ -24,5 +24,7 @@
   "transferrable ": "transferrable ",
   "transferrable": "transferrable",
   "all available": "all available",
-  "Asset type": "Asset type"
+  "Asset type": "Asset type",
+  "Select the asset you want to transfer.": "Select the asset you want to transfer.",
+  "Enter the amount you want to transfer.": "Enter the amount you want to transfer."
 }
