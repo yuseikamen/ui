@@ -11,8 +11,7 @@ import store from 'store';
 import styled from 'styled-components';
 import { withMulti, withObservable } from '@polkadot/react-api/hoc';
 import keyring from '@polkadot/ui-keyring';
-import keyringOption from '@polkadot/ui-keyring/options';
-import createKeyringItem from '@polkadot/ui-keyring/options/item';
+import { createOptionItem } from '@polkadot/ui-keyring/options/item';
 import { isUndefined } from '@polkadot/util';
 
 import { classes, getAddressName } from '../util';
@@ -95,8 +94,8 @@ function createOption (address: string): Option {
       isRecent = true;
     }
   }
-
-  return createItem(createKeyringItem(address, name), !isRecent);
+  return createItem(createOptionItem(address, name), !isRecent);
+ // return createItem(createKeyringItem(address, name), !isRecent);
 }
 
 function readOptions (): Record<string, any> {
@@ -312,7 +311,7 @@ const ExportedComponent = withMulti(
       max-width: 0;
     }
   `,
-  withObservable(keyringOption.optionsSubject, {
+  withObservable(keyring.keyringOption.optionsSubject, {
     propName: 'optionsAll',
     transform: (optionsAll: KeyringOptions): Record<string, Option[]> =>
       Object.entries(optionsAll).reduce((result: Record<string, Option[]>, [type, options]): Record<string, Option[]> => {

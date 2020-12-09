@@ -2,10 +2,9 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import { ApiState } from './types';
-
-import React, { useContext, useEffect, useState } from 'react';
-import { isWeb3Injected, web3Accounts, web3Enable } from '@polkadot/extension-dapp';
+import type { ApiProps, ApiState } from './types';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
+import { web3Accounts, web3Enable } from '@polkadot/extension-dapp';
 import { StatusContext } from '@polkadot/react-components/Status';
 import { TokenUnit } from '@polkadot/react-components/InputNumber';
 import keyring from '@polkadot/ui-keyring';
@@ -15,14 +14,17 @@ import { createType } from '@polkadot/types';
 import { formatBalance, isTestChain } from '@polkadot/util';
 import { setSS58Format } from '@polkadot/util-crypto';
 import { defaults as addressDefaults } from '@polkadot/util-crypto/address/defaults';
-
+import type { KeyringStore } from '@polkadot/ui-keyring/types';
+import type { InjectedExtension } from '@polkadot/extension-inject/types';
 import ApiContext from './ApiContext';
 import registry from './typeRegistry';
 import {Api as ApiPromise} from '@cennznet/api';
+import store from "store";
 
 interface Props {
   children: React.ReactNode;
   url?: string;
+  store?: KeyringStore;
 }
 
 interface State extends ApiState {
@@ -39,12 +41,27 @@ interface InjectedAccountExt {
 
 const DEFAULT_DECIMALS = createType(registry, 'u32', 4);
 const DEFAULT_SS58 = createType(registry, 'u32', addressDefaults.prefix);
-const injectedPromise = web3Enable('polkadot-js/apps');
 let api: ApiPromise;
 
 export { api };
 
-async function loadOnReady (api: ApiPromise): Promise<State> {
+function isKeyringLoaded () {
+  try {
+    return !!keyring.keyring;
+  } catch {
+    return false;
+  }
+}
+function getDevTypes (): Record<string, Record<string, string>> {
+  const types = store.get('types', {}) as Record<string, Record<string, string>>;
+  const names = Object.keys(types);
+
+  names.length && console.log('Injected types:', names.join(', '));
+
+  return types;
+}
+
+async function loadOnReady (api: ApiPromise, injectedPromise: Promise<InjectedExtension[]>, store: KeyringStore | undefined, types: Record<string, Record<string, string>>): Promise<State> {
   const [properties, _systemChain, _systemName, _systemVersion, injectedAccounts] = await Promise.all([
     api.rpc.system.properties(),
     api.rpc.system.chain(),
@@ -90,11 +107,12 @@ async function loadOnReady (api: ApiPromise): Promise<State> {
   });
   TokenUnit.setAbbr(tokenSymbol);
 
-  // finally load the keyring
-  keyring.loadAll({
+// finally load the keyring
+  isKeyringLoaded() || keyring.loadAll({
     genesisHash: api.genesisHash,
     isDevelopment,
     ss58Format,
+    store,
     type: 'ed25519'
   }, injectedAccounts);
 
@@ -116,42 +134,54 @@ async function loadOnReady (api: ApiPromise): Promise<State> {
   } as State;
 }
 
-export default function Api ({ children, url }: Props): React.ReactElement<Props> | null {
+export default function Api ({ children, store, url }: Props): React.ReactElement<Props> | null {
   const { queuePayload, queueSetTxStatus } = useContext(StatusContext);
   const [state, setState] = useState<State>({ isApiReady: false } as Partial<State> as State);
   const [isApiConnected, setIsApiConnected] = useState(false);
-  const [isWaitingInjected, setIsWaitingInjected] = useState(isWeb3Injected);
-  const [isInitialized, setIsInitialized] = useState(false);
-
+  const [isApiInitialized, setIsApiInitialized] = useState(false);
+  const [apiError, setApiError] = useState<null | string>(null);
+  const [extensions, setExtensions] = useState<InjectedExtension[] | undefined>();
+  const value = useMemo<ApiProps>(
+      () => ({ ...state, api, apiError, extensions, isApiConnected, isApiInitialized, isWaitingInjected: !extensions }),
+      [apiError, extensions, isApiConnected, isApiInitialized, state]
+  );
   // initial initialization
   useEffect((): void => {
     const signer = new ApiSigner(queuePayload, queueSetTxStatus);
-
+    const types = getDevTypes();
     api = new ApiPromise({ provider: url, registry, signer });
 
     api.on('connected', (): void => setIsApiConnected(true));
     api.on('disconnected', (): void => setIsApiConnected(false));
     api.on('ready', async (): Promise<void> => {
-      try {
-        setState(await loadOnReady(api));
-      } catch (error) {
-        console.error('Unable to load chain', error);
-      }
+      const injectedPromise = web3Enable('polkadot-js/apps');
+
+      injectedPromise
+          .then(setExtensions)
+          .catch(console.error);
+
+      loadOnReady(api, injectedPromise, store, types)
+          .then(setState)
+          .catch((error): void => {
+            console.error(error);
+
+            setApiError((error as Error).message);
+          });
     });
 
-    injectedPromise
-      .then((): void => setIsWaitingInjected(false))
-      .catch((error: Error) => console.error(error));
+    // injectedPromise
+    //   .then((): void => setIsWaitingInjected(false))
+    //   .catch((error: Error) => console.error(error));
 
-    setIsInitialized(true);
+    setIsApiInitialized(true);
   }, []);
 
-  if (!isInitialized) {
+  if (!value.isApiInitialized) {
     return null;
   }
 
   return (
-    <ApiContext.Provider value={{ ...state, api, isApiConnected, isWaitingInjected }}>
+    <ApiContext.Provider value={value}>
       {children}
     </ApiContext.Provider>
   );

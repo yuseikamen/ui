@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { SubmittableExtrinsicFunction } from '@polkadot/api/promise/types';
-
+import type { InjectedExtension } from '@polkadot/extension-inject/types';
 import { ApiPromise } from '@polkadot/api';
 
 // helpers for HOC props
@@ -28,8 +28,11 @@ export interface ApiState {
 
 export interface ApiProps extends ApiState {
   api: ApiPromise;
-  isWaitingInjected: boolean;
+  apiError: string | null;
+  extensions?: InjectedExtension[];
   isApiConnected: boolean;
+  isApiInitialized: boolean;
+  isWaitingInjected: boolean;
 }
 
 export interface OnChangeCbObs {
