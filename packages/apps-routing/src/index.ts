@@ -16,6 +16,7 @@ import js from './js';
 import parachains from './parachains';
 import settings from './settings';
 import society from './society';
+import staking from './staking';
 import storage from './storage';
 import sudo from './sudo';
 import toolbox from './toolbox';
@@ -30,6 +31,7 @@ const routes: Routes = appSettings.uiMode === 'light'
     explorer,
     claims,
     transfer,
+    staking,
     null,
     // TODO Not sure about the inclusion of treasury, parachains & society here
     null,
@@ -42,6 +44,7 @@ const routes: Routes = appSettings.uiMode === 'light'
     explorer,
     claims,
     transfer,
+    staking,
     null,
     parachains,
     society,
