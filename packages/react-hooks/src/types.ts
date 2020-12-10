@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { ConstructTxFn, StringOrNull } from '@polkadot/react-components/types';
-import { AccountId, Balance, BlockNumber, Call, Hash, SessionIndex } from '@polkadot/types/interfaces';
+import { AccountId, Balance, BlockNumber, Call, Exposure, Hash, RewardDestination, SessionIndex, StakingLedger, ValidatorPrefs } from '@polkadot/types/interfaces';
 import { IExtrinsic } from '@polkadot/types/types';
 import { SubmittableExtrinsic } from '@polkadot/api/promise/types';
 
@@ -13,9 +13,10 @@ export type CallParams = [] | [CallParam] | [CallParam, CallParam] | [CallParam,
 
 export interface CallOptions <T> {
   defaultValue?: T;
-  isSingle?: boolean;
   paramMap?: (params: any) => CallParams;
   transform?: (value: any) => T;
+  withParams?: boolean;
+  withParamsTransform?: boolean;
 }
 
 export type TxDef = [string, any[] | ConstructTxFn];
@@ -64,4 +65,26 @@ export interface TxState extends ExtrinsicAndSenders {
   isSending: boolean;
   accountId?: StringOrNull;
   onChangeAccountId: (_: StringOrNull) => void;
+}
+export interface Inflation {
+  inflation: number;
+  stakedReturn: number;
+}
+
+export interface StakerState {
+  controllerId: string | null;
+  destination?: RewardDestination;
+  exposure?: Exposure;
+  hexSessionIdNext: string | null;
+  hexSessionIdQueue: string | null;
+  isLoading: boolean;
+  isOwnController: boolean;
+  isOwnStash: boolean;
+  isStashNominating: boolean;
+  isStashValidating: boolean;
+  nominating?: string[];
+  sessionIds: string[];
+  stakingLedger?: StakingLedger;
+  stashId: string;
+  validatorPrefs?: ValidatorPrefs;
 }

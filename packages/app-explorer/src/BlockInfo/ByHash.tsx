@@ -24,9 +24,9 @@ interface Props extends I18nProps {
 
 function BlockByHash ({ className, value }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
-  const events = useCall<EventRecord[]>(api.query.system.events.at as any, [value], { isSingle: true });
-  const getBlock = useCall<SignedBlock>(api.rpc.chain.getBlock as any, [value], { isSingle: true });
-  const getHeader = useCall<HeaderExtended>(api.derive.chain.getHeader as any, [value]);
+  const events = useCall<EventRecord[]>(api.query.system.events.at, [value]);
+  const getBlock = useCall<SignedBlock>(api.rpc.chain.getBlock, [value]);
+  const getHeader = useCall<HeaderExtended>(api.derive.chain.getHeader, [value]);
 
   if (!getBlock || getBlock.isEmpty || !getHeader || getHeader.isEmpty) {
     return null;

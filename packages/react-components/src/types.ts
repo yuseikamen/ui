@@ -159,3 +159,31 @@ export interface NullContract {
   abi: null;
   address: null;
 }
+
+export interface ThemeDef {
+  bgInput: string;
+  bgInputError: string;
+  bgInverse: string;
+  bgMenu: string;
+  bgMenuHover: string;
+  bgPage: string;
+  bgTable: string;
+  bgTabs: string;
+  bgToggle: string;
+  borderTable: string;
+  borderTabs: string;
+  color: string;
+  colorCheckbox: string;
+  colorError: string;
+  colorLabel: string;
+  colorSummary: string;
+  fontSans: string;
+  fontMono: string;
+  fontWeightLight: number;
+  fontWeightNormal: number;
+  theme: 'dark' | 'light';
+}
+
+export interface ThemeProps {
+  theme: ThemeDef;
+}
