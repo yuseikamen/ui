@@ -15,48 +15,48 @@ import Summary from './Overview/Summary';
 import { useTranslation } from './translate';
 
 export default function ToolboxApp ({ basePath }: Props): React.ReactElement<Props> {
-  const { t } = useTranslation();
+    const { t } = useTranslation();
     const { api } = useApi();
-  const { hasAccounts } = useAccounts();
+    const { hasAccounts } = useAccounts();
     const { pathname } = useLocation();
     const [next] = useState<string[]>([]);
     const stakingOverview = useCall<any>(api.derive.staking.overview, []);
-  const items = useMemo(() => [
-    {
-      isRoot: true,
-      name: 'overview',
-      text: t('Overview')
-    },
-    {
-      name: 'actions',
-      text: t('Actions')
-    },
-  ], [t]);
+    const items = useMemo(() => [
+        {
+            isRoot: true,
+            name: 'overview',
+            text: t('Overview')
+        },
+        {
+            name: 'actions',
+            text: t('Actions')
+        },
+    ], [t]);
 
-  return (
-      <main className='toolbox--App'>
-        <header>
-          <Tabs
-              basePath={basePath}
-              hidden={
-                hasAccounts
-                    ? []
-                    : ['sign', 'verify']
-              }
-              items={items}
-          />
-        </header>
-          <Summary
-              isVisible={pathname === basePath}
-              next={next}
-              nominators={[]}
-              stakingOverview={stakingOverview}
-          />
-        <Switch>
-          <Route path={`${basePath}/overview`} component={Overview} />
-          <Route path={`${basePath}/actions`} component={Actions} />
-          <Route component={Overview} />
-        </Switch>
-      </main>
-  );
+    return (
+        <main className='toolbox--App'>
+            <header>
+                <Tabs
+                    basePath={basePath}
+                    hidden={
+                        hasAccounts
+                            ? []
+                            : ['sign', 'verify']
+                    }
+                    items={items}
+                />
+            </header>
+            <Summary
+                isVisible={pathname === basePath}
+                next={next}
+                nominators={[]}
+                stakingOverview={stakingOverview}
+            />
+            <Switch>
+                <Route path={`${basePath}/overview`} component={Overview} />
+                <Route path={`${basePath}/actions`} component={Actions} />
+                <Route component={Overview} />
+            </Switch>
+        </main>
+    );
 }

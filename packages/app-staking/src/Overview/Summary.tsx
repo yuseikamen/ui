@@ -2,8 +2,6 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-//import { DerivedStakingOverview } from '@polkadot/api-derive/types';
-
 import React, { useContext } from 'react';
 import styled from 'styled-components';
 import SummarySession from '@polkadot/app-explorer/SummarySession';

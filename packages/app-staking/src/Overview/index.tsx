@@ -4,39 +4,17 @@
 
 import { BareProps } from '@polkadot/react-components/types';
 
-import React, { useContext } from 'react';
-import { useLocation } from 'react-router-dom';
-import { BlockAuthorsContext } from '@polkadot/react-query';
-
-import CurrentList from './CurrentList';
+import React from 'react';
 
 interface Props extends BareProps {
-  hasQueries: boolean;
   isVisible: boolean;
-  recentlyOnline?: any;
-  next: string[];
-  setNominators: (nominators: string[]) => void;
-  stakingOverview?: any;
 }
 
-export default function Overview ({ hasQueries, isVisible, className, recentlyOnline, next, setNominators, stakingOverview }: Props): React.ReactElement<Props> {
-  const { pathname } = useLocation();
-  const { byAuthor, lastBlockAuthors } = useContext(BlockAuthorsContext);
-  const isIntentions = pathname !== '/staking';
+export default function Overview ({ isVisible, className }: Props): React.ReactElement<Props> {
 
   return (
     <div className={`staking--Overview ${className} ${!isVisible && 'staking--hidden'}`}>
-      <CurrentList
-        authorsMap={byAuthor}
-        hasQueries={hasQueries}
-        isIntentions={isIntentions}
-        isVisible={isVisible}
-        lastAuthors={lastBlockAuthors}
-        next={next}
-        recentlyOnline={recentlyOnline}
-        setNominators={setNominators}
-        stakingOverview={stakingOverview}
-      />
+
     </div>
   );
 }
