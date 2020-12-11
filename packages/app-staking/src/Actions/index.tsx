@@ -4,21 +4,13 @@
 
 
 import React from 'react';
+import {BareProps} from "@polkadot/react-components/types";
 
-
-interface Props {
-  allStashes: string[];
-  className?: string;
+interface Props extends BareProps {
   isVisible: boolean;
-  recentlyOnline?: any;
-  next: string[];
-  stakingOverview?: any;
 }
 
-
-export default function Actions ({ allStashes, className, isVisible, next, recentlyOnline, stakingOverview }: Props): React.ReactElement<Props> {
-
-
+export default function Actions ({ className, isVisible }: Props): React.ReactElement<Props> {
   return (
     <div className={`${className} ${!isVisible && 'staking--hidden'}`}>
 

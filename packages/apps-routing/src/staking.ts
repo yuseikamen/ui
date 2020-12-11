@@ -13,7 +13,6 @@ export default ([
       needsApi: [
         [
           'tx.staking.bond' // current bonding API
-          // 'tx.staking.stake' // previous staking API
         ]
       ]
     },
