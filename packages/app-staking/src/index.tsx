@@ -3,24 +3,52 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AppProps as Props } from '@polkadot/react-components/types';
-import React, {  useMemo,  useState } from 'react';
+import React, {  useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Route, Switch } from 'react-router';
 import Tabs from '@polkadot/react-components/Tabs';
-import { useAccounts, useCall, useApi } from '@polkadot/react-hooks';
-
+import { useAccounts, useCall, useApi, useFavorites, useStashIds } from '@polkadot/react-hooks';
 import Actions from './Actions';
 import Overview from './Overview';
 import Summary from './Overview/Summary';
+import useSortedTargets from './useSortedTargets';
+import { STORE_FAVS_BASE } from './constants';
 import { useTranslation } from './translate';
+import { Balance, FixedI128 } from '@polkadot/types/interfaces';
+import { toFormattedBalance } from "@polkadot/react-components/util";
+import { formatBalance } from '@polkadot/util';
+import BN from "bn.js";
 
 export default function ToolboxApp ({ basePath }: Props): React.ReactElement<Props> {
     const { t } = useTranslation();
     const { api } = useApi();
     const { hasAccounts } = useAccounts();
     const { pathname } = useLocation();
-    const [next] = useState<string[]>([]);
+    const allStashes = useStashIds();
     const stakingOverview = useCall<any>(api.derive.staking.overview, []);
+    const transactionFeePot = useCall<Balance>(api.query.rewards.transactionFeePot, []);
+    const inflationRate = useCall<FixedI128>(api.query.rewards.inflationRate, []);
+    const PERBILL = new BN(1000000000);
+    const calcRewards = transactionFeePot && inflationRate ?
+        transactionFeePot.toBn().add(transactionFeePot.toBn().mul((inflationRate.toBn().div(PERBILL.mul(PERBILL))))) : new BN(0);
+    const rewards = toFormattedBalance({
+        value: calcRewards as BN,
+        unit: formatBalance.getDefaults().unit
+    });
+
+    const next = useMemo(
+        () => (allStashes && stakingOverview)
+            ? allStashes.filter((address) => !stakingOverview.validators.includes(address as any))
+            : undefined,
+        [allStashes, stakingOverview]
+    );
+    const [favorites, toggleFavorite] = useFavorites(STORE_FAVS_BASE);
+    const targets = useSortedTargets(favorites);
+    const hasQueries = useMemo(
+        () => hasAccounts && !!(api.query.imOnline?.authoredBlocks) && !!(api.query.staking.activeEra),
+        [api, hasAccounts]
+    );
+
     const items = useMemo(() => [
         {
             isRoot: true,
@@ -49,13 +77,30 @@ export default function ToolboxApp ({ basePath }: Props): React.ReactElement<Pro
             <Summary
                 isVisible={pathname === basePath}
                 next={next}
-                nominators={[]}
+                nominators={targets.nominators}
                 stakingOverview={stakingOverview}
+                rewards={`${rewards}`}
             />
             <Switch>
-                <Route path={`${basePath}/overview`} component={Overview} />
+                <Route path={`${basePath}/overview`}>
+                    <Overview
+                        favorites={favorites}
+                        hasQueries={hasQueries}
+                        next={next}
+                        stakingOverview={stakingOverview}
+                        targets={targets}
+                        toggleFavorite={toggleFavorite}
+                    />
+                </Route>
                 <Route path={`${basePath}/actions`} component={Actions} />
-                <Route component={Overview} />
+                <Route><Overview
+                    favorites={favorites}
+                    hasQueries={hasQueries}
+                    next={next}
+                    stakingOverview={stakingOverview}
+                    targets={targets}
+                    toggleFavorite={toggleFavorite}
+                /></Route>
             </Switch>
         </main>
     );

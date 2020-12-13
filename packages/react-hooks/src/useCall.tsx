@@ -1,26 +1,25 @@
 // Copyright 2017-2020 @polkadot/react-hooks authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
-
-import { Codec } from '@polkadot/types/types';
-import { CallOptions, CallParam, CallParams } from './types';
+// SPDX-License-Identifier: Apache-2.0
 
 import { useEffect, useRef, useState } from 'react';
+
+import type { Codec } from '@polkadot/types/types';
 import { isNull, isUndefined } from '@polkadot/util';
 
-import useIsMountedRef, { MountedRef } from './useIsMountedRef';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import type { CallOptions, CallParam, CallParams } from './types';
+import { MountedRef, default as useIsMountedRef } from './useIsMountedRef';
 
-interface TrackFnCallback {
-  (value: Codec): void;
-}
+type VoidFn = () => void;
 
-type TrackFnResult = Promise<() => void>;
+// This should be VoidFn, however the API actually does allow us to use any general single-shot queries with
+// a result callback, so `api.query.system.account.at(<blokHash>, <account>, (info) => {... })` does work
+// (The same applies to e.g. keys or entries). So where we actally use the unsub, we cast `unknown` to `VoidFn`
+// to cater for our usecase.
+type TrackFnResult = Promise<unknown>;
 
 interface TrackFn {
-  (a: CallParam, b: CallParam, c: CallParam, cb: TrackFnCallback): TrackFnResult;
-  (a: CallParam, b: CallParam, cb: TrackFnCallback): TrackFnResult;
-  (a: CallParam, cb: TrackFnCallback): TrackFnResult;
-  (cb: TrackFnCallback): TrackFnResult;
+  (...params: CallParam[]): TrackFnResult;
   meta?: {
     type: {
       isDoubleMap: boolean;
@@ -30,7 +29,6 @@ interface TrackFn {
 
 interface Tracker {
   isActive: boolean;
-  count: number;
   serialized: string | null;
   subscriber: TrackFnResult | null;
 }
@@ -40,17 +38,17 @@ interface TrackerRef {
 }
 
 // the default transform, just returns what we have
-function transformIdentity (value: any): any {
-  return value;
+function transformIdentity <T> (value: unknown): T {
+  return value as T;
 }
 
 // extract the serialized and mapped params, all ready for use in our call
-function extractParams (fn: any, params: any[], paramMap: (params: any[]) => any): [string, CallParams | null] {
+function extractParams <T> (fn: unknown, params: unknown[], { paramMap = transformIdentity }: CallOptions<T> = {}): [string, CallParams | null] {
   return [
-    JSON.stringify({ f: fn?.name, p: params }),
-    params.length === 0 || !params.some((param): boolean => isNull(param) || isUndefined(null))
-      ? paramMap(params)
-      : null
+    JSON.stringify({ f: (fn as { name: string })?.name, p: params }),
+    params.length === 0 || !params.some((param) => isNull(param) || isUndefined(param))
+        ? paramMap(params)
+        : null
   ];
 }
 
@@ -59,32 +57,33 @@ function unsubscribe (tracker: TrackerRef): void {
   tracker.current.isActive = false;
 
   if (tracker.current.subscriber) {
-    tracker.current.subscriber.then((unsubFn): void => unsubFn());
+    tracker.current.subscriber.then((unsubFn) => (unsubFn as VoidFn)()).catch(console.error);
     tracker.current.subscriber = null;
   }
 }
 
-// subscribe, tyring to play nice with the browser threads
-function subscribe <T> (mounted: MountedRef, tracker: TrackerRef, fn: TrackFn | undefined, params: CallParams, setValue: (value: T) => void, { isSingle, transform = transformIdentity }: CallOptions<T>): void {
-  const validParams = params.filter((p): boolean => !isUndefined(p));
+// subscribe, trying to play nice with the browser threads
+function subscribe <T> (mountedRef: MountedRef, tracker: TrackerRef, fn: TrackFn | undefined, params: CallParams, setValue: (value: T) => void, { transform = transformIdentity, withParams, withParamsTransform }: CallOptions<T> = {}): void {
+  const validParams = params.filter((p) => !isUndefined(p));
 
   unsubscribe(tracker);
 
   setTimeout((): void => {
-    if (mounted.current) {
+    if (mountedRef.current) {
       if (fn && (!fn.meta || !fn.meta.type?.isDoubleMap || validParams.length === 2)) {
-        // swap to acive mode and reset our count
+        // swap to acive mode
         tracker.current.isActive = true;
-        tracker.current.count = 0;
 
-        // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
-        // @ts-ignore We tried to get the typings right, close but no cigar...
-        tracker.current.subscriber = fn(...params, (value: any): void => {
-          // when we don't have an active sub, or single-shot, ignore (we use the isActive flag here
-          // since .subscriber may not be set on immeditae callback)
-          if (mounted.current && tracker.current.isActive && (!isSingle || !tracker.current.count)) {
-            tracker.current.count++;
-            setValue(transform(value));
+        tracker.current.subscriber = (fn as (...params: unknown[]) => Promise<() => void>)(...params, (value: Codec): void => {
+          // we use the isActive flag here since .subscriber may not be set on immediate callback)
+          if (mountedRef.current && tracker.current.isActive) {
+            mountedRef.current && tracker.current.isActive && setValue(
+                withParams
+                    ? [params, transform(value)] as any
+                    : withParamsTransform
+                    ? transform([params, value])
+                    : transform(value)
+            );
           }
         });
       } else {
@@ -98,31 +97,29 @@ function subscribe <T> (mounted: MountedRef, tracker: TrackerRef, fn: TrackFn | 
 //  - returns a promise with an unsubscribe function
 //  - has a callback to set the value
 // FIXME The typings here need some serious TLC
-export default function useCall <T> (fn: TrackFn | undefined | null, params: CallParams = [], options: CallOptions<T> = {}): T | undefined {
-  const mounted = useIsMountedRef();
-  const tracker = useRef<Tracker>({ isActive: false, count: 0, serialized: null, subscriber: null });
-  const [value, setValue] = useState<T | undefined>(options.defaultValue);
+export default function useCall <T> (fn: TrackFn | undefined | null | false, params?: CallParams, options?: CallOptions<T>): T | undefined {
+  const mountedRef = useIsMountedRef();
+  const tracker = useRef<Tracker>({ isActive: false, serialized: null, subscriber: null });
+  const [value, setValue] = useState<T | undefined>((options || {}).defaultValue);
 
-  // initial effect, we need an unsubscription
+  // initial effect, we need an un-subscription
   useEffect((): () => void => {
-    return (): void => {
-      unsubscribe(tracker);
-    };
+    return () => unsubscribe(tracker);
   }, []);
 
   // on changes, re-subscribe
   useEffect((): void => {
     // check if we have a function & that we are mounted
-    if (mounted.current && fn) {
-      const [serialized, mappedParams] = extractParams(fn, params, options.paramMap || transformIdentity);
+    if (mountedRef.current && fn) {
+      const [serialized, mappedParams] = extractParams(fn, params || [], options);
 
       if (mappedParams && serialized !== tracker.current.serialized) {
         tracker.current.serialized = serialized;
 
-        subscribe(mounted, tracker, fn, mappedParams, setValue, options);
+        subscribe(mountedRef, tracker, fn, mappedParams, setValue, options);
       }
     }
-  }, [fn, params]);
+  }, [fn, options, mountedRef, params]);
 
   return value;
 }

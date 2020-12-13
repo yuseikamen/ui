@@ -1,32 +1,30 @@
 // Copyright 2017-2020 @polkadot/react-components authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
-
-import { BareProps } from './types';
+// SPDX-License-Identifier: Apache-2.0
 
 import React from 'react';
 import styled from 'styled-components';
 
-interface Props extends BareProps {
+interface Props {
   children?: React.ReactNode;
   className?: string;
+  isSmall?: boolean;
 }
 
-function SummaryBox ({ children, className }: Props): React.ReactElement<Props> {
+function SummaryBox ({ children, className = '', isSmall }: Props): React.ReactElement<Props> {
   return (
-    <div className={className}>
-      {children}
-    </div>
+      <div className={`${className}${isSmall ? ' isSmall' : ''}`}>
+        {children}
+      </div>
   );
 }
 
-export default styled(SummaryBox)`
+export default React.memo(styled(SummaryBox)`
   align-items: stretch;
-  border-radius: 4px;
+  border-radius: 0.25rem;
   display: flex;
   flex-wrap: no-wrap;
   justify-content: space-between;
-  margin-bottom: 1.4rem;
+  margin: 1.5rem 0;
 
   > section {
     display: flex;
@@ -49,16 +47,8 @@ export default styled(SummaryBox)`
     }
   }
 
-  @media(max-width: 767px) {
-    padding: 0;
-
-    .ui--media-small {
-      display: none !important;
-    }
-  }
-
-  @media(min-width: 768px) {
-    margin-bottom: 2.8rem;
+  &.isSmall {
+    margin-bottom: 0;
   }
 
   .ui.label {
@@ -66,4 +56,4 @@ export default styled(SummaryBox)`
     padding-right: 0;
     padding-top: 0;
   }
-`;
+`);

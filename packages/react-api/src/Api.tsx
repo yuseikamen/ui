@@ -19,6 +19,7 @@ import { defaults as addressDefaults } from '@polkadot/util-crypto/address/defau
 import ApiContext from './ApiContext';
 import registry from './typeRegistry';
 import {Api as ApiPromise} from '@cennznet/api';
+import * as staking from './staking';
 
 interface Props {
   children: React.ReactNode;
@@ -126,8 +127,8 @@ export default function Api ({ children, url }: Props): React.ReactElement<Props
   // initial initialization
   useEffect((): void => {
     const signer = new ApiSigner(queuePayload, queueSetTxStatus);
-
-    api = new ApiPromise({ provider: url, registry, signer });
+    const derives = { staking };
+    api = new ApiPromise({ provider: url, registry, derives, signer });
 
     api.on('connected', (): void => setIsApiConnected(true));
     api.on('disconnected', (): void => setIsApiConnected(false));
