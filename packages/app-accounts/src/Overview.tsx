@@ -6,11 +6,10 @@ import { KeyringAddress } from '@polkadot/ui-keyring/types';
 import { ComponentProps as Props } from './types';
 
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components';
 import keyring from '@polkadot/ui-keyring';
 import { getLedger, isLedger } from '@polkadot/react-api';
 import { useAccounts, useFavorites } from '@polkadot/react-hooks';
-import { Button, Input, Table } from '@polkadot/react-components';
+import { Button, Table } from '@polkadot/react-components';
 
 import CreateModal from './modals/Create';
 import ImportModal from './modals/Import';
@@ -35,7 +34,7 @@ async function queryLedger (): Promise<void> {
   }
 }
 
-function Overview ({ className, onStatusChange }: Props): React.ReactElement<Props> {
+export default function Overview ({ className, onStatusChange }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { allAccounts, hasAccounts } = useAccounts();
   const [isCreateOpen, setIsCreateOpen] = useState(false);
@@ -43,7 +42,6 @@ function Overview ({ className, onStatusChange }: Props): React.ReactElement<Pro
   const [isQrOpen, setIsQrOpen] = useState(false);
   const [favorites, toggleFavorite] = useFavorites(STORE_FAVS);
   const [sortedAccounts, setSortedAccounts] = useState<SortedAccount[]>([]);
-  const [filter, setFilter] = useState<string>('');
 
   useEffect((): void => {
     setSortedAccounts(
@@ -70,7 +68,7 @@ function Overview ({ className, onStatusChange }: Props): React.ReactElement<Pro
   const _toggleQr = (): void => setIsQrOpen(!isQrOpen);
 
   return (
-    <div className={className}>
+    <div className={className} style={{ minWidth: "800px", maxWidth: "80%" }}>
       {isCreateOpen && (
         <CreateModal
           onClose={_toggleCreate}
@@ -118,21 +116,11 @@ function Overview ({ className, onStatusChange }: Props): React.ReactElement<Pro
       {hasAccounts
         ? (
           <>
-            <div className='filter--tags'>
-              <Input
-                autoFocus
-                isFull
-                label={t('filter by name or tags')}
-                onChange={setFilter}
-                value={filter}
-              />
-            </div>
             <Table>
               <Table.Body>
                 {sortedAccounts.map(({ address, isFavorite }): React.ReactNode => (
                   <Account
                     address={address}
-                    filter={filter}
                     isFavorite={isFavorite}
                     key={address}
                     toggleFavorite={toggleFavorite}
@@ -147,15 +135,3 @@ function Overview ({ className, onStatusChange }: Props): React.ReactElement<Pro
     </div>
   );
 }
-
-export default styled(Overview)`
-  .filter--tags {
-    .ui--Dropdown {
-      padding-left: 0;
-
-      label {
-        left: 1.55rem;
-      }
-    }
-  }
-`;
