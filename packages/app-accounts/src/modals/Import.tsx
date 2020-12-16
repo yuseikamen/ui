@@ -9,10 +9,10 @@ import { ModalProps } from '../types';
 
 import React from 'react';
 import { AddressRow, Button, InputAddress, InputFile, Modal, Password, TxComponent } from '@polkadot/react-components';
-import { isHex, isObject, u8aToString } from '@polkadot/util';
+import { isObject, u8aToString } from '@polkadot/util';
 import keyring from '@polkadot/ui-keyring';
-
 import translate from '../translate';
+import {updateToV3KeyringFormat} from "@polkadot/react-api/util/keyringFormat";
 
 interface Props extends ModalProps, I18nProps {}
 
@@ -95,7 +95,7 @@ class Import extends TxComponent<Props, State> {
       const json = JSON.parse(u8aToString(file));
       const publicKey = keyring.decodeAddress(json.address, true);
       const address = keyring.encodeAddress(publicKey);
-      const isFileValid = publicKey.length === 32 && isHex(json.encoded) && isObject(json.meta) && (
+      const isFileValid = publicKey.length === 32 && json.encoded && isObject(json.meta) && (
         Array.isArray(json.encoding.content)
           ? json.encoding.content[0] === 'pkcs8'
           : json.encoding.content === 'pkcs8'
@@ -134,6 +134,7 @@ class Import extends TxComponent<Props, State> {
     const status: Partial<ActionStatus> = { action: 'restore' };
 
     try {
+      updateToV3KeyringFormat(json);
       const pair = keyring.restoreAccount(json, password);
       const { address } = pair;
 
