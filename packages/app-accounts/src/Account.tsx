@@ -194,6 +194,22 @@ function Account ({ address, className, isFavorite, toggleFavorite }: Props): Re
         />
       </td>
        <td className='number middle'>
+       <Button
+          icon='paper plane'
+          isPrimary
+          key='send'
+          label={t('Send')}
+          onClick={() => toggleTransfer()}
+          size='small'
+          tooltip={t('Send funds from this account')}
+        />
+        <Button
+          icon='history'
+          key='history'
+          onClick={() => { location.href = `https://uncoverexplorer.com/account/${address}` }}
+          size='small'
+          tooltip={t('View account transaction history')}
+        />
         <Popup
           className='theme--default'
           onClose={toggleSettings}
@@ -246,23 +262,6 @@ function Account ({ address, className, isFavorite, toggleFavorite }: Props): Re
             )}
           </Menu>
         </Popup>
-        <Button
-          icon='history'
-          key='history'
-          label={t('History')}
-          onClick={() => { location.href = `https://uncoverexplorer.com/account/${address}` }}
-          size='small'
-          tooltip={t('View account transaction history')}
-        />
-        <Button
-          icon='paper plane'
-          isPrimary
-          key='send'
-          label={t('Send')}
-          onClick={() => toggleTransfer()}
-          size='small'
-          tooltip={t('Send funds from this account')}
-        />
       </td>
     </tr>
   );
