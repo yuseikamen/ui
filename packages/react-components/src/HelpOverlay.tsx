@@ -12,16 +12,18 @@ import Icon from './Icon';
 
 interface Props extends BareProps {
   md: string;
-  initialVisibility?: boolean;
+  openHelpDailog?: boolean;
+  closeHelp?: (param: boolean) => void;
 }
 
-function HelpOverlay ({ className, md, initialVisibility, closeHelp }: Props): React.ReactElement<Props> {
+function HelpOverlay ({ className, md, openHelpDailog, closeHelp }: Props): React.ReactElement<Props> {
   const [isVisible, setIsVisible] = useState(false);
 
   const _toggleVisible = (): void => {
-    setIsVisible(!isVisible);
-    if (initialVisibility) {
+    if (openHelpDailog && closeHelp) {
       closeHelp(false);
+    } else {
+      setIsVisible(!isVisible);
     }
   }
 
@@ -33,7 +35,7 @@ function HelpOverlay ({ className, md, initialVisibility, closeHelp }: Props): R
           onClick={_toggleVisible}
         />
       </div>
-      <div className={`help-slideout ${isVisible || initialVisibility ? 'open' : 'closed'}`}>
+      <div className={`help-slideout ${isVisible || openHelpDailog ? 'open' : 'closed'}`}>
         <div className='help-button'>
           <Icon
             name='close'

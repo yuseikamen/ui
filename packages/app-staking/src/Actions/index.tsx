@@ -101,11 +101,11 @@ export default function Actions ({ className, isVisible }: Props): React.ReactEl
     const { t } = useTranslation();
     const transferrable = <span className='label'>{t('transferrable')}</span>;
     const notEnoughTransferrable = <span style={{ color: "#9f3a38" }}>{t('not enough to stake')}</span>;
-    const _openHelp = (): void => setOpenHelpDailog(true);
+    const _toggleHelp = (): void => setOpenHelpDailog(!openHelpDailog);
     const _closeHelp = (): void => setOpenHelpDailog(false);
     return (
           <div>
-            <HelpOverlay md={basicMd} initialVisibility={openHelpDailog} closeHelp={_closeHelp}/>
+            <HelpOverlay md={basicMd} openHelpDailog={openHelpDailog} closeHelp={_closeHelp}/>
             <div className={`${className} ${!isVisible && 'staking--hidden'}`} style={{fontSize:'24px', color:'black'}}>
               Stake <b>CENNZ</b> and nominate the best validators to earn <b>Cpay</b> rewards
             </div>
@@ -113,7 +113,7 @@ export default function Actions ({ className, isVisible }: Props): React.ReactEl
                   style={{marginTop:'1%', backgroundColor: '#f19135'}}
                   label={t('Know the risks')}
                   icon='exclamation'
-                  onClick={_openHelp}
+                  onClick={_toggleHelp}
                   isPrimary
             />
             <div className='extrinsics--Selection' style={{marginTop:'2%', width:'50%', borderRadius: '35px', padding: '20px', border: '2px solid #D0D0D0', background:'white'}}>
