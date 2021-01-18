@@ -53,11 +53,15 @@ export default function ToolboxApp ({ basePath }: Props): React.ReactElement<Pro
         {
             isRoot: true,
             name: 'overview',
-            text: t('Overview')
+            text: t('overview')
         },
         {
-            name: 'actions',
-            text: t('Actions')
+            name: 'stake',
+            text: t('new stake')
+        },
+        {
+            name: 'manage',
+            text: t('new stake')
         },
     ], [t]);
 
@@ -74,13 +78,18 @@ export default function ToolboxApp ({ basePath }: Props): React.ReactElement<Pro
                     items={items}
                 />
             </header>
-            <Summary
-                isVisible={pathname === basePath}
-                next={next}
-                nominators={targets.nominators}
-                stakingOverview={stakingOverview}
-                rewards={`${rewards}`}
-            />
+            {pathname === `/staking` ?
+                (
+                    <Summary
+                        isVisible={pathname === basePath}
+                        next={next}
+                        nominators={targets.nominators}
+                        stakingOverview={stakingOverview}
+                        rewards={`${rewards}`}
+                    />
+                ):
+                null
+            }
             <Switch>
                 <Route path={`${basePath}/overview`}>
                     <Overview
@@ -92,7 +101,8 @@ export default function ToolboxApp ({ basePath }: Props): React.ReactElement<Pro
                         toggleFavorite={toggleFavorite}
                     />
                 </Route>
-                <Route path={`${basePath}/actions`} component={Actions} />
+                <Route path={`${basePath}/stake`} component={Actions} />
+                <Route path={`${basePath}/manage`} component={Actions} />
                 <Route><Overview
                     favorites={favorites}
                     hasQueries={hasQueries}
