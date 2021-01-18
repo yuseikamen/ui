@@ -82,7 +82,7 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
                <AddressSmall value={address} />
            </td>
           <td className='address'>
-              {chain? poolRegistry[chain][address]: ''}
+              {chain? poolRegistry[chain]?[address]: 'unknown' : 'unknown'}
           </td>
           <td className='badge together'>
               <Status
