@@ -10,6 +10,7 @@ import {
     Table,
     AddressSmall,
     Button,
+    HelpOverlay,
     Icon,
     InputBalance,
     TxButton
@@ -24,6 +25,7 @@ import Available from "@polkadot/app-generic-asset/Available";
 import BN from "bn.js";
 import {AssetId, Balance, Codec} from "@cennznet/types";
 import { SubmittableExtrinsic } from '@polkadot/api/promise/types';
+import basicMd from '../md/basic.md';
 
 interface Props extends BareProps {
   isVisible: boolean;
@@ -40,13 +42,12 @@ export default function Actions ({ className, isVisible }: Props): React.ReactEl
     const stakingAssetId = useCall<AssetId>(api.query.genericAsset.stakingAssetId as any, []);
     const [extrinsic, setExtrinsic] = useState<SubmittableExtrinsic | null>(null);
     const [rewardDestinationId, setRewardDestinationId] = useState<string | null | undefined>();
-    const [isCreateOpen, setIsCreateOpen] = useState(false);
     const [accountIdVec, setAccountIdVec] = useState<string[]>([]);
     const chain: string | undefined = chainInfo ? chainInfo.toString() : undefined;
     const [ isValid, setIsValid] = useState<boolean>(false);
+    const [ openHelpDailog, setOpenHelpDailog] = useState<boolean>(false);
     const [hasAvailable, setHasAvailable] = useState(true);
     const [amount, setAmount] = useState<BN | undefined>(new BN(0));
-    const nominate = (): void => setIsCreateOpen(!isCreateOpen);
     useMemo((): void => {
         if (stakingAssetId && stashAccountId) {
             api.query.genericAsset.freeBalance(stakingAssetId, stashAccountId!).then(
@@ -100,9 +101,11 @@ export default function Actions ({ className, isVisible }: Props): React.ReactEl
     const { t } = useTranslation();
     const transferrable = <span className='label'>{t('transferrable')}</span>;
     const notEnoughTransferrable = <span style={{ color: "#9f3a38" }}>{t('not enough to stake')}</span>;
-
-      return (
+    const _openHelp = (): void => setOpenHelpDailog(true);
+    const _closeHelp = (): void => setOpenHelpDailog(false);
+    return (
           <div>
+            <HelpOverlay md={basicMd} initialVisibility={openHelpDailog} closeHelp={_closeHelp}/>
             <div className={`${className} ${!isVisible && 'staking--hidden'}`} style={{fontSize:'24px', color:'black'}}>
               Stake <b>CENNZ</b> and nominate the best validators to earn <b>Cpay</b> rewards
             </div>
@@ -110,7 +113,7 @@ export default function Actions ({ className, isVisible }: Props): React.ReactEl
                   style={{marginTop:'1%', backgroundColor: '#f19135'}}
                   label={t('Know the risks')}
                   icon='exclamation'
-                  onClick={() => { window.open(`https://medium.com/centrality/the-cennznet-journey-part-2-public-staking-a994daa65856#c888`,"_blank" )}}
+                  onClick={_openHelp}
                   isPrimary
             />
             <div className='extrinsics--Selection' style={{marginTop:'2%', width:'50%', borderRadius: '35px', padding: '20px', border: '2px solid #D0D0D0', background:'white'}}>
@@ -140,44 +143,45 @@ export default function Actions ({ className, isVisible }: Props): React.ReactEl
                 />
                 <div>
                     Select validators to nominate
-                        <Table>
-                            <Table.Body>
-                                {electedInfo?.info.map(({ accountId, exposure }): React.ReactNode => (
-                                    <tr className={className} key={accountId.toString()}>
-                                        <td className='address'>
-                                            <AddressSmall value={accountId.toString()} />
-                                        </td>
-                                        <td className='address'>
-                                            {chain? poolRegistry[chain][accountId.toString()]: 'CENTRALITY'}
-                                        </td>
-                                        <td style={{width:'15%', whiteSpace:'nowrap'}}>
-                                            {exposure.total?.toBn()?.gtn(0) && (
-                                                <FormatBalance value={exposure.total} symbol={STAKING_ASSET_NAME}/>)}
-                                        </td>
-                                        <td>
-                                            <input
-                                                type={"checkbox"}
-                                                value={accountId.toString()}
-                                                onClick={_validatorSelected}
-                                            />
-                                        </td>
-                                    </tr>
-                                ))}
-                            </Table.Body>
-                        </Table>
-                    <div style={{marginLeft:'45%'}}>
-                        <TxButton
-                            accountId={stashAccountId}
-                            extrinsic={extrinsic}
-                            icon='check'
-                            isDisabled={!isValid}
-                            isPrimary
-                            label={t('nominate')}
-                            onClick={nominate}
-                        />
-                    </div>
+                  <Table>
+                    <Table.Body>
+                      {electedInfo?.info.map(({ accountId, exposure, validatorPrefs }): React.ReactNode => (
+                        <tr className={className} key={accountId.toString()}>
+                          <td className='address'>
+                            <AddressSmall value={accountId.toString()} />
+                          </td>
+                          <td className='address'>
+                            {chain? poolRegistry[chain][accountId.toString()]: 'CENTRALITY'}
+                          </td>
+                          <td>
+                            {validatorPrefs["commission"].toHuman()}
+                          </td>
+                          <td style={{width:'15%', whiteSpace:'nowrap'}}>
+                            {exposure.total?.toBn()?.gtn(0) && (
+                              <FormatBalance value={exposure.total} symbol={STAKING_ASSET_NAME}/>)}
+                          </td>
+                          <td>
+                            <input
+                              type={"checkbox"}
+                              value={accountId.toString()}
+                              onClick={_validatorSelected}
+                            />
+                          </td>
+                        </tr>
+                      ))}
+                    </Table.Body>
+                  </Table>
+                  <div style={{marginLeft:'45%'}}>
+                    <TxButton
+                      accountId={stashAccountId}
+                      extrinsic={extrinsic}
+                      icon='check'
+                      isDisabled={!isValid}
+                      isPrimary
+                      label={t('nominate')}
+                    />
+                  </div>
                 </div>
-
             </div>
           </div>
 
