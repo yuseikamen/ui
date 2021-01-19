@@ -97,7 +97,7 @@ export const popUpBackground = '#1B1C1D';
 
 /* highlighted buttons, orange */
 export const highlightedOrange = '#f19135';
-export const lightGrey = '#D0D0D0';
+export const matterhorn = '#4e4e4e';
 /*
  * NOTICE: this file only contains basic color defination of basic elements like border,
  * text, link, etc.

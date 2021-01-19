@@ -179,6 +179,13 @@ function OnboardNominators ({ className, isVisible }: Props): React.ReactElement
                   </div>
                   <Table>
                     <Table.Body>
+                      <tr>
+                        <th>{t('Validator')}</th>
+                        <th>{t('Pool')}</th>
+                        <th>{t('Commission')}</th>
+                        <th>{t('Total Staked')}</th>
+                        <th></th>
+                      </tr>
                       {electedInfo?.info.map(({ accountId, exposure, validatorPrefs }): React.ReactNode => (
                         <tr className={className} key={accountId.toString()}>
                           <td className='address'>
@@ -226,7 +233,7 @@ export default styled(OnboardNominators)`
     font-size: 22px;
     margin-top: 3rem;
     margin-left: 1.2rem;
-    color:${colors.N1000};
+    color: ${colors.N1000};
   }
 
   .ui.primary.button.know-risk {
@@ -236,12 +243,12 @@ export default styled(OnboardNominators)`
   }
 
   .nominator--Selection {
+    min-width: 663px;
     margin-top: 1.5rem;
-     width: 50%;
-     border-radius: 35px;
-     padding: 20px;
-     border: 2px solid ${colors.lightGrey};
-     background: ${colors.N0};
+    width: 50%;
+    border-radius: 35px;
+    padding: 20px;
+    background: ${colors.N0};
   }
 
   .menuActive {
@@ -258,6 +265,13 @@ export default styled(OnboardNominators)`
 
   .validator-info {
     margin-top: 3rem;
+    padding-left: 2rem;
+    th {
+      background: ${colors.N0};
+      color: ${colors.matterhorn};
+      text-align: left;
+      font-size: 15px;
+    }
     .label {
       margin-left: 1.5rem;
       font-size: 18px;
@@ -271,6 +285,7 @@ export default styled(OnboardNominators)`
       width:  20px;
       height: 20px;
       border:2px solid #555;
+      cursor: pointer;
     }
   }
 `;
