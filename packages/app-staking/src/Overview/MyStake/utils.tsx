@@ -185,23 +185,23 @@ export async function getNominates(
 }
 
 // Reference: https://github.com/cennznet/cennznet/wiki/Validator-Guide#rewards
-// TODO: is 0.8 dynamic?
-const stakersPayRate = new BN(0.8); // 80% to stakers
+const PERBILL_DIVIDED_NUMBER = new BN(10).pow(new BN(18));
 export async function getNextRewardEstimate(
   api: ApiPromise,
   commission: BN,
   stakeShare: BN
 ): Promise<BN> {
   const inflationBalanceOf = (await api.query.rewards.inflationRate()) as BalanceOf;
-  const inflation = new BN(inflationBalanceOf).div(new BN(10).pow(new BN(18)));
+  const inflation = new BN(inflationBalanceOf).div(PERBILL_DIVIDED_NUMBER);
   const totalTransactionFeesBalanceOf = await api.query.rewards.transactionFeePot();
   const totalTransactionFees = new BN(totalTransactionFeesBalanceOf.toString());
   const totalPayout = totalTransactionFees.mul(inflation);
 
   const validators = await api.query.session.validators();
   const validatorCount = new BN(validators.length);
+  const developmentFundTake = new BN((await api.query.rewards.developmentFundTake()).toString());
   const perValidatorPayout = totalPayout
-    .mul(stakersPayRate)
+    .mul(new BN(1).sub(developmentFundTake))
     .div(validatorCount);
 
   const nominatorPayout = perValidatorPayout
