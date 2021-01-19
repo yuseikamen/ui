@@ -146,5 +146,8 @@
   "total stake": "total stake",
   "payout (est.)": "payout (est.)",
   "Nominating {{count}}": "Nominating {{count}}",
-  "Nominating ({{count}})": "Nominating ({{count}})"
+  "Nominating ({{count}})": "Nominating ({{count}})",
+  "Actions": "操作",
+  "Overview": "概览",
+  "My Stake": "我的质押"
 }

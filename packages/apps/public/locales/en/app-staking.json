@@ -159,5 +159,8 @@
   "Active nominations ({{count}})": "Active nominations ({{count}})",
   "profit/era est.": "profit/era est.",
   "nominators": "nominators",
-  "validators/nominators": "validators/nominators"
+  "validators/nominators": "validators/nominators",
+  "Actions": "Actions",
+  "Overview": "Overview",
+  "My Stake": "My Stake"
 }
