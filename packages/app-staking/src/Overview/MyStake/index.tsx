@@ -59,7 +59,6 @@ function MyStake({ className = '' }: Props): React.ReactElement<Props> {
             key={`${stake.stashAccountAddress}-${stake.controllerAccountAddress}`}
           >
             <tr>
-              {/* // TODO: Add translations */}
               <th>{t('Stash')}</th>
               <th>{t('Controller')}</th>
               <th>{t('Amount')}</th>
