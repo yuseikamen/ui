@@ -157,7 +157,6 @@ function OnboardNominators ({ className, isVisible }: Props): React.ReactElement
                 <InputAddress
                     label={t('Stash')}
                     help={t('Choose an account to stake CENNZ with')}
-                    // labelExtra={<Available label={available} params={stashAccountId} />}
                     labelExtra={<FormatBalance label={available} value={assetBalance} symbol={STAKING_ASSET_NAME}/>}
                     onChange={setStashAccountId}
                     type='account'
@@ -165,7 +164,6 @@ function OnboardNominators ({ className, isVisible }: Props): React.ReactElement
                 <InputAddress
                     label={t('Reward to')}
                     help={t('Choose an account where Cpay rewards will be paid')}
-                    // labelExtra={<Available label={transferrable} params={rewardDestinationId} />}
                     onChange={setRewardDestinationId}
                     type='allPlus'
                 />
