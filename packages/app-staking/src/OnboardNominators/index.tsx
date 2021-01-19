@@ -1,10 +1,8 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-
-
-import React, {useEffect, useMemo, useState} from 'react';
-import {BareProps} from "@polkadot/react-components/types";
+import React, { useEffect, useMemo, useState } from 'react';
+import { BareProps } from "@polkadot/react-components/types";
 import {
     InputAddress,
     Table,
@@ -15,24 +13,27 @@ import {
     InputBalance,
     TxButton
 } from "@polkadot/react-components";
-import {useTranslation} from "@polkadot/app-staking/translate";
-import {useApi, useCall} from "@polkadot/react-hooks";
+import { useTranslation } from "@polkadot/app-staking/translate";
+import { useAccounts, useApi, useCall } from "@polkadot/react-hooks";
 import type { DeriveStakingElected } from '@polkadot/api-derive/types';
 import FormatBalance from '@polkadot/app-generic-asset/FormatBalance';
-import {poolRegistry} from "@polkadot/app-staking/Overview/Address/poolRegistry";
-import {STAKING_ASSET_NAME} from "@polkadot/app-generic-asset/assetsRegistry";
-import Available from "@polkadot/app-generic-asset/Available";
+import { poolRegistry } from "@polkadot/app-staking/Overview/Address/poolRegistry";
+import { STAKING_ASSET_NAME } from "@polkadot/app-generic-asset/assetsRegistry";
 import BN from "bn.js";
 import {AssetId, Balance, Codec} from "@cennznet/types";
 import { SubmittableExtrinsic } from '@polkadot/api/promise/types';
+import styled from 'styled-components';
 import basicMd from '../md/basic.md';
+import { colors } from '../../../../styled-theming';
+import AccountCheckingModal from "@polkadot/app-accounts/modals/Checking";
+import AccountCreateModal from "@polkadot/app-accounts/modals/Create";
+import AccountImportModal from "@polkadot/app-accounts/modals/Import";
 
 interface Props extends BareProps {
   isVisible: boolean;
 }
 
-
-export default function Actions ({ className, isVisible }: Props): React.ReactElement<Props> {
+function OnboardNominators ({ className, isVisible }: Props): React.ReactElement<Props> {
     const { api } = useApi();
     const electedInfo = useCall<DeriveStakingElected>(api.derive.staking.electedInfo);
 
@@ -50,11 +51,11 @@ export default function Actions ({ className, isVisible }: Props): React.ReactEl
     const [amount, setAmount] = useState<BN | undefined>(new BN(0));
     useMemo((): void => {
         if (stakingAssetId && stashAccountId) {
-            api.query.genericAsset.freeBalance(stakingAssetId, stashAccountId!).then(
+            api.query.genericAsset.freeBalance(stakingAssetId, stashAccountId).then(
                 (balance: Codec) => setAssetBalance((balance as Balance).toBn())
             );
         }
-    }, [stakingAssetId]);
+    }, [stakingAssetId, stashAccountId]);
     useEffect((): void => {
         if (accountIdVec.length === 0 || stashAccountId === null || rewardDestinationId === null || amount?.isZero() || amount?.gte(assetBalance)) {
             setIsValid(false);
@@ -78,7 +79,7 @@ export default function Actions ({ className, isVisible }: Props): React.ReactEl
             txs.push(nominateTx);
             setExtrinsic(api.tx.utility.batch(txs));
         }
-    }, [isValid]);
+    }, [isValid, stashAccountId, rewardDestinationId, amount]);
 
     const _validatorSelected = (element: any): void => {
         const accountSelected: string = element.currentTarget.value;
@@ -99,50 +100,85 @@ export default function Actions ({ className, isVisible }: Props): React.ReactEl
         }
     }
     const { t } = useTranslation();
-    const transferrable = <span className='label'>{t('transferrable')}</span>;
-    const notEnoughTransferrable = <span style={{ color: "#9f3a38" }}>{t('not enough to stake')}</span>;
+    const available = <span className='label'>{t('available')}</span>;
     const _toggleHelp = (): void => setOpenHelpDailog(!openHelpDailog);
     const _closeHelp = (): void => setOpenHelpDailog(false);
+
+    // If user has no accounts then open a pop-up to create/import account will appear
+    const { hasAccounts } = useAccounts();
+    const [isAccountCheckingModalOpen, setAccountCheckingModalOpen] = useState(true);
+    const [isAccountCreateModalOpen, setIsAccountCreateModalOpen] = useState(false);
+    const [isAccountImportModalOpen, setIsAccountImportModalOpen] = useState(false);
+    const onAccountCheckingModalClose = (): void => setAccountCheckingModalOpen(!isAccountCheckingModalOpen);
+    const onAccountCreateModalClose = (): void =>
+      setIsAccountCreateModalOpen(!isAccountCreateModalOpen);
+    const onAccountImportModalClose = (): void =>
+      setIsAccountImportModalOpen(!isAccountImportModalOpen);
+    const onStatusChange = (): void =>
+      setAccountCheckingModalOpen(!isAccountCheckingModalOpen);
+    const notEnoughToStake = <span style={{ color: `${colors.red}` }}>{hasAccounts ? t('not enough to stake'): t('no account exist')}</span>;
+
     return (
-          <div>
+          <div className={className}>
+            {isAccountCreateModalOpen && (
+              <AccountCreateModal
+                onClose={onAccountCreateModalClose}
+                onStatusChange={onStatusChange}
+              />
+            )}
+            {isAccountImportModalOpen && (
+              <AccountImportModal
+                onClose={onAccountImportModalClose}
+                onStatusChange={onStatusChange}
+              />
+            )}
+            {isAccountCheckingModalOpen && !hasAccounts && (
+              <AccountCheckingModal
+                onClose={onAccountCheckingModalClose}
+                onCreateAccount={onAccountCreateModalClose}
+                onImportAccount={onAccountImportModalClose}
+              />
+            )}
             <HelpOverlay md={basicMd} openHelpDailog={openHelpDailog} closeHelp={_closeHelp}/>
-            <div className={`${className} ${!isVisible && 'staking--hidden'}`} style={{fontSize:'24px', color:'black'}}>
+            <div className='header'>
               Stake <b>CENNZ</b> and nominate the best validators to earn <b>Cpay</b> rewards
             </div>
-            <Button
-                  style={{marginTop:'1%', backgroundColor: '#f19135'}}
+            <Button className='know-risk'
                   label={t('Know the risks')}
                   icon='exclamation'
                   onClick={_toggleHelp}
                   isPrimary
             />
-            <div className='extrinsics--Selection' style={{marginTop:'2%', width:'50%', borderRadius: '35px', padding: '20px', border: '2px solid #D0D0D0', background:'white'}}>
+            <div className='nominator--Selection'>
                 <div className='menuActive'>
-                    <Icon name={'users'} size='huge' color={'black'}/>
-                    <span>{'new nominator'}</span>
+                    <Icon name={'users'} size='big' color={'black'}/>
+                    <span className='label'>{'new nominator'}</span>
                 </div>
                 <InputAddress
                     label={t('Stash')}
                     help={t('Choose an account to stake CENNZ with')}
-                    labelExtra={<Available label={transferrable} params={stashAccountId} />}
+                    // labelExtra={<Available label={available} params={stashAccountId} />}
+                    labelExtra={<FormatBalance label={available} value={assetBalance} symbol={STAKING_ASSET_NAME}/>}
                     onChange={setStashAccountId}
                     type='account'
                 />
                 <InputAddress
                     label={t('Reward to')}
                     help={t('Choose an account where Cpay rewards will be paid')}
-                    labelExtra={<Available label={transferrable} params={rewardDestinationId} />}
+                    // labelExtra={<Available label={transferrable} params={rewardDestinationId} />}
                     onChange={setRewardDestinationId}
                     type='allPlus'
                 />
                 <InputBalance
                     help={t('The amount of CENNZ to put at stake')}
                     label={t('Stake')}
-                    labelExtra={!hasAvailable && notEnoughTransferrable}
+                    labelExtra={!hasAvailable && notEnoughToStake}
                     onChange={setAmount}
                 />
-                <div>
+                <div className='validator-info'>
+                  <div className='label'>
                     Select validators to nominate
+                  </div>
                   <Table>
                     <Table.Body>
                       {electedInfo?.info.map(({ accountId, exposure, validatorPrefs }): React.ReactNode => (
@@ -156,12 +192,13 @@ export default function Actions ({ className, isVisible }: Props): React.ReactEl
                           <td>
                             {validatorPrefs["commission"].toHuman()}
                           </td>
-                          <td style={{width:'15%', whiteSpace:'nowrap'}}>
+                          <td>
                             {exposure.total?.toBn()?.gtn(0) && (
                               <FormatBalance value={exposure.total} symbol={STAKING_ASSET_NAME}/>)}
                           </td>
                           <td>
                             <input
+                              className='checkbox'
                               type={"checkbox"}
                               value={accountId.toString()}
                               onClick={_validatorSelected}
@@ -171,7 +208,7 @@ export default function Actions ({ className, isVisible }: Props): React.ReactEl
                       ))}
                     </Table.Body>
                   </Table>
-                  <div style={{marginLeft:'45%'}}>
+                  <div className='submitTx'>
                     <TxButton
                       accountId={stashAccountId}
                       extrinsic={extrinsic}
@@ -184,6 +221,58 @@ export default function Actions ({ className, isVisible }: Props): React.ReactEl
                 </div>
             </div>
           </div>
-
-      );
+    );
 }
+export default styled(OnboardNominators)`
+  .header {
+    font-size: 22px;
+    margin-top: 3rem;
+    margin-left: 1.2rem;
+    color:${colors.N1000};
+  }
+
+  .ui.primary.button.know-risk {
+    margin-top: 1.5rem;
+    margin-left: 1.2rem;
+    background-color: ${colors.highlightedOrange} !important;
+  }
+
+  .nominator--Selection {
+    margin-top: 1.5rem;
+     width: 50%;
+     border-radius: 35px;
+     padding: 20px;
+     border: 2px solid ${colors.lightGrey};
+     background: ${colors.N0};
+  }
+
+  .menuActive {
+    margin-bottom: 2rem;
+    i.big.icon, i.big.icons {
+      font-size: 3rem;
+    }
+    .label {
+      margin-left: 1rem;
+      font-size: 22px;
+      font-weight: 100;
+    }
+  }
+
+  .validator-info {
+    margin-top: 3rem;
+    .label {
+      margin-left: 1.5rem;
+      font-size: 18px;
+      font-weight: 100;
+      margin-bottom: 2rem;
+    }
+    .submitTx {
+      margin-left: 45%;
+    }
+    .checkbox {
+      width:  20px;
+      height: 20px;
+      border:2px solid #555;
+    }
+  }
+`;

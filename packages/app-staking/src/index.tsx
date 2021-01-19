@@ -8,7 +8,7 @@ import { useLocation } from 'react-router-dom';
 import { Route, Switch } from 'react-router';
 import Tabs from '@polkadot/react-components/Tabs';
 import { useAccounts, useCall, useApi, useFavorites, useStashIds } from '@polkadot/react-hooks';
-import Actions from './Actions';
+import OnboardNominators from './OnboardNominators';
 import Overview from './Overview';
 import Summary from './Overview/Summary';
 import useSortedTargets from './useSortedTargets';
@@ -61,7 +61,7 @@ export default function ToolboxApp ({ basePath }: Props): React.ReactElement<Pro
         },
         {
             name: 'manage',
-            text: t('new stake')
+            text: t('manage stake')
         },
     ], [t]);
 
@@ -101,8 +101,8 @@ export default function ToolboxApp ({ basePath }: Props): React.ReactElement<Pro
                         toggleFavorite={toggleFavorite}
                     />
                 </Route>
-                <Route path={`${basePath}/stake`} component={Actions} />
-                <Route path={`${basePath}/manage`} component={Actions} />
+                <Route path={`${basePath}/stake`} component={OnboardNominators} />
+                <Route path={`${basePath}/manage`} component={OnboardNominators} />
                 <Route><Overview
                     favorites={favorites}
                     hasQueries={hasQueries}
