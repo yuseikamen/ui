@@ -36,7 +36,7 @@ interface Props extends BareProps {
 function OnboardNominators ({ className, isVisible }: Props): React.ReactElement<Props> {
     const { api } = useApi();
     const electedInfo = useCall<DeriveStakingElected>(api.derive.staking.electedInfo);
-
+    const minimumBond = useCall<Balance>(api.query.staking.minimumBond);
     const chainInfo = useCall<string>(api.rpc.system.chain, []);
     const [stashAccountId, setStashAccountId] = useState<string | null | undefined>();
     const [assetBalance, setAssetBalance] = useState<BN>(new BN(0));
@@ -116,7 +116,14 @@ function OnboardNominators ({ className, isVisible }: Props): React.ReactElement
       setIsAccountImportModalOpen(!isAccountImportModalOpen);
     const onStatusChange = (): void =>
       setAccountCheckingModalOpen(!isAccountCheckingModalOpen);
-    const notEnoughToStake = <span style={{ color: `${colors.red}` }}>{hasAccounts ? t('not enough to stake'): t('no account exist')}</span>;
+    const notEnoughToStake =
+      <span style={{ color: `${colors.red}` }}>
+        { hasAccounts && minimumBond ?
+          (amount as BN)?.lt(minimumBond as BN)?
+            t(`Minimum bond amount - ${minimumBond.divn(10000)}`) :
+            t('Not enough to stake')
+          : t('No account exist')}
+      </span>;
 
     return (
           <div className={className}>
@@ -247,7 +254,7 @@ export default styled(OnboardNominators)`
     margin-top: 1.5rem;
     width: 50%;
     border-radius: 35px;
-    padding: 20px;
+    padding: 20px 3.8rem 20px 20px;
     background: ${colors.N0};
   }
 
@@ -273,13 +280,12 @@ export default styled(OnboardNominators)`
       font-size: 15px;
     }
     .label {
-      margin-left: 1.5rem;
       font-size: 18px;
       font-weight: 100;
       margin-bottom: 2rem;
     }
     .submitTx {
-      margin-left: 45%;
+      margin-left: 40%;
     }
     .checkbox {
       width:  20px;
