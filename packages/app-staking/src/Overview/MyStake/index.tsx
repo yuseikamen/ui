@@ -56,18 +56,10 @@ function MyStake({ className = '' }: Props): React.ReactElement<Props> {
       return stakes.map(stake => {
         return (
           <div
-            className={
-              stake.nominates.length === 0
-                ? 'tbody-container'
-                : 'tbody-container tbody-container-with-nominators'
-            }
+            className='tbody-container'
             key={`${stake.stashAccountAddress}-${stake.controllerAccountAddress}`}
           >
-            <tbody
-              className={
-                stake.nominates.length === 0 ? '' : 'tbody-with-nominators'
-              }
-            >
+            <tbody>
               <tr>
                 <th>{t('Stash')}</th>
                 <th>{t('Controller')}</th>
@@ -184,7 +176,7 @@ const StyledTable = styled(Table)`
     border-bottom-right-radius: 10px !important;
   }
 
-  .tbody-container-with-nominators {
+  .tbody-container {
     background-color: white;
     border: 1px solid #f2f2f2;
     padding: 1rem;
