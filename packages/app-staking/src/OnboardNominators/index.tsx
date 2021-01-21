@@ -1,7 +1,8 @@
 // Copyright 2017-2020 @polkadot/app-staking authors & contributors
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { KeyringSectionOption } from '@polkadot/ui-keyring/options/types';
 import { BareProps } from "@polkadot/react-components/types";
 import {
     InputAddress,
@@ -20,14 +21,13 @@ import FormatBalance from '@polkadot/app-generic-asset/FormatBalance';
 import { poolRegistry } from "@polkadot/app-staking/Overview/Address/poolRegistry";
 import { STAKING_ASSET_NAME } from "@polkadot/app-generic-asset/assetsRegistry";
 import BN from "bn.js";
-import {AssetId, Balance, Codec} from "@cennznet/types";
+import { AssetId, Balance, Codec, AccountId } from "@cennznet/types";
+import { Option } from '@polkadot/types';
 import { SubmittableExtrinsic } from '@polkadot/api/promise/types';
 import styled from 'styled-components';
 import basicMd from '../md/basic.md';
 import { colors } from '../../../../styled-theming';
-import AccountCheckingModal from "@polkadot/app-accounts/modals/Checking";
-import AccountCreateModal from "@polkadot/app-accounts/modals/Create";
-import AccountImportModal from "@polkadot/app-accounts/modals/Import";
+import AccountCheckingModal from "@polkadot/app-accounts/modals/AccountsForStaking";
 
 interface Props extends BareProps {
   isVisible: boolean;
@@ -45,11 +45,11 @@ function OnboardNominators ({ className, isVisible }: Props): React.ReactElement
     const [rewardDestinationId, setRewardDestinationId] = useState<string | null | undefined>();
     const [accountIdVec, setAccountIdVec] = useState<string[]>([]);
     const chain: string | undefined = chainInfo ? chainInfo.toString() : undefined;
-    const [ isValid, setIsValid] = useState<boolean>(false);
-    const [ openHelpDailog, setOpenHelpDailog] = useState<boolean>(false);
+    const [isValid, setIsValid] = useState<boolean>(false);
+    const [openHelpDailog, setOpenHelpDailog] = useState<boolean>(false);
     const [hasAvailable, setHasAvailable] = useState(true);
     const [amount, setAmount] = useState<BN | undefined>(new BN(0));
-    useMemo((): void => {
+    useEffect((): void => {
         if (stakingAssetId && stashAccountId) {
             api.query.genericAsset.freeBalance(stakingAssetId, stashAccountId).then(
                 (balance: Codec) => setAssetBalance((balance as Balance).toBn())
@@ -57,7 +57,7 @@ function OnboardNominators ({ className, isVisible }: Props): React.ReactElement
         }
     }, [stakingAssetId, stashAccountId]);
     useEffect((): void => {
-        if (accountIdVec.length === 0 || stashAccountId === null || rewardDestinationId === null || amount?.isZero() || amount?.gte(assetBalance)) {
+        if (accountIdVec.length === 0 || stashAccountId === null || rewardDestinationId === null || openAccountCheckingModal || amount?.isZero() || amount?.gte(assetBalance)) {
             setIsValid(false);
         } else {
             setIsValid(true);
@@ -93,7 +93,7 @@ function OnboardNominators ({ className, isVisible }: Props): React.ReactElement
             }
         }
         setAccountIdVec(accounts);
-        if (accountIdVec.length === 0 || stashAccountId === null || rewardDestinationId === null || amount?.isZero() || amount?.gte(assetBalance)) {
+        if (accountIdVec.length === 0 || stashAccountId === null || rewardDestinationId === null || openAccountCheckingModal || amount?.isZero() || amount?.gte(assetBalance)) {
             setIsValid(false);
         } else {
             setIsValid(true);
@@ -104,18 +104,17 @@ function OnboardNominators ({ className, isVisible }: Props): React.ReactElement
     const _toggleHelp = (): void => setOpenHelpDailog(!openHelpDailog);
     const _closeHelp = (): void => setOpenHelpDailog(false);
 
-    // If user has no accounts then open a pop-up to create/import account will appear
-    const { hasAccounts } = useAccounts();
-    const [isAccountCheckingModalOpen, setAccountCheckingModalOpen] = useState(true);
-    const [isAccountCreateModalOpen, setIsAccountCreateModalOpen] = useState(false);
-    const [isAccountImportModalOpen, setIsAccountImportModalOpen] = useState(false);
-    const onAccountCheckingModalClose = (): void => setAccountCheckingModalOpen(!isAccountCheckingModalOpen);
-    const onAccountCreateModalClose = (): void =>
-      setIsAccountCreateModalOpen(!isAccountCreateModalOpen);
-    const onAccountImportModalClose = (): void =>
-      setIsAccountImportModalOpen(!isAccountImportModalOpen);
-    const onStatusChange = (): void =>
-      setAccountCheckingModalOpen(!isAccountCheckingModalOpen);
+    // If user has no accounts then open a pop-up to create account /manage stake will appear
+    const { allAccounts, hasAccounts } = useAccounts();
+    const listAlreadyBonded = useCall<[]>(api.query.staking.bonded.multi, [allAccounts]);
+    const controllersBonded = listAlreadyBonded?.map((account:Option<AccountId>)=> account.toString());
+    const stashesBonded = listAlreadyBonded?.map((account:Option<AccountId>, index) => account.isSome ? allAccounts[index] : null);
+    const filteredList = controllersBonded && allAccounts ? allAccounts.filter(account => !controllersBonded.includes(account) && !stashesBonded?.includes(account)) : [];
+    const filteredOption: KeyringSectionOption[] = filteredList.map((address) => ({ key: address, name: address, value: address }));
+    let openAccountCheckingModal = false;
+    if (api.isReady && controllersBonded && (!hasAccounts || filteredList.length==0)) {
+      openAccountCheckingModal = true;
+    }
     const notEnoughToStake =
       <span style={{ color: `${colors.red}` }}>
         { hasAccounts && minimumBond ?
@@ -127,24 +126,8 @@ function OnboardNominators ({ className, isVisible }: Props): React.ReactElement
 
     return (
           <div className={className}>
-            {isAccountCreateModalOpen && (
-              <AccountCreateModal
-                onClose={onAccountCreateModalClose}
-                onStatusChange={onStatusChange}
-              />
-            )}
-            {isAccountImportModalOpen && (
-              <AccountImportModal
-                onClose={onAccountImportModalClose}
-                onStatusChange={onStatusChange}
-              />
-            )}
-            {isAccountCheckingModalOpen && !hasAccounts && (
-              <AccountCheckingModal
-                onClose={onAccountCheckingModalClose}
-                onCreateAccount={onAccountCreateModalClose}
-                onImportAccount={onAccountImportModalClose}
-              />
+            {openAccountCheckingModal && (
+              <AccountCheckingModal/>
             )}
             <HelpOverlay md={basicMd} openHelpDailog={openHelpDailog} closeHelp={_closeHelp}/>
             <div className='header'>
@@ -163,8 +146,10 @@ function OnboardNominators ({ className, isVisible }: Props): React.ReactElement
                 </div>
                 <InputAddress
                     label={t('Stash')}
+                    options={filteredOption}
+                    defaultValue={filteredOption[0] ? filteredOption[0].value : null}
                     help={t('Choose an account to stake CENNZ with')}
-                    labelExtra={<FormatBalance label={available} value={assetBalance} symbol={STAKING_ASSET_NAME}/>}
+                    labelExtra={!openAccountCheckingModal && <FormatBalance label={available} value={assetBalance} symbol={STAKING_ASSET_NAME}/>}
                     onChange={setStashAccountId}
                     type='account'
                 />
