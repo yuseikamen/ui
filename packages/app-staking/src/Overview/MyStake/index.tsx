@@ -55,62 +55,73 @@ function MyStake({ className = '' }: Props): React.ReactElement<Props> {
     (stakes: Stake[]) => {
       return stakes.map(stake => {
         return (
-          <thead
+          <div
+            className={
+              stake.nominates.length === 0
+                ? 'tbody-container'
+                : 'tbody-container tbody-container-with-nominators'
+            }
             key={`${stake.stashAccountAddress}-${stake.controllerAccountAddress}`}
           >
-            <tr>
-              <th>{t('Stash')}</th>
-              <th>{t('Controller')}</th>
-              <th>{t('Amount')}</th>
-              <th>{t('Reward Destination')}</th>
-            </tr>
-            <tr>
-              <td className='address'>
-                <AddressSmall value={stake.stashAccountAddress} />
-              </td>
-              <td className='address'>
-                <AddressSmall value={stake.controllerAccountAddress} />
-              </td>
-              <td>
-                <FormatBalance
-                  value={stake.stakeAmount}
-                  symbol={STAKING_ASSET_NAME}
-                />
-              </td>
-              <td className='address'>
-                <AddressSmall value={stake.rewardDestinationsAddress} />
-              </td>
-            </tr>
-            {stake.nominates.length === 0 ? (
-              <tr />
-            ) : (
+            <tbody
+              className={
+                stake.nominates.length === 0 ? '' : 'tbody-with-nominators'
+              }
+            >
               <tr>
-                <th>{t('Nominating')}</th>
-                <th>{t('Stake share')}</th>
-                <th>{t('Next reward estimate')}</th>
-                <th>{t('Elected')}</th>
+                <th>{t('Stash')}</th>
+                <th>{t('Controller')}</th>
+                <th>{t('Amount')}</th>
+                <th>{t('Reward Destination')}</th>
               </tr>
-            )}
-            {stake.nominates.map(nominate => (
-              <tr
-                key={`${stake.stashAccountAddress}-${stake.controllerAccountAddress}-${nominate.nominateToAddress}`}
-              >
-                <td>
-                  <AddressSmall value={nominate.nominateToAddress} />
+              <tr>
+                <td className='address'>
+                  <AddressSmall value={stake.stashAccountAddress} />
                 </td>
-                <td>
-                  <div>{`${nominate.stakeShare?.toString(2)}%`}</div>
+                <td className='address'>
+                  <AddressSmall value={stake.controllerAccountAddress} />
                 </td>
                 <td>
                   <FormatBalance
-                    value={nominate.nextRewardEstimate?.toString()}
-                    symbol={SPENDING_ASSET_NAME}
+                    value={stake.stakeAmount}
+                    symbol={STAKING_ASSET_NAME}
                   />
                 </td>
-                <td>{`${nominate.elected}`}</td>
+                <td className='address'>
+                  <AddressSmall value={stake.rewardDestinationsAddress} />
+                </td>
               </tr>
-            ))}
-          </thead>
+              {stake.nominates.length === 0 ? (
+                <tr />
+              ) : (
+                <tr>
+                  <th>{t('Nominating')}</th>
+                  <th>{t('Stake share')}</th>
+                  <th>{t('Next reward estimate')}</th>
+                  <th>{t('Elected')}</th>
+                </tr>
+              )}
+              {stake.nominates.map(nominate => (
+                <tr
+                  key={`${stake.stashAccountAddress}-${stake.controllerAccountAddress}-${nominate.nominateToAddress}`}
+                >
+                  <td>
+                    <AddressSmall value={nominate.nominateToAddress} />
+                  </td>
+                  <td>
+                    <div>{`${nominate.stakeShare?.toString(2)}%`}</div>
+                  </td>
+                  <td>
+                    <FormatBalance
+                      value={nominate.nextRewardEstimate?.toString()}
+                      symbol={SPENDING_ASSET_NAME}
+                    />
+                  </td>
+                  <td>{`${nominate.elected}`}</td>
+                </tr>
+              ))}
+            </tbody>
+          </div>
         );
       });
     },
@@ -119,7 +130,7 @@ function MyStake({ className = '' }: Props): React.ReactElement<Props> {
 
   return (
     <div className={`staking--Overview--MyStake ${className}`}>
-      <StyledTable className='staking--Overview--MyStake-info'>
+      <StyledTable className='staking--Overview--MyStake-Table'>
         {_renderStakes(stakes)}
       </StyledTable>
     </div>
@@ -130,11 +141,39 @@ export default MyStake;
 
 const StyledTable = styled(Table)`
   font-size: 15px;
+
+  table {
+    display: block;
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  tbody-container {
+    display: block;
+    width: 100%;
+  }
+
+  tbody {
+    display: block;
+    width: 100%;
+  }
+
+  tr {
+    display: flex;
+    width: 100%;
+  }
+
   th {
     background: #fafafa !important;
     color: rgba(78, 78, 78, 0.66) !important;
     text-align: left !important;
+    flex: 1;
   }
+
+  td {
+    flex: 1;
+  }
+
   td:first-child {
     border-top-left-radius: 10px !important;
     border-bottom-left-radius: 10px !important;
@@ -143,5 +182,19 @@ const StyledTable = styled(Table)`
   td:last-child {
     border-top-right-radius: 10px !important;
     border-bottom-right-radius: 10px !important;
+  }
+
+  .tbody-container-with-nominators {
+    background-color: white;
+    border: 1px solid #f2f2f2;
+    padding: 1rem;
+    margin: 0.75rem 0;
+
+    th {
+      background: white !important;
+    }
+    td {
+      background: #fafafa !important;
+    }
   }
 `;
