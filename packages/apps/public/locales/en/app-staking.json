@@ -162,5 +162,8 @@
   "validators/nominators": "validators/nominators",
   "Actions": "Actions",
   "Overview": "Overview",
-  "My Stake": "My Stake"
+  "My Stake": "My Stake",
+  "This is the primary account that holds the funds and has a portion bonded for participation": "This is the primary account that holds the funds and has a portion bonded for participation",
+  "This is used to control the operation of the validator or nominator, switching between validating, nominating and idle (It only needs enough funds to send transactions when actions are taken)": "This is used to control the operation of the validator or nominator, switching between validating, nominating and idle (It only needs enough funds to send transactions when actions are taken)",
+  "This is the account that will receive reward": "This is the account that will receive reward"
 }

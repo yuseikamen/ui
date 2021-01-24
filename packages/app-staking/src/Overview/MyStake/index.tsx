@@ -15,6 +15,7 @@ import {
 
 import { useTranslation } from '../../translate';
 import { getStakes } from './utils';
+import { LabelHelp } from '@polkadot/react-components';
 
 export interface Stake {
   stashAccountAddress: string;
@@ -61,10 +62,29 @@ function MyStake({ className = '' }: Props): React.ReactElement<Props> {
           >
             <tbody>
               <tr>
-                <th>{t('Stash')}</th>
-                <th>{t('Controller')}</th>
+                <th data-for='stash-trigger'>
+                  {t('Stash')}
+                  <LabelHelp
+                    help={t(
+                      'This is the primary account that holds the funds and has a portion bonded for participation'
+                    )}
+                  />
+                </th>
+                <th>
+                  {t('Controller')}
+                  <LabelHelp
+                    help={t(
+                      'This is used to control the operation of the validator or nominator, switching between validating, nominating and idle (It only needs enough funds to send transactions when actions are taken)'
+                    )}
+                  />
+                </th>
                 <th>{t('Amount')}</th>
-                <th>{t('Reward Destination')}</th>
+                <th>
+                  {t('Reward Destination')}
+                  <LabelHelp
+                    help={t('This is the account that will receive reward')}
+                  />
+                </th>
               </tr>
               <tr>
                 <td className='address'>
