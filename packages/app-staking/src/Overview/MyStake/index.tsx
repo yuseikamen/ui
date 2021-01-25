@@ -106,8 +106,9 @@ function MyStake({ className = '' }: Props): React.ReactElement<Props> {
                 <th>{t('Elected')}</th>
               </tr>
             )}
-            {stake.nominates.map(nominate => (
+            {stake.nominates.map((nominate, index) => (
               <tr
+                className={index === 0 ? '' : 'staking-MyStake-Nomination'}
                 key={`${stake.stashAccountAddress}-${stake.controllerAccountAddress}-${nominate.nominateToAddress}`}
               >
                 <td>
@@ -191,6 +192,7 @@ const StyledTable = styled(Table)`
   .tbody-container {
     background-color: white;
     border: 1px solid #f2f2f2;
+    border-radius: 10px;
     padding: 1rem;
     margin: 0.75rem 0;
 
@@ -199,6 +201,10 @@ const StyledTable = styled(Table)`
     }
     td {
       background: #fafafa !important;
+    }
+
+    .staking-MyStake-Nomination {
+      padding-top: 1rem;
     }
   }
 `;
