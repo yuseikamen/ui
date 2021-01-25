@@ -56,84 +56,78 @@ function MyStake({ className = '' }: Props): React.ReactElement<Props> {
     (stakes: Stake[]) => {
       return stakes.map(stake => {
         return (
-          <div
+          <tbody
             className='tbody-container'
             key={`${stake.stashAccountAddress}-${stake.controllerAccountAddress}`}
           >
-            <tbody>
+            <tr>
+              <th data-for='stash-trigger'>
+                {t('Stash')}
+                <LabelHelp
+                  help={t('Primary account holding CENNZ at stake (aka stash)')}
+                />
+              </th>
+              <th>
+                {t('Controller')}
+                <LabelHelp
+                  help={t(
+                    'Controls staking preferences for the stash. Requires Cpay for transactions fees only'
+                  )}
+                />
+              </th>
+              <th>{t('Amount')}</th>
+              <th>
+                {t('Reward Destination')}
+                <LabelHelp help={t('Account to receive rewards payouts')} />
+              </th>
+            </tr>
+            <tr>
+              <td className='address'>
+                <AddressSmall value={stake.stashAccountAddress} />
+              </td>
+              <td className='address'>
+                <AddressSmall value={stake.controllerAccountAddress} />
+              </td>
+              <td>
+                <FormatBalance
+                  value={stake.stakeAmount}
+                  symbol={STAKING_ASSET_NAME}
+                />
+              </td>
+              <td className='address'>
+                <AddressSmall value={stake.rewardDestinationsAddress} />
+              </td>
+            </tr>
+            {stake.nominates.length === 0 ? (
+              <tr />
+            ) : (
               <tr>
-                <th data-for='stash-trigger'>
-                  {t('Stash')}
-                  <LabelHelp
-                    help={t(
-                      'This is the primary account that holds the funds and has a portion bonded for participation'
-                    )}
-                  />
-                </th>
-                <th>
-                  {t('Controller')}
-                  <LabelHelp
-                    help={t(
-                      'This is used to control the operation of the validator or nominator, switching between validating, nominating and idle (It only needs enough funds to send transactions when actions are taken)'
-                    )}
-                  />
-                </th>
-                <th>{t('Amount')}</th>
-                <th>
-                  {t('Reward Destination')}
-                  <LabelHelp
-                    help={t('This is the account that will receive reward')}
-                  />
-                </th>
+                <th>{t('Nominating')}</th>
+                <th>{t('Stake share')}</th>
+                <th>{t('Next reward estimate')}</th>
+                <th>{t('Elected')}</th>
               </tr>
-              <tr>
-                <td className='address'>
-                  <AddressSmall value={stake.stashAccountAddress} />
+            )}
+            {stake.nominates.map(nominate => (
+              <tr
+                key={`${stake.stashAccountAddress}-${stake.controllerAccountAddress}-${nominate.nominateToAddress}`}
+              >
+                <td>
+                  <AddressSmall value={nominate.nominateToAddress} />
                 </td>
-                <td className='address'>
-                  <AddressSmall value={stake.controllerAccountAddress} />
+                <td>
+                  <div>{`${nominate.stakeShare?.toString(2)}%`}</div>
                 </td>
                 <td>
                   <FormatBalance
-                    value={stake.stakeAmount}
-                    symbol={STAKING_ASSET_NAME}
+                    value={nominate.nextRewardEstimate?.toString()}
+                    symbol={SPENDING_ASSET_NAME}
                   />
                 </td>
-                <td className='address'>
-                  <AddressSmall value={stake.rewardDestinationsAddress} />
-                </td>
+                <td>{`${nominate.elected}`}</td>
               </tr>
-              {stake.nominates.length === 0 ? (
-                <tr />
-              ) : (
-                <tr>
-                  <th>{t('Nominating')}</th>
-                  <th>{t('Stake share')}</th>
-                  <th>{t('Next reward estimate')}</th>
-                  <th>{t('Elected')}</th>
-                </tr>
-              )}
-              {stake.nominates.map(nominate => (
-                <tr
-                  key={`${stake.stashAccountAddress}-${stake.controllerAccountAddress}-${nominate.nominateToAddress}`}
-                >
-                  <td>
-                    <AddressSmall value={nominate.nominateToAddress} />
-                  </td>
-                  <td>
-                    <div>{`${nominate.stakeShare?.toString(2)}%`}</div>
-                  </td>
-                  <td>
-                    <FormatBalance
-                      value={nominate.nextRewardEstimate?.toString()}
-                      symbol={SPENDING_ASSET_NAME}
-                    />
-                  </td>
-                  <td>{`${nominate.elected}`}</td>
-                </tr>
-              ))}
-            </tbody>
-          </div>
+            ))}
+          </tbody>
         );
       });
     },
