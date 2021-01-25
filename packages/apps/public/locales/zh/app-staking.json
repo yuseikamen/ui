@@ -150,7 +150,7 @@
   "Actions": "操作",
   "Overview": "概览",
   "My Stake": "我的质押",
-  "This is the primary account that holds the funds and has a portion bonded for participation": "This is the primary account that holds the funds and has a portion bonded for participation",
-  "This is used to control the operation of the validator or nominator, switching between validating, nominating and idle (It only needs enough funds to send transactions when actions are taken)": "This is used to control the operation of the validator or nominator, switching between validating, nominating and idle (It only needs enough funds to send transactions when actions are taken)",
-  "This is the account that will receive reward": "This is the account that will receive reward"
+  "Primary account holding CENNZ at stake (aka stash)": "Primary account holding CENNZ at stake (aka stash)",
+  "Controls staking preferences for the stash. Requires Cpay for transactions fees only": "Controls staking preferences for the stash. Requires Cpay for transactions fees only",
+  "Account to receive rewards payouts": "Account to receive rewards payouts"
 }
