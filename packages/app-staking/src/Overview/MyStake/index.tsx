@@ -6,7 +6,7 @@ import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { AddressSmall, Table } from '@polkadot/react-components';
 import BN from 'bn.js';
-import { useAccounts, useAddresses, useApi } from '@polkadot/react-hooks';
+import { useAccounts, useApi } from '@polkadot/react-hooks';
 import FormatBalance from '@polkadot/app-generic-asset/FormatBalance';
 import {
   STAKING_ASSET_NAME,
@@ -42,12 +42,10 @@ function MyStake({ className = '' }: Props): React.ReactElement<Props> {
 
   const { t } = useTranslation();
   const { api } = useApi();
-  const { allAddresses } = useAddresses();
   const { allAccounts } = useAccounts();
-  const addresses = [...new Set([...allAddresses, ...allAccounts])]; // Use new Set to remove duplicate
 
   api.isReady.then(async () => {
-    const stakes = await getStakes(api, addresses);
+    const stakes = await getStakes(api, allAccounts);
 
     setStakes(stakes);
   });
