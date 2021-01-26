@@ -194,6 +194,7 @@ const StyledTable = styled(Table)`
     border: 1px solid #f2f2f2;
     border-radius: 10px;
     padding: 1rem;
+    padding-top: 0.5rem;
     margin: 0.75rem 0;
 
     th {
