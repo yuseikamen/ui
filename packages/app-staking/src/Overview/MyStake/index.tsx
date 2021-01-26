@@ -177,6 +177,8 @@ const StyledTable = styled(Table)`
 
   td {
     flex: 1;
+    display: flex;
+    align-items: center;
   }
 
   td:first-child {
