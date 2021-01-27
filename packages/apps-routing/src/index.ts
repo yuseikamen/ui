@@ -22,6 +22,7 @@ import sudo from './sudo';
 import toolbox from './toolbox';
 import transfer from './transfer';
 import landing from './landing';
+import propertyTrading  from "@polkadot/apps-routing/propertyTrading";
 
 const routes: Routes = appSettings.uiMode === 'light'
   ? ([] as Routes).concat(
@@ -32,6 +33,7 @@ const routes: Routes = appSettings.uiMode === 'light'
     claims,
     transfer,
     staking,
+    propertyTrading,
     null,
     // TODO Not sure about the inclusion of treasury, parachains & society here
     null,
@@ -45,6 +47,7 @@ const routes: Routes = appSettings.uiMode === 'light'
     claims,
     transfer,
     staking,
+    propertyTrading,
     null,
     parachains,
     society,

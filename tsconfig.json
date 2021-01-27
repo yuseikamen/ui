@@ -10,6 +10,8 @@
     "paths": {
       "@polkadot/app-123code": [ "packages/app-123code/src" ],
       "@polkadot/app-123code/*": [ "packages/app-123code/src/*" ],
+      "@polkadot/apps-propertyTrading": [ "packages/apps-propertyTrading/src" ],
+      "@polkadot/apps-propertyTrading/*": [ "packages/apps-propertyTrading/src/*" ],
       "@polkadot/app-accounts": [ "packages/app-accounts/src" ],
       "@polkadot/app-accounts/*": [ "packages/app-accounts/src/*" ],
       "@polkadot/app-address-book": [ "packages/app-address-book/src" ],

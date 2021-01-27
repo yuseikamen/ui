@@ -4,13 +4,13 @@
 
 import { Routes } from './types';
 
-import Staking from '@polkadot/app-staking';
+// import Staking from '@polkadot/app-staking';
+import PropertyTrading from '@polkadot/apps-propertyTrading';
 
 export default ([
   {
-    Component: Staking,
+    Component: PropertyTrading,
     display: {
-      isHidden: true,
       needsApi: [
         [
           'tx.staking.bond' // current bonding API
@@ -18,10 +18,10 @@ export default ([
       ]
     },
     i18n: {
-      defaultValue: 'Staking'
+      defaultValue: 'Property Trading'
     },
     icon: 'certificate',
-    name: 'staking',
+    name: 'Property Trading',
     isAdvanced: true
   }
 ] as Routes);
