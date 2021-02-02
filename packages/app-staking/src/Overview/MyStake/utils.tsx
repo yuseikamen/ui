@@ -162,7 +162,7 @@ export async function getNominates(
           ).div(PERBILL_DIVIDED_NUMBER);
 
           // Get stakeShare
-          const { stakeShare, elected } = await getstakeShare(
+          const { stakeShare, elected } = await getStakeShare(
             nominateToAddress,
             stashAccountAddress,
             api
@@ -249,7 +249,7 @@ export async function getNextRewardEstimate(
   return nominatorPayout;
 }
 
-export async function getstakeShare(
+export async function getStakeShare(
   nominateToAddress: string,
   stashAccountAddress: string,
   api: ApiPromise
