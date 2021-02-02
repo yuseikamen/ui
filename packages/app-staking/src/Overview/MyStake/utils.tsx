@@ -1,9 +1,12 @@
-import BN from 'bn.js';
 import { Nominations, StakingLedger, Exposure } from '@cennznet/types';
 import { ApiPromise } from '@polkadot/api';
 import { BalanceOf } from '@polkadot/types/interfaces';
+import BigNumber from 'bigNumber.js';
+import BN from 'bn.js';
 
 import { Nominate, Stake } from './index';
+
+const PERBILL_DIVIDED_NUMBER = new BigNumber(1000000000);
 
 export async function getStakes(
   api: ApiPromise,
@@ -151,12 +154,15 @@ export async function getNominates(
       async nominateToAddress =>
         new Promise<void>(async resolve => {
           // Get commission
-          const commission = (
-            await api.query.staking.validators(nominateToAddress)
-          ).commission.toString();
+          // TODO: test in a case that commission is not 0
+          const commission = new BigNumber(
+            (
+              await api.query.staking.validators(nominateToAddress)
+            ).commission.toString()
+          ).div(PERBILL_DIVIDED_NUMBER);
 
           // Get stakeShare
-          const { stakeShare, elected } = await getStakeShare(
+          const { stakeShare, elected } = await getstakeShare(
             nominateToAddress,
             stashAccountAddress,
             api
@@ -165,14 +171,14 @@ export async function getNominates(
           // Get reward estimate
           const nextRewardEstimate = await getNextRewardEstimate(
             api,
-            new BN(commission),
+            new BigNumber(commission),
             stakeShare
           );
 
           nominates.push({
             nominateToAddress,
             stakeShare,
-            commission: new BN(commission),
+            commission: new BigNumber(commission),
             elected,
             nextRewardEstimate
           });
@@ -185,51 +191,83 @@ export async function getNominates(
 }
 
 // Reference: https://github.com/cennznet/cennznet/wiki/Validator-Guide#rewards
-const PERBILL_DIVIDED_NUMBER = new BN(10).pow(new BN(18));
+// Reference 2: cennznet/crml/staking/src/rewars/mod.rs/fn enqueue_reward_payouts&calculate_npos_payouts
+const INFLATION_DIVIDED_NUMBER = new BigNumber(10).pow(new BigNumber(18));
 export async function getNextRewardEstimate(
   api: ApiPromise,
-  commission: BN,
-  stakeShare: BN
-): Promise<BN> {
+  commission: BigNumber,
+  stakeShare: BigNumber
+): Promise<BigNumber> {
   const inflationBalanceOf = (await api.query.rewards.inflationRate()) as BalanceOf;
-  const inflation = new BN(inflationBalanceOf).div(PERBILL_DIVIDED_NUMBER);
-  const totalTransactionFeesBalanceOf = await api.query.rewards.transactionFeePot();
-  const totalTransactionFees = new BN(totalTransactionFeesBalanceOf.toString());
-  const totalPayout = totalTransactionFees.mul(inflation);
+  const inflationRate = new BigNumber(inflationBalanceOf.toString()).div(
+    INFLATION_DIVIDED_NUMBER
+  ); // If inflationBalanceOf is 1,000,000,000,000,000(10pow16), than inflation should be 1.01 (10pow16/10pow18 + 1)
+  const totalTransactionFees = new BigNumber(
+    (await api.query.rewards.transactionFeePot()).toString()
+  );
+  const totalPayout = totalTransactionFees
+    .multipliedBy(inflationRate.plus(new BigNumber(1)))
+    .decimalPlaces(0, BigNumber.ROUND_DOWN);
+
+  const developmentFundTake = new BigNumber(
+    (await api.query.rewards.developmentFundTake()).toString()
+  ).div(PERBILL_DIVIDED_NUMBER);
+  const developmentFundPayout = totalPayout
+    .times(developmentFundTake)
+    .decimalPlaces(0, BigNumber.ROUND_DOWN);
+  let validatorPayout = totalPayout.minus(developmentFundPayout);
+  validatorPayout = validatorPayout.isPositive()
+    ? validatorPayout
+    : new BigNumber(0);
 
   const validators = await api.query.session.validators();
-  const validatorCount = new BN(validators.length);
-  const developmentFundTake = new BN((await api.query.rewards.developmentFundTake()).toString());
-  const perValidatorPayout = totalPayout
-    .mul(new BN(1).sub(developmentFundTake))
-    .div(validatorCount);
+  const validatorCount = new BigNumber(validators.length);
+  const perValidatorPayout = validatorCount.isZero()
+    ? new BigNumber(0)
+    : validatorPayout
+        .div(validatorCount)
+        .decimalPlaces(0, BigNumber.ROUND_DOWN);
 
-  const nominatorPayout = perValidatorPayout
-    .mul(new BN(1).sub(commission))
-    .mul(stakeShare);
+  // calculate_npos_payouts
+  let validatorsCut = perValidatorPayout.times(commission);
+  validatorsCut = validatorsCut.isGreaterThan(perValidatorPayout)
+    ? perValidatorPayout
+    : validatorsCut;
+
+  const nominatorsCut = perValidatorPayout.minus(validatorsCut);
+
+  if (nominatorsCut.isZero()) {
+    // There's nothing left after validator has taken it's commission
+    // only the validator gets a payout.
+    return new BigNumber(0);
+  }
+
+  const nominatorPayout = nominatorsCut
+    .times(stakeShare)
+    .decimalPlaces(0, BigNumber.ROUND_DOWN);
 
   return nominatorPayout;
 }
 
-export async function getStakeShare(
+export async function getstakeShare(
   nominateToAddress: string,
   stashAccountAddress: string,
   api: ApiPromise
-): Promise<{ stakeShare: BN; elected: boolean }> {
+): Promise<{ stakeShare: BigNumber; elected: boolean }> {
   const stakers = (await api.query.staking.stakers(
     nominateToAddress
   )) as Exposure;
-  const totalStakeAmount = new BN(stakers.total.toString());
+  const totalStakeAmount = new BigNumber(stakers.total.toString());
   const stakersWithStashAccount = stakers.others.find(
     other => other.who.toString() === stashAccountAddress
   );
   if (!stakersWithStashAccount) {
     return {
-      stakeShare: new BN(0),
+      stakeShare: new BigNumber(0),
       elected: false
     };
   }
-  const stashAccountStakeAmount = new BN(
+  const stashAccountStakeAmount = new BigNumber(
     stakersWithStashAccount.value.toString()
   );
 

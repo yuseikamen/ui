@@ -5,17 +5,19 @@
 import React, { useCallback, useState } from 'react';
 import styled from 'styled-components';
 import { AddressSmall, Table } from '@polkadot/react-components';
-import BN from 'bn.js';
 import { useAccounts, useApi } from '@polkadot/react-hooks';
 import FormatBalance from '@polkadot/app-generic-asset/FormatBalance';
 import {
   STAKING_ASSET_NAME,
   SPENDING_ASSET_NAME
 } from '@polkadot/app-generic-asset/assetsRegistry';
+import BigNumber from 'bigNumber.js';
+import { LabelHelp } from '@polkadot/react-components';
+import BN from 'bn.js';
 
 import { useTranslation } from '../../translate';
 import { getStakes } from './utils';
-import { LabelHelp } from '@polkadot/react-components';
+import { STAKE_SHARE_DISPLAY_DECIMAL_PLACE } from './config';
 
 export interface Stake {
   stashAccountAddress: string;
@@ -27,10 +29,10 @@ export interface Stake {
 
 export interface Nominate {
   nominateToAddress: string;
-  stakeShare?: BN;
-  commission?: BN;
-  nextRewardEstimate?: BN;
-  elected?: boolean;
+  stakeShare: BigNumber;
+  commission: BigNumber;
+  nextRewardEstimate: BigNumber;
+  elected: boolean;
 }
 
 interface Props {
@@ -46,9 +48,27 @@ function MyStake({ className = '' }: Props): React.ReactElement<Props> {
 
   api.isReady.then(async () => {
     const stakes = await getStakes(api, allAccounts);
-
     setStakes(stakes);
   });
+
+  const _renderStakeShare = (stakeShare: BigNumber) => {
+    /* times(100) to convert to percentage */
+    if (stakeShare.isZero()) {
+      return <div>{`0%`}</div>;
+    }
+    const percentage = stakeShare
+      .times(100)
+      .toFixed(STAKE_SHARE_DISPLAY_DECIMAL_PLACE, 1); // 1 means round down. eg: 1. (new BigNumber(0.0001)).toFixed(3, 1) = '0.000'; 2.(new BigNumber(0.0009)).toFixed(3, 1) = '0.000'; 3.(new BigNumber(0.001)).toFixed(3, 1) = '0.001';
+    if (percentage === '0.000') {
+      // stakeShare less than (1 * 10pow(-STAKE_SHARE_DISPLAY_DECIMAL_PLACE) %)
+      return (
+        <div>{`< ${Math.pow(10, -STAKE_SHARE_DISPLAY_DECIMAL_PLACE)}%`}</div>
+      );
+    }
+    <div>{`${stakeShare
+      .times(100)
+      .toFixed(STAKE_SHARE_DISPLAY_DECIMAL_PLACE)}%`}</div>;
+  };
 
   const _renderStakes = useCallback(
     (stakes: Stake[]) => {
@@ -114,12 +134,10 @@ function MyStake({ className = '' }: Props): React.ReactElement<Props> {
                 <td>
                   <AddressSmall value={nominate.nominateToAddress} />
                 </td>
-                <td>
-                  <div>{`${nominate.stakeShare?.toString(2)}%`}</div>
-                </td>
+                <td>{_renderStakeShare(nominate.stakeShare)}</td>
                 <td>
                   <FormatBalance
-                    value={nominate.nextRewardEstimate?.toString()}
+                    value={new BN(nominate.nextRewardEstimate.toFixed())}
                     symbol={SPENDING_ASSET_NAME}
                   />
                 </td>
