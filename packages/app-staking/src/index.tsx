@@ -19,6 +19,7 @@ import { toFormattedBalance } from "@polkadot/react-components/util";
 import { formatBalance } from '@polkadot/util';
 import BN from "bn.js";
 import MyStake from './Overview/MyStake';
+import BigNumber from 'bigNumber';
 
 export default function ToolboxApp ({ basePath }: Props): React.ReactElement<Props> {
     const { t } = useTranslation();
@@ -36,7 +37,8 @@ export default function ToolboxApp ({ basePath }: Props): React.ReactElement<Pro
         value: calcRewards as BN,
         unit: formatBalance.getDefaults().unit
     });
-
+    const x = new BigNumber(0.0001);
+    console.log('x::',x);
     const next = useMemo(
         () => (allStashes && stakingOverview)
             ? allStashes.filter((address) => !stakingOverview.validators.includes(address as any))
@@ -67,7 +69,7 @@ export default function ToolboxApp ({ basePath }: Props): React.ReactElement<Pro
     ], [t]);
 
     const _renderMyStakeComponent = (): React.ReactNode => <MyStake />;
-    
+
     return (
         <main className='toolbox--App'>
             <header>
