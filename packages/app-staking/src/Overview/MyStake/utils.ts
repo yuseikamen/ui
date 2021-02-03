@@ -1,7 +1,7 @@
 import { Nominations, StakingLedger, Exposure } from '@cennznet/types';
 import { ApiPromise } from '@polkadot/api';
 import { BalanceOf } from '@polkadot/types/interfaces';
-import BigNumber from 'bigNumber.js';
+import BigNumber from 'bigNumber';
 import BN from 'bn.js';
 
 import { Nominate, Stake } from './index';

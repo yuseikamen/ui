@@ -11,7 +11,7 @@ import {
   STAKING_ASSET_NAME,
   SPENDING_ASSET_NAME
 } from '@polkadot/app-generic-asset/assetsRegistry';
-import BigNumber from 'bigNumber.js';
+import BigNumber from 'bigNumber';
 import { LabelHelp } from '@polkadot/react-components';
 import BN from 'bn.js';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
