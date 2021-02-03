@@ -2,7 +2,7 @@
 // This software may be modified and distributed under the terms
 // of the Apache-2.0 license. See the LICENSE file for details.
 
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { AddressSmall, Table } from '@polkadot/react-components';
 import { useAccounts, useApi } from '@polkadot/react-hooks';
@@ -14,6 +14,8 @@ import {
 import BigNumber from 'bigNumber.js';
 import { LabelHelp } from '@polkadot/react-components';
 import BN from 'bn.js';
+import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
+import Loader from 'react-loader-spinner';
 
 import { useTranslation } from '../../translate';
 import { getStakes } from './utils';
@@ -41,15 +43,19 @@ interface Props {
 
 function MyStake({ className = '' }: Props): React.ReactElement<Props> {
   const [stakes, setStakes] = useState<Stake[]>([]);
+  const [isDiaplySpinner, setIsDiaplySpinner] = useState<boolean>(true);
 
   const { t } = useTranslation();
   const { api } = useApi();
   const { allAccounts } = useAccounts();
 
-  api.isReady.then(async () => {
-    const stakes = await getStakes(api, allAccounts);
-    setStakes(stakes);
-  });
+  useEffect(() => {
+    setIsDiaplySpinner(true);
+    getStakes(api, allAccounts).then(stakes => {
+      setIsDiaplySpinner(false);
+      setStakes(stakes);
+    });
+  }, [allAccounts]);
 
   const _renderStakeShare = (stakeShare: BigNumber) => {
     /* times(100) to convert to percentage */
@@ -151,16 +157,40 @@ function MyStake({ className = '' }: Props): React.ReactElement<Props> {
     [stakes]
   );
 
+  const _renderSpinner = () => (
+    <StyledLoader>
+      <Loader
+        type='TailSpin'
+        color='#1E2022'
+        height={100}
+        width={100}
+        timeout={-1} //3 secs
+      />
+    </StyledLoader>
+  );
+
   return (
     <div className={`staking--Overview--MyStake ${className}`}>
-      <StyledTable className='staking--Overview--MyStake-Table'>
-        {_renderStakes(stakes)}
-      </StyledTable>
+      {isDiaplySpinner ? (
+        _renderSpinner()
+      ) : (
+        <StyledTable className='staking--Overview--MyStake-Table'>
+          {_renderStakes(stakes)}
+        </StyledTable>
+      )}
     </div>
   );
 }
 
 export default MyStake;
+
+const StyledLoader = styled.div`
+  &:nth-child(1) {
+    margin: auto;
+    margin-top: 100px;
+    width: 100px;
+  }
+`;
 
 const StyledTable = styled(Table)`
   font-size: 15px;

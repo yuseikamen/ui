@@ -15,6 +15,7 @@
     "@polkadot/app-explorer": "0.40.0-beta.45",
     "@polkadot/react-components": "0.40.0-beta.45",
     "@polkadot/react-query": "0.40.0-beta.45",
-    "bignumber.js": "^9.0.1"
+    "bignumber.js": "^9.0.1",
+    "react-loader-spinner": "^4.0.0"
   }
 }
