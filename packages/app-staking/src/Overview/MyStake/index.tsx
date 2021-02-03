@@ -71,9 +71,11 @@ function MyStake({ className = '' }: Props): React.ReactElement<Props> {
         <div>{`< ${Math.pow(10, -STAKE_SHARE_DISPLAY_DECIMAL_PLACE)}%`}</div>
       );
     }
-    <div>{`${stakeShare
-      .times(100)
-      .toFixed(STAKE_SHARE_DISPLAY_DECIMAL_PLACE)}%`}</div>;
+    return (
+      <div>{`${stakeShare
+        .times(100)
+        .toFixed(STAKE_SHARE_DISPLAY_DECIMAL_PLACE)}%`}</div>
+    );
   };
 
   const _renderStakes = useCallback(
