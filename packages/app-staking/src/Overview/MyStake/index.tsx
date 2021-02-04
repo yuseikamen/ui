@@ -45,17 +45,28 @@ function MyStake({ className = '' }: Props): React.ReactElement<Props> {
   const [stakes, setStakes] = useState<Stake[]>([]);
   const [isDiaplySpinner, setIsDiaplySpinner] = useState<boolean>(true);
 
+  const [setStakesCount, setSetStakesCount] = useState<number>(0); // The number of unfinished setStakes calls
+
   const { t } = useTranslation();
   const { api } = useApi();
   const { allAccounts } = useAccounts();
 
   useEffect(() => {
     setIsDiaplySpinner(true);
+    setSetStakesCount(setStakesCount + 1);
     getStakes(api, allAccounts).then(stakes => {
-      setIsDiaplySpinner(false);
+      setSetStakesCount(setStakesCount - 1);
       setStakes(stakes);
     });
   }, [allAccounts]);
+
+  useEffect(() => {
+    if (setStakesCount <= 0) {
+      setIsDiaplySpinner(false);
+    } else {
+      setIsDiaplySpinner(true);
+    }
+  }, [setStakesCount]);
 
   const _renderStakeShare = (stakeShare: BigNumber) => {
     /* times(100) to convert to percentage */
