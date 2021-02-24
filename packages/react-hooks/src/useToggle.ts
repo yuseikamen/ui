@@ -1,14 +1,33 @@
 // Copyright 2017-2020 @polkadot/react-hooks authors & contributors
-// This software may be modified and distributed under the terms
-// of the Apache-2.0 license. See the LICENSE file for details.
+// SPDX-License-Identifier: Apache-2.0
 
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+
+import useIsMountedRef from './useIsMountedRef';
 
 // Simple wrapper for a true/false toggle
-export default function useToggle (defaultValue = false): [boolean, () => void, (value: boolean) => void] {
+export default function useToggle (defaultValue = false, onToggle?: (isActive: boolean) => void): [boolean, () => void, (value: boolean) => void] {
+  const mountedRef = useIsMountedRef();
   const [isActive, setActive] = useState(defaultValue);
 
-  const toggle = (): void => setActive(!isActive);
+  const _toggleActive = useCallback(
+      (): void => {
+        mountedRef.current && setActive((isActive) => !isActive);
+      },
+      [mountedRef]
+  );
 
-  return [isActive, toggle, setActive];
+  const _setActive = useCallback(
+      (isActive: boolean): void => {
+        mountedRef.current && setActive(isActive);
+      },
+      [mountedRef]
+  );
+
+  useEffect(
+      () => onToggle && onToggle(isActive),
+      [isActive, onToggle]
+  );
+
+  return [isActive, _toggleActive, _setActive];
 }

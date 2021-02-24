@@ -20,6 +20,7 @@ import { accountRegex } from '@polkadot/ui-keyring/defaults';
 import ApiContext from './ApiContext';
 import registry from './typeRegistry';
 import {Api as ApiPromise} from '@cennznet/api';
+import * as staking from './staking';
 
 interface Props {
   children: React.ReactNode;
@@ -88,7 +89,7 @@ async function loadOnReady (api: ApiPromise): Promise<State> {
   // TODO: query from genericAsset.assetRegistry
   // 1) find spending Asset ID
   // 2) find spending Asset ID decimals and symbol
-  const tokenSymbol = 'Cpay';
+  const tokenSymbol = 'CPAY';
   const tokenDecimals = properties.tokenDecimals.unwrapOr(DEFAULT_DECIMALS).toNumber();
 
   const systemChain = _systemChain
@@ -150,8 +151,8 @@ export default function Api ({ children, url }: Props): React.ReactElement<Props
   // initial initialization
   useEffect((): void => {
     const signer = new ApiSigner(queuePayload, queueSetTxStatus);
-
-    api = new ApiPromise({ provider: url, registry, signer });
+    const derives = { staking };
+    api = new ApiPromise({ provider: url, registry, derives, signer });
 
     api.on('connected', (): void => setIsApiConnected(true));
     api.on('disconnected', (): void => setIsApiConnected(false));
