@@ -3,7 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { AppProps as Props } from '@polkadot/react-components/types';
-import React, {  useMemo } from 'react';
+import React, {useMemo, useState} from 'react';
 import { useLocation } from 'react-router-dom';
 import { Route, Switch } from 'react-router';
 import Tabs from '@polkadot/react-components/Tabs';
@@ -19,6 +19,8 @@ import { toFormattedBalance } from "@polkadot/react-components/util";
 import { formatBalance } from '@polkadot/util';
 import BN from "bn.js";
 import MyStake from './MyStake';
+import {findStakedAccounts} from "@polkadot/app-staking/MyStake/utils";
+import {Api} from "@cennznet/api";
 
 export default function ToolboxApp ({ basePath }: Props): React.ReactElement<Props> {
     const { t } = useTranslation();
@@ -26,6 +28,8 @@ export default function ToolboxApp ({ basePath }: Props): React.ReactElement<Pro
     const { allAccounts, hasAccounts } = useAccounts();
     const { pathname } = useLocation();
     const allStashes = useStashIds();
+    const [ showMyStake, setShowMyStake ] = useState<boolean>(true);
+    findStakedAccounts(api as Api, allAccounts).then(stakedAccounts => setShowMyStake(stakedAccounts.size > 0) );
     const stakingOverview = useCall<any>(api.derive.staking.overview, []);
     const transactionFeePot = useCall<Balance>(api.query.rewards.transactionFeePot, []);
     const baseInflation = useCall<FixedI128>(api.query.rewards.targetInflationPerStakingEra, []);
@@ -65,11 +69,14 @@ export default function ToolboxApp ({ basePath }: Props): React.ReactElement<Pro
         },
     ], [t]);
 
-    return (
+    const hidden = showMyStake ? []: ['mystake'];
+
+  return (
         <main className='staking--App'>
             <header>
                 <Tabs
                     basePath={basePath}
+                    hidden={hidden}
                     items={items}
                 />
             </header>
