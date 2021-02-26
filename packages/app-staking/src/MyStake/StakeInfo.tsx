@@ -168,7 +168,7 @@ export default function StakeInfo({ stakePair }: Props): React.ReactElement<Prop
             <th className='header-secondary'>
               {t('Estimated reward')}
               <LabelHelp
-                help={t('Expected total payout at the end of this era')}
+                help={t('Estimated total payout at the end of this era')}
               />
             </th>
           </tr>
@@ -181,7 +181,8 @@ export default function StakeInfo({ stakePair }: Props): React.ReactElement<Prop
             <td>
               <FormatBalance
                 // assumes equal rewards to nominated validators
-                value={rewardEstimate.multipliedBy(nominee.stakeRaw.div(stakedAmount)).toString()}
+                // toFixed(0) removes decimal places from the calculated number
+                value={rewardEstimate.multipliedBy(nominee.stakeRaw.div(stakedAmount)).toFixed(0)}
                 symbol={SPENDING_ASSET_NAME}
               />
             </td>
