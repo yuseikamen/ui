@@ -12,7 +12,7 @@ import {useApi, useCall} from "@polkadot/react-hooks";
 import { faCube } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import BN from 'bn.js';
-import { u64 } from '@cennznet/types';
+import { u64, EraIndex, Option } from '@cennznet/types';
 interface Props {
   className?: string;
   isVisible: boolean;
@@ -30,7 +30,9 @@ function Summary ({ className = '',  isVisible, next, nominators, stakingOvervie
   const currentSlot = useCall<u64>(api.query.babe.currentSlot);
   const epochIndex = useCall<u64>(api.query.babe.epochIndex);
   const genesisSlot = useCall<u64>(api.query.babe.genesisSlot);
-  const currentEraStartSessionIndex = useCall<SessionIndex>(api.query.staking.currentEraStartSessionIndex);
+  const currentEraIndex = useCall<Option<EraIndex>>(api.query.staking.currentEra);
+  const currentEraStartSessionIndex = useCall<Option<SessionIndex>>(api.query.staking.erasStartSessionIndex, [currentEraIndex?.unwrap()]);
+  // const currentEraStartSessionIndex = useCall<SessionIndex>(api.query.staking.currentEraStartSessionIndex);
   const sessionsPerEra = api.consts?.staking?.sessionsPerEra;
   const epochDuration =  api.consts?.babe?.epochDuration;
   const eraLength = sessionsPerEra.mul(epochDuration);
@@ -38,8 +40,8 @@ function Summary ({ className = '',  isVisible, next, nominators, stakingOvervie
   if (sessionInfo && epochIndex && genesisSlot && currentSlot && currentEraStartSessionIndex) {
       const epochStartSlot = epochIndex.mul(sessionInfo.sessionLength).iadd(genesisSlot);
       const sessionProgress = currentSlot.gt(epochDuration) ? currentSlot.sub(epochStartSlot): new BN(0);
-      if (sessionInfo.currentIndex.gte(currentEraStartSessionIndex)) {
-          const eraProgress = sessionInfo.currentIndex.sub(currentEraStartSessionIndex).imul(sessionInfo.sessionLength).iadd(sessionProgress);
+      if (sessionInfo.currentIndex.gte(currentEraStartSessionIndex.unwrap())) {
+          const eraProgress = sessionInfo.currentIndex.sub(currentEraStartSessionIndex.unwrap()).imul(sessionInfo.sessionLength).iadd(sessionProgress);
           if (eraLength.gte(eraProgress)) {
               nextElectionIn = eraLength.sub(eraProgress);
               progress = eraProgress.muln(100).div(eraLength);
