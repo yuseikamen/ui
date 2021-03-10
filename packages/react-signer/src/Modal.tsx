@@ -102,7 +102,7 @@ async function makeExtrinsicSignature (
 ): Promise<void> {
   console.log('makeExtrinsicSignature: payload ::', JSON.stringify(payload));
 
-  const result = createType(registry, 'ExtrinsicPayload', payload, { version: payload.version }).sign(pair);
+  const result = registry.createType('ExtrinsicPayload', payload, { version: payload.version }).sign(pair);
 
   if (isFunction(signerCb)) {
     signerCb(id, { id, ...result });

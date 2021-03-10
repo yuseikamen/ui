@@ -75,7 +75,7 @@ function createWebpack({ alias = {}, context, name = 'index' }) {
           ]
         },
         {
-          test: /\.(js|ts|tsx)$/,
+          test: /\.(js|mjs|ts|tsx)$/,
           exclude: /(node_modules)/,
           use: [
             require.resolve('thread-loader'),

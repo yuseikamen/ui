@@ -14,6 +14,9 @@ import md from './md/basics.md';
 import { useTranslation } from './translate';
 import Developer from './Developer';
 import General from './General';
+import useChainInfo from "@polkadot/app-settings/useChainInfo";
+import Metadata from './Metadata';
+import useCounter from "@polkadot/app-settings/useCounter";
 
 const hidden = uiSettings.uiMode === 'full'
   ? []
@@ -21,11 +24,19 @@ const hidden = uiSettings.uiMode === 'full'
 
 export default function SettingsApp ({ basePath, onStatusChange }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
+  const chainInfo = useChainInfo();
+  const numExtensions = useCounter();
+  console.log('Chain info::', chainInfo);
   const items = useMemo(() => [
     {
       isRoot: true,
       name: 'general',
       text: t('General')
+    },
+    {
+      count: numExtensions,
+      name: 'metadata',
+      text: t<string>('Metadata')
     },
     {
       name: 'developer',
@@ -49,6 +60,9 @@ export default function SettingsApp ({ basePath, onStatusChange }: Props): React
             basePath={basePath}
             onStatusChange={onStatusChange}
           />
+        </Route>
+        <Route path={`${basePath}/metadata`}>
+          <Metadata />
         </Route>
         <Route component={General} />
       </Switch>

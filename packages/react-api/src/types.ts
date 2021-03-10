@@ -3,6 +3,7 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { SubmittableExtrinsicFunction } from '@polkadot/api/promise/types';
+import type { InjectedExtension } from '@polkadot/extension-inject/types';
 
 import { ApiPromise } from '@polkadot/api';
 import { KeyringPair$JsonEncodingTypes, KeyringPair$JsonVersion, KeyringPair$Meta } from '@polkadot/keyring/types';
@@ -20,6 +21,7 @@ export interface BareProps {
 export interface ApiState {
   apiDefaultTx: SubmittableExtrinsicFunction;
   apiDefaultTxSudo: SubmittableExtrinsicFunction;
+  hasInjectedAccounts: boolean;
   isApiReady: boolean;
   isDevelopment: boolean;
   isSubstrateV2: boolean;
@@ -30,8 +32,10 @@ export interface ApiState {
 
 export interface ApiProps extends ApiState {
   api: ApiPromise;
+  extensions?: InjectedExtension[];
   isWaitingInjected: boolean;
   isApiConnected: boolean;
+  isApiInitialized: boolean;
 }
 
 export interface OnChangeCbObs {

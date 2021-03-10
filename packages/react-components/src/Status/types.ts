@@ -6,7 +6,7 @@ import { SubmittableResult } from '@polkadot/api';
 import { SubmittableExtrinsic } from '@polkadot/api/promise/types';
 import { SignerResult } from '@polkadot/api/types';
 import { AccountId, Address } from '@polkadot/types/interfaces';
-import { DefinitionRpcExt, SignerPayloadJSON } from '@polkadot/types/types';
+import { DefinitionRpcExt, Registry, SignerPayloadJSON } from '@polkadot/types/types';
 
 export type Actions = 'create' | 'edit' | 'restore' | 'forget' | 'backup' | 'changePassword' | 'transfer';
 
@@ -99,7 +99,7 @@ export type QueueTxRpcAdd = (value: PartialQueueTxRpc) => void;
 
 export type QueueTxExtrinsicAdd = (value: PartialQueueTxExtrinsic) => void;
 
-export type QueueTxPayloadAdd = (payload: SignerPayloadJSON, signerCb: SignerCallback) => void;
+export type QueueTxPayloadAdd = (registry: Registry, payload: SignerPayloadJSON, signerCb: SignerCallback) => void;
 
 export type QueueTxMessageSetStatus = (id: number, status: QueueTxStatus, result?: any, error?: Error) => void;
 
