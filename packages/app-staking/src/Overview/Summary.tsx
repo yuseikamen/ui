@@ -36,7 +36,7 @@ function Summary ({ className = '',  isVisible, next, nominators, stakingOvervie
   const epochDuration =  api.consts?.babe?.epochDuration;
   const eraLength = sessionsPerEra.mul(epochDuration);
   let nextElectionIn = eraLength ? eraLength : new BN(0);
-  if (sessionInfo && epochIndex && genesisSlot && currentSlot && currentEraStartSessionIndex) {
+  if (sessionInfo && epochIndex && genesisSlot && currentSlot && currentEraStartSessionIndex?.isSome) {
       const epochStartSlot = epochIndex.mul(sessionInfo.sessionLength).iadd(genesisSlot);
       const sessionProgress = currentSlot.gt(epochDuration) ? currentSlot.sub(epochStartSlot): new BN(0);
       if (sessionInfo.currentIndex.gte(currentEraStartSessionIndex.unwrap())) {
