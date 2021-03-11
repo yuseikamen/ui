@@ -170,9 +170,7 @@ function extractInfo (api: ApiPromise, allAccounts: string[], electedDerive: Der
     .filter(({ isActive }) => isActive)
     .map(({ bondTotal }) => bondTotal)
     .sort((a, b) => a.cmp(b));
-  // console.log('Active totals:', activeTotals);
   const totalStaked = activeTotals.reduce((total: BN, value) => total.iadd(value), new BN(0));
-  // console.log('totalStaked:',totalStaked);
   const avgStaked = totalStaked.divn(activeTotals.length);
   const inflation = calcInflation(api, totalStaked, totalIssuance);
 

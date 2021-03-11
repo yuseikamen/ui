@@ -32,7 +32,6 @@ function Summary ({ className = '',  isVisible, next, nominators, stakingOvervie
   const genesisSlot = useCall<u64>(api.query.babe.genesisSlot);
   const currentEraIndex = useCall<Option<EraIndex>>(api.query.staking.currentEra);
   const currentEraStartSessionIndex = useCall<Option<SessionIndex>>(api.query.staking.erasStartSessionIndex, [currentEraIndex?.unwrap()]);
-  // const currentEraStartSessionIndex = useCall<SessionIndex>(api.query.staking.currentEraStartSessionIndex);
   const sessionsPerEra = api.consts?.staking?.sessionsPerEra;
   const epochDuration =  api.consts?.babe?.epochDuration;
   const eraLength = sessionsPerEra.mul(epochDuration);
