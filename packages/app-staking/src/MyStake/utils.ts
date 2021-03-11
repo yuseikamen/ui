@@ -134,7 +134,8 @@ export async function getStakeShare(
   stashAddress: string,
   api: ApiPromise
 ): Promise<{ stakeShare: BigNumber; stakeRaw: BigNumber; elected: boolean }> {
-  const stakers = (await api.query.staking.stakers(nominatedAddress)) as Exposure;
+  const eraIndex = await api.query.staking.currentEra();
+  const stakers = (await api.query.staking.erasStakers(eraIndex.unwrap(),nominatedAddress)) as Exposure;
   const totalStakeAmount = new BigNumber(stakers.total.toString());
   const stakersWithStashAccount = stakers.others.find(
     other => other.who.toString() === stashAddress
