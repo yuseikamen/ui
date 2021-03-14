@@ -100,6 +100,10 @@ export default React.memo(styled(Summary)`
     vertical-align: middle;
   }
 
+  .media--1200 {
+    height: 0;
+  }
+
   .validator--Summary-authors {
     .validator--Account-block-icon+.validator--Account-block-icon {
       margin-left: -1.5rem;

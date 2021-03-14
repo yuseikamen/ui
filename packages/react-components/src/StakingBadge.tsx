@@ -47,20 +47,15 @@ function Badge ({ className = '', color = 'normal', hover, icon, info, isSmall, 
 }
 
 export default React.memo(styled(Badge)`
-  border-radius: 16px;
-  box-sizing: border-box;
+  border-radius: 14px;
   color: #eeedec;
   display: inline-block;
-  font-size: 12px;
-  height: 22px;
-  line-height: 22px;
+  font-size: 14px;
+  line-height: 24px;
+  height: 24px;
   margin-right: 0.25rem;
-  min-width: 22px;
-  padding: 0 4px;
-  overflow: hidden;
+  min-width: 24px;
   text-align: center;
-  vertical-align: middle;
-  width: 22px;
 
   &.isTooltip {
     cursor: help;
@@ -68,8 +63,7 @@ export default React.memo(styled(Badge)`
 
   .ui--Icon {
     cursor: inherit;
-    margin-top: 5px;
-    vertical-align: top;
+    vertical-align: middle;
     width: 1em;
   }
 
@@ -78,16 +72,12 @@ export default React.memo(styled(Badge)`
   }
 
   &.isSmall {
-    font-size: 10px;
-    height: 16px;
-    line-height: 16px;
-    min-width: 16px;
+    font-size: 14px;
+    height: 14px;
+    line-height: 14px;
+    min-width: 14px;
     padding: 0;
-    width: 16px;
-
-    .ui--Icon {
-      margin-top: 3px;
-    }
+    width: 14px;
   }
 
   &.blueColor {

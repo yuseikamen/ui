@@ -1,15 +1,18 @@
-import { Nominations, Exposure } from '@cennznet/types';
+import { Nominations, Exposure, EraIndex } from '@cennznet/types';
 import { Api as ApiPromise } from '@cennznet/api';
 import { BigNumber } from 'bignumber.js';
 
 import { Nomination } from './index';
 
 export const STORE_STAKES: string = 'accounts:staking';
+export const ERA_EXPOSURE: string = 'era:exposure';
 
 export interface StakePair {
   stashAddress: string;
   controllerAddress: string;
 }
+
+let exposures: Map<string, Exposure> = new Map();
 
 // Return a list of all stash, controller pairs associated with the given (local) addresses
 export async function findStakedAccounts(
@@ -84,7 +87,8 @@ export async function getStashByController(
 export async function getNominationDetails(
   nominatedStashes: Nominations,
   stashAddress: string,
-  api: ApiPromise
+  api: ApiPromise,
+  eraIndex: EraIndex,
 ): Promise<Nomination[]> {
   const nominations: Nomination[] = [];
   const nominated =
@@ -99,6 +103,7 @@ export async function getNominationDetails(
         new Promise<void>(async resolve => {
 
           const { stakeShare, stakeRaw, elected } = await getStakeShare(
+            eraIndex,
             nominateToAddress,
             stashAddress,
             api
@@ -130,12 +135,15 @@ export async function getNextRewardEstimate(
 
 // Return info on the stake contributed by [[stashAddress]] to [[nominatedAddress]]
 export async function getStakeShare(
+  eraIndex: EraIndex,
   nominatedAddress: string,
   stashAddress: string,
   api: ApiPromise
 ): Promise<{ stakeShare: BigNumber; stakeRaw: BigNumber; elected: boolean }> {
-  const eraIndex = await api.query.staking.currentEra();
-  const stakers = (await api.query.staking.erasStakers(eraIndex.unwrap(),nominatedAddress)) as Exposure;
+  // TODO: cache these exposures
+  const stakers = exposures.get(nominatedAddress) || (await api.query.staking.erasStakers(eraIndex, nominatedAddress)) as Exposure;
+  exposures.set(nominatedAddress, stakers);
+
   const totalStakeAmount = new BigNumber(stakers.total.toString());
   const stakersWithStashAccount = stakers.others.find(
     other => other.who.toString() === stashAddress

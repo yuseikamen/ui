@@ -9,13 +9,15 @@ import { useApi, useCall } from '@polkadot/react-hooks';
 import { formatNumber } from '@polkadot/util';
 
 import { useTranslation } from './translate';
+import styled from 'styled-components';
 
 interface Props {
   withEra?: boolean;
   withSession?: boolean;
+  className?: string;
 }
 
-export default function SummarySession ({ withEra = true, withSession = true }: Props): React.ReactElement<Props> {
+function SummarySession ({ className, withEra = true, withSession = true }: Props): React.ReactElement<Props> {
   const { t } = useTranslation();
   const { api } = useApi();
   const sessionInfo = useCall<DeriveSessionProgress>(api.query.staking && api.derive.session?.progress);
@@ -36,6 +38,7 @@ export default function SummarySession ({ withEra = true, withSession = true }: 
             sessionInfo.sessionLength.gtn(1)
               ? (
                 <CardSummary
+                  className={className}
                   label={sessionLabel}
                   progress={{
                     total: sessionInfo.sessionLength,
@@ -44,7 +47,7 @@ export default function SummarySession ({ withEra = true, withSession = true }: 
                 />
               )
               : (
-                <CardSummary label={sessionLabel}>
+                <CardSummary className={className} label={sessionLabel}>
                   #{formatNumber(sessionInfo.currentIndex)}
                 </CardSummary>
               )
@@ -53,6 +56,7 @@ export default function SummarySession ({ withEra = true, withSession = true }: 
             sessionInfo.sessionLength.gtn(1)
               ? (
                 <CardSummary
+                  className={className}
                   label={eraLabel}
                   progress={{
                     total: sessionInfo.eraLength,
@@ -61,7 +65,7 @@ export default function SummarySession ({ withEra = true, withSession = true }: 
                 />
               )
               : (
-                <CardSummary label={eraLabel}>
+                <CardSummary className={className} label={eraLabel}>
                   #{formatNumber(sessionInfo.currentEra)}
                 </CardSummary>
               )
@@ -71,3 +75,8 @@ export default function SummarySession ({ withEra = true, withSession = true }: 
     </>
   );
 }
+
+// allows the progress bar to not affect height
+export default styled(SummarySession)`
+  height: 0 !important;
+`;

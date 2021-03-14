@@ -22,11 +22,9 @@ function Summary ({ t }: Props): React.ReactElement<Props> {
           className='ui--media-small'
           label={t('target')}
         >
-          <TimePeriod />
+          <TimePeriod/>
         </CardSummary>
-      </section>
-      <section className='ui--media-large'>
-        <SummarySession withEra={false} />
+        <SummarySession className='ui--media-small' withEra={false}/>
       </section>
       <section>
         <CardSummary label={t('finalized')}>
