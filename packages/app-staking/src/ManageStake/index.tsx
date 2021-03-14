@@ -36,7 +36,7 @@ export function _renderRows(validatorInfo: DeriveStakingQuery[], isElected: bool
           <AddressSmall value={accountId.toString()}/>
         </td>
         <td className='address'>
-          {chain ? poolRegistry[chain][accountId.toString()] ? poolRegistry[chain][accountId.toString()] : 'Centrality' : 'Centrality'}
+          {chain && poolRegistry[chain] && poolRegistry[chain][accountId.toString()] ? poolRegistry[chain][accountId.toString()] : 'Unknown'}
         </td>
         <td>
           {validatorPrefs["commission"].toHuman()}

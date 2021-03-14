@@ -121,7 +121,8 @@ function Address ({ address, className = '', filterName, hasQueries, isElected, 
 
   const chainInfo = useCall<string>(api.rpc.system.chain, []);
   const chain: string | undefined = chainInfo ? chainInfo.toString() : undefined;
-  const pool = chain ? poolRegistry[chain][address] ? poolRegistry[chain][address] : 'Centrality' : 'unknown';
+  const pool = chain && poolRegistry[chain] && poolRegistry[chain][address] ? poolRegistry[chain][address] : 'Unknown';
+
 
   return (
       <tr className={className} onClick={toggleViewNominators}>
