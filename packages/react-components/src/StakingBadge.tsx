@@ -50,11 +50,11 @@ export default React.memo(styled(Badge)`
   border-radius: 14px;
   color: #eeedec;
   display: inline-block;
-  font-size: 14px;
-  line-height: 24px;
-  height: 24px;
+  font-size: 12px;
+  line-height: 22px;
+  height: 22px;
   margin-right: 0.25rem;
-  min-width: 24px;
+  min-width: 22px;
   text-align: center;
 
   &.isTooltip {

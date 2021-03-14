@@ -68,7 +68,7 @@ export default function Overview ({ className, onStatusChange }: Props): React.R
   const _toggleQr = (): void => setIsQrOpen(!isQrOpen);
 
   return (
-    <div className={className} style={{ minWidth: "800px", maxWidth: "80%" }}>
+    <div className={className} style={{ minWidth: '800px', maxWidth: '80%' }}>
       {isCreateOpen && (
         <CreateModal
           onClose={_toggleCreate}
@@ -87,7 +87,7 @@ export default function Overview ({ className, onStatusChange }: Props): React.R
           onStatusChange={onStatusChange}
         />
       )}
-      <Button.Group>
+      <Button.Group style={{ marginBottom: '2em' }}>
         <Button
           icon='add'
           isPrimary
