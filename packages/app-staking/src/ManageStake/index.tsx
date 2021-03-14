@@ -193,7 +193,7 @@ function ManageStake ({ className, controllerAddress, stashAddress, onClose }: P
                 label={t('Action')}
                 onChange={setMethod}
               />
-              {isFinalSession && <span style={{ color: 'red', marginLeft: '1em', marginTop: '2em' }}>⚠️ nominations and active stake amounts cannot be changed in the last session of an era</span>}
+              {isFinalSession.valueOf() && <span style={{ color: 'red', marginLeft: '1em', marginTop: '2em' }}>⚠️ nominations and active stake amounts cannot be changed in the last session of an era</span>}
               <div className='validator-info' style={{ display: showValidatorList ? 'block' : 'none' }}>
                 <div className='label'>
                   Select validators to nominate
