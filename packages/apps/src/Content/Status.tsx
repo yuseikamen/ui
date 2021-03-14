@@ -41,7 +41,7 @@ export default function Status ({ optionsAll, queueAction, stqueue, txqueue }: P
 
     const statusses = events && events
       .map(({ event: { data, method, section } }): ActionStatus | null => {
-        if (section === 'genericAsset' && method === 'Transfer') {
+        if (section === 'genericAsset' && method === 'Transferred') {
           const account = data[1].toString();
 
           if (allAccounts.includes(account)) {
