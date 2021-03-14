@@ -110,7 +110,6 @@ function getValuesFromString (value: string, props: Props): [string, BN, boolean
   // sanitize the user input value, keeping digits and decimal point only.
   const valueSanitized = value.replace(/[^\d|\.]/g, '');
   const valueFormatted = formatInput(valueSanitized);
-  console.log(valueSanitized);
   const valueBn = new BN(
     decimalToFixedWidth({
       value: valueSanitized,
@@ -138,7 +137,6 @@ function getValuesFromBn (valueBn: BN, si: SiDef | null): [string, BN, boolean] 
 }
 
 function getValues (value: BN | string, si: SiDef | null, props: Props): [string, BN, boolean] {
-  console.log(value.toString());
   return BN.isBN(value)
     ? getValuesFromBn(value, si)
     : getValuesFromString(value, props);
