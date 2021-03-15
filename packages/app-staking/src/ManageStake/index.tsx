@@ -17,7 +17,7 @@ import { poolRegistry } from "@polkadot/app-staking/Overview/Address/poolRegistr
 import assetsRegistry, { SPENDING_ASSET_NAME, STAKING_ASSET_NAME } from "@polkadot/app-generic-asset/assetsRegistry";
 import BN from "bn.js";
 import { StakingLedger } from "@cennznet/types";
-import { Option } from '@polkadot/types';
+import { bool, Option } from '@polkadot/types';
 import { SubmittableExtrinsic } from '@polkadot/api/promise/types';
 import styled from 'styled-components';
 import {colors} from '../../../../styled-theming';
@@ -36,7 +36,7 @@ export function _renderRows(validatorInfo: DeriveStakingQuery[], isElected: bool
           <AddressSmall value={accountId.toString()}/>
         </td>
         <td className='address'>
-          {chain ? poolRegistry[chain][accountId.toString()] ? poolRegistry[chain][accountId.toString()] : 'Centrality' : 'Centrality'}
+          {chain && poolRegistry[chain] && poolRegistry[chain][accountId.toString()] ? poolRegistry[chain][accountId.toString()] : 'Unknown'}
         </td>
         <td>
           {validatorPrefs["commission"].toHuman()}
@@ -68,6 +68,7 @@ function ManageStake ({ className, controllerAddress, stashAddress, onClose }: P
     const electedInfo = useCall<DeriveStakingElected>(api.derive.staking.electedInfo);
     const waitingInfo = useCall<DeriveStakingWaiting>(api.derive.staking.waitingInfo);
     const [method, setMethod] = useState<SubmittableExtrinsic | null>();
+    const isFinalSession = useCall<bool>(api.query.staking.isCurrentSessionFinal) || false;
     const chainInfo = useCall<string>(api.rpc.system.chain, []);
     // the address which should sign the transaction.
     // it can change between stash or controller.
@@ -192,7 +193,8 @@ function ManageStake ({ className, controllerAddress, stashAddress, onClose }: P
                 label={t('Action')}
                 onChange={setMethod}
               />
-              <div className='validator-info' style={showValidatorList ? {display: 'block'} : {display: 'none'}}>
+              {isFinalSession.valueOf() && <span style={{ color: 'red', marginLeft: '1em', marginTop: '2em' }}>⚠️ nominations and active stake amounts cannot be changed in the last session of an era</span>}
+              <div className='validator-info' style={{ display: showValidatorList ? 'block' : 'none' }}>
                 <div className='label'>
                   Select validators to nominate
                 </div>
@@ -217,7 +219,7 @@ function ManageStake ({ className, controllerAddress, stashAddress, onClose }: P
               accountId={signingAddress}
               extrinsic={extrinsic}
               icon='sign-in'
-              isDisabled={!isValid}
+              isDisabled={!isValid || isFinalSession.valueOf()}
               onStart={onClose}
               isPrimary
               label={t('Submit Transaction')}

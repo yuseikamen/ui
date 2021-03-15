@@ -87,6 +87,10 @@ export default styled(AddressSmall)`
   white-space: nowrap;
   box-shadow: none !important;
 
+  .container.highlight::before {
+    box-shadow: 0 0 1px 1px #EEE !important;
+  }
+
   .name--clickable {
     cursor: pointer;
   }

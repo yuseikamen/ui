@@ -8,21 +8,23 @@ import { css } from 'styled-components';
 const colorBtnDefault = '#666';
 
 /* highlighted buttons, orange */
-const colorBtnHighlight = '#f19135';
+const colorBtnHighlight = '#ed9d2d';
 
 /* primary buttons, blue */
-const colorBtnPrimary = '#2e86ab';
+const colorBtnPrimary = '#3452eb';
 
 /* button text color */
 const colorBtnText = '#f9f9f9';
 
+const colorLink = '#2e86ab';
+
 export default css`
   a {
-    color: ${colorBtnPrimary};
+    color: ${colorLink};
 
     &:hover,
     a:visited {
-      color: ${colorBtnPrimary};
+      color: ${colorLink};
     }
   }
 

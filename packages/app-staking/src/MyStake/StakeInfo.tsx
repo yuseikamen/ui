@@ -3,8 +3,8 @@
 // of the Apache-2.0 license. See the LICENSE file for details.
 
 import { Api } from '@cennznet/api';
-import {UnlockChunk} from '@polkadot/types/interfaces/staking/types';
-import { AccountId, Nominations, Option, StakingLedger, u64 } from '@cennznet/types';
+import {ActiveEraInfo, EraIndex, UnlockChunk} from '@polkadot/types/interfaces/staking/types';
+import { AccountId, Nominations, Option, StakingLedger } from '@cennznet/types';
 import {
   SPENDING_ASSET_NAME, STAKING_ASSET_NAME
 } from '@polkadot/app-generic-asset/assetsRegistry';
@@ -53,12 +53,19 @@ export default function StakeInfo({ stakePair }: Props): React.ReactElement<Prop
   const [rewardEstimate, setRewardEstimate] = useState<BigNumber>(new BigNumber(0));
   const [stakedAmount, setStakedAmount] = useState<BigNumber>(new BigNumber(0));
   const [unlocking, setUnlocking] = useState<UnlockChunk[]>([]);
+  const [eraIndex, setEraIndex] = useState<EraIndex>(api.createType('EraIndex', 0));
 
   let controllerAddress = useCall<string>(api.query.staking.bonded, [stakePair.stashAddress])?.toString() || stakePair.controllerAddress;
   let rewardAddress = useCall<AccountId>(api.query.rewards.payee, [stakePair.stashAddress]);
   let ledger = useCall<Option<StakingLedger>>(api.query.staking.ledger, [controllerAddress]);
   let nominatedStashes = useCall<Option<Nominations>>(api.query.staking.nominators, [stakePair.stashAddress]);
-  let currentEra = useCall<u64>(api.query.staking.currentEra, []);
+  let activeEra = useCall<Option<ActiveEraInfo>>(api.query.staking.activeEra, []);
+
+  useEffect(() => {
+    if (activeEra?.isSome) {
+      setEraIndex(activeEra.unwrap().index)
+    }
+  }, [activeEra]);
 
   useEffect(() => {
     if(!ledger) return;
@@ -77,9 +84,9 @@ export default function StakeInfo({ stakePair }: Props): React.ReactElement<Prop
   useEffect(() => {
     if(!nominatedStashes) return;
 
-    getNominationDetails(nominatedStashes.unwrapOrDefault(), stakePair.stashAddress, api as Api)
+    getNominationDetails(nominatedStashes.unwrapOrDefault(), stakePair.stashAddress, api as Api, eraIndex)
       .then((nominations: Nomination[]) => setNominations(nominations));
-  }, [nominatedStashes]);
+  }, [nominatedStashes, eraIndex]);
 
     return (
       <tbody
@@ -209,7 +216,7 @@ export default function StakeInfo({ stakePair }: Props): React.ReactElement<Prop
         {unlocking?.map((chunk: UnlockChunk, index: number) => (
           <tr className='unlocking-info' key={index}>
             <td><FormatBalance value={chunk.value.toString()} symbol={STAKING_ASSET_NAME}/></td>
-            <td>{`${Math.max(0, chunk.era.toNumber() - (currentEra?.toNumber() || 0)).toString()} days`}</td>
+            <td>{`${Math.max(0, chunk.era.toNumber() - eraIndex.toNumber())} days`}</td>
           </tr>
         ))}
         </tbody>

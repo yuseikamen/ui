@@ -8,9 +8,10 @@ import { useApi } from '@polkadot/react-hooks';
 
 interface Props {
   numNominators?: number;
+  hover?: React.ReactNode;
 }
 
-function MaxBadge ({ numNominators }: Props): React.ReactElement<Props> | null {
+function MaxBadge ({ numNominators, hover }: Props): React.ReactElement<Props> | null {
   const { api } = useApi();
 
   const max = api.consts.staking?.maxNominatorRewardedPerValidator;
@@ -23,6 +24,7 @@ function MaxBadge ({ numNominators }: Props): React.ReactElement<Props> | null {
     <StakingBadge
       color='red'
       icon='balance-scale-right'
+      hover={hover}
     />
   );
 }

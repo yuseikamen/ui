@@ -118,6 +118,6 @@ const StyledTable = styled(Table)`
 
   .unlocking-header,
   .unlocking-info {
-    max-width: 500px;
+    max-width: 350px;
   }
 `;

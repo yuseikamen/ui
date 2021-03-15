@@ -9,7 +9,6 @@ import { isWeb3Injected, web3Accounts, web3Enable } from '@polkadot/extension-da
 import { StatusContext } from '@polkadot/react-components/Status';
 import { TokenUnit } from '@polkadot/react-components/InputNumber';
 import keyring from '@polkadot/ui-keyring';
-import uiSettings from '@polkadot/ui-settings';
 import ApiSigner from '@polkadot/react-signer/ApiSigner';
 import { createType } from '@polkadot/types';
 import { formatBalance, isTestChain } from '@polkadot/util';
@@ -82,10 +81,7 @@ async function loadOnReady (api: ApiPromise): Promise<State> {
       }))
     )
   ]);
-  const ss58Format = uiSettings.prefix === -1
-    ? properties.ss58Format.unwrapOr(DEFAULT_SS58).toNumber()
-    : uiSettings.prefix;
-
+  const ss58Format = properties.ss58Format.unwrapOr(DEFAULT_SS58).toNumber();
   // TODO: query from genericAsset.assetRegistry
   // 1) find spending Asset ID
   // 2) find spending Asset ID decimals and symbol

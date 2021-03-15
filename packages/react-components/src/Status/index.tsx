@@ -4,9 +4,8 @@
 
 import { QueueStatus, QueueTx, QueueTxStatus } from './types';
 
-import React from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { registry } from '@polkadot/react-api';
 
 import AddressMini from '../AddressMini';
 import Button from '../Button';
@@ -52,7 +51,6 @@ function signerIconName (status: QueueTxStatus): any {
       return 'check';
 
     case 'dropped':
-    case 'retracted':
     case 'invalid':
     case 'usurped':
       return 'arrow down';
@@ -78,7 +76,7 @@ function renderStatus ({ account, action, id, message, removeItem, status }: Que
       <div className='wrapper'>
         <div className='container'>
           <Icon
-            name='close'
+            name='times'
             onClick={removeItem}
           />
           <div className='short'>
@@ -86,7 +84,9 @@ function renderStatus ({ account, action, id, message, removeItem, status }: Que
           </div>
           <div className='desc'>
             <div className='header'>
-              {action}
+              {Array.isArray(action)
+                ? action.map((action, index) => <div key={index}>{action}</div>)
+                : action}
             </div>
             {account && (
               <AddressMini value={account} />
@@ -105,7 +105,7 @@ function renderItem ({ id, extrinsic, error, removeItem, rpc, status }: QueueTx)
   let { method, section } = rpc;
 
   if (extrinsic) {
-    const found = registry.findMetaCall(extrinsic.callIndex);
+    const found = extrinsic.registry.findMetaCall(extrinsic.callIndex);
 
     if (found.section !== 'unknown') {
       method = found.method;
@@ -113,7 +113,7 @@ function renderItem ({ id, extrinsic, error, removeItem, rpc, status }: QueueTx)
     }
   }
 
-  const icon = signerIconName(status);
+  const icon = signerIconName(status) as 'ban' | 'spinner';
 
   return (
     <div
@@ -124,7 +124,7 @@ function renderItem ({ id, extrinsic, error, removeItem, rpc, status }: QueueTx)
         <div className='container'>
           {STATUS_COMPLETE.includes(status) && (
             <Icon
-              name='close'
+              name='times'
               onClick={removeItem}
             />
           )}
@@ -139,7 +139,7 @@ function renderItem ({ id, extrinsic, error, removeItem, rpc, status }: QueueTx)
               {section}.{method}
             </div>
             <div className='status'>
-              {error ? error.message : status}
+              {error ? (error.message || error) : status}
             </div>
           </div>
         </div>
@@ -148,38 +148,58 @@ function renderItem ({ id, extrinsic, error, removeItem, rpc, status }: QueueTx)
   );
 }
 
-function Status ({ className, stqueue = [], txqueue = [] }: Props): React.ReactElement<Props> | null {
-  const { t } = useTranslation();
-  const allst: QueueStatus[] = stqueue.filter(({ isCompleted }): boolean => !isCompleted);
-  const alltx: QueueTx[] = txqueue.filter(({ status }): boolean =>
-    !['completed', 'incomplete'].includes(status)
-  );
-  const completedTx = alltx.filter(({ status }): boolean => STATUS_COMPLETE.includes(status));
+function filterSt (stqueue?: QueueStatus[]): QueueStatus[] {
+  return (stqueue || []).filter(({ isCompleted }) => !isCompleted);
+}
 
-  if (!allst.length && !alltx.length) {
+function filterTx (txqueue?: QueueTx[]): [QueueTx[], QueueTx[]] {
+  const allTx = (txqueue || []).filter(({ status }) => !['completed', 'incomplete'].includes(status));
+
+  return [allTx, allTx.filter(({ status }) => STATUS_COMPLETE.includes(status))];
+}
+
+function Status ({ className }: Props): React.ReactElement<Props> | null {
+  const { stqueue, txqueue } = useContext(StatusContext);
+  const [allSt, setAllSt] = useState<QueueStatus[]>([]);
+  const [[allTx, completedTx], setAllTx] = useState<[QueueTx[], QueueTx[]]>([[], []]);
+  const { t } = useTranslation();
+
+  useEffect((): void => {
+    setAllSt(filterSt(stqueue));
+  }, [stqueue]);
+
+  useEffect((): void => {
+    setAllTx(filterTx(txqueue));
+  }, [txqueue]);
+
+  const _onDismiss = useCallback(
+    (): void => {
+      allSt.map((s) => s.removeItem());
+      completedTx.map((t) => t.removeItem());
+    },
+    [allSt, completedTx]
+  );
+
+  if (!allSt.length && !allTx.length) {
     return null;
   }
 
-  const _onDismiss = (): void => {
-    allst.map((s): void => s.removeItem());
-    completedTx.map((t): void => t.removeItem());
-  };
-
   return (
     <div className={`ui--Status ${className}`}>
-      {(allst.length + completedTx.length) > 1 && (
+      {(allSt.length + completedTx.length) > 1 && (
         <div className='dismiss'>
           <Button
+            isBasic
             isFluid
-            isNegative
+            style={{ width: '100%' }}
             onClick={_onDismiss}
             label={t('Dismiss all notifications')}
-            icon='cancel'
+            icon='times'
           />
         </div>
       )}
-      {alltx.map(renderItem)}
-      {allst.map(renderStatus)}
+      {allTx.map(renderItem)}
+      {allSt.map(renderStatus)}
     </div>
   );
 }

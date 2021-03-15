@@ -13,7 +13,7 @@ export default function createOptions (api: ApiPromise, sectionName: string): Dr
     return [];
   }
   // these methods require sudo or advanced knowledge
-  const removeOperations = ["setValidatorCount", "reapStash", "validate", "forceNoEras", "forceNewEra", "setMinimumBond", "setInvulnerables", "forceUnstake", "forceNewEraAlways","cancelDeferredSlash","bond"];
+  const removeOperations = ["setValidatorCount", "reapStash", "validate", "forceNoEras", "forceNewEra", "setMinimumBond", "setInvulnerables", "forceUnstake", "forceNewEraAlways","cancelDeferredSlash","bond", "submitElectionSolution", "submitElectionSolutionUnsigned", "increaseValidatorCount", "setHistoryDepth"];
   const stakingDocHelp: Record<string, any> = {
     "setController": ["Change controller account","Set the controller for this stash"],
     "nominate": ["Change nominations", "Nominate different validators for this stash"],

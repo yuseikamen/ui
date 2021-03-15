@@ -39,7 +39,7 @@ function AccountCheckingModal ({className, closeNoAccountsPopUp }: Props): React
   const { t } = useTranslation();
 
   return (
-    <Modal className={className}>
+    <Modal style={{ marginTop: '10%' }} className={className}>
       <FontAwesomeIcon
         style={{marginLeft:"97%", marginTop:"1%"}}
         icon={faTimes}
@@ -59,6 +59,8 @@ function AccountCheckingModal ({className, closeNoAccountsPopUp }: Props): React
 export default styled(AccountCheckingModal)`
 background: ${colors.lightBrown} !important;
 border: solid 2px #d09c4e !important;
+max-width: 700px;
+
 .content {
   margin-left: 2rem;
   color: rgb(95 50 3 / 87%);

@@ -33,7 +33,7 @@ function Status ({ isElected, isMain, nominators = [], onlineCount, onlineMessag
           <StakingBadge
             color='green'
             icon='hand-paper'
-            hover='validator has support from some nominators'
+            hover='validator has been nominated by one of your accounts'
           />
         )
         : null
@@ -51,7 +51,7 @@ function Status ({ isElected, isMain, nominators = [], onlineCount, onlineMessag
           ? (
             <StakingBadge
               color='blue'
-              hover={`validator is online and has authored ${blockCount} blocks`}
+              hover={`validator is online and has authored ${blockCount} out of the last 120 blocks`}
               info={blockCount || <Icon icon='envelope'
             />
         }
@@ -59,7 +59,10 @@ function Status ({ isElected, isMain, nominators = [], onlineCount, onlineMessag
           )
           : null
       )}
-      <MaxBadge numNominators={nominators.length} />
+      <MaxBadge
+        numNominators={nominators.length}
+        hover={`validator is oversubscribed with ${nominators.length} nominators`}
+      />
     </>
   );
 }

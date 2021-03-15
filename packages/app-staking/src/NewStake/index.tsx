@@ -85,6 +85,7 @@ function NewStake ({ className, isVisible }: Props): React.ReactElement<Props> {
     }, [stashAccountId]);
 
     useEffect((): void => {
+        openAccountCheckingModal
         if (accountIdVec.length === 0 || stashAccountId === null || rewardDestinationId === null || openAccountCheckingModal || amount?.isZero() || amount?.gt(assetBalance) || !acknowledged) {
             setIsValid(false);
         } else {

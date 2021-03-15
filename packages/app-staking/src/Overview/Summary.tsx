@@ -4,15 +4,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
-import type { DeriveStakingOverview, DeriveSessionInfo } from '@polkadot/api-derive/types';
-import type { SessionIndex } from '@polkadot/types/interfaces/session';
+import type { DeriveStakingOverview, DeriveSessionProgress } from '@polkadot/api-derive/types';
 import { CardSummary, SummaryBox } from '@polkadot/react-components';
 import { useTranslation } from '../translate';
 import {useApi, useCall} from "@polkadot/react-hooks";
 import { faCube } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import BN from 'bn.js';
-import { u64 } from '@cennznet/types';
+
 interface Props {
   className?: string;
   isVisible: boolean;
@@ -26,25 +25,11 @@ function Summary ({ className = '',  isVisible, next, nominators, stakingOvervie
   const { t } = useTranslation();
   const { api } = useApi();
   let progress = new BN(0);
-  const sessionInfo = useCall<DeriveSessionInfo>(api.derive.session?.info);
-  const currentSlot = useCall<u64>(api.query.babe.currentSlot);
-  const epochIndex = useCall<u64>(api.query.babe.epochIndex);
-  const genesisSlot = useCall<u64>(api.query.babe.genesisSlot);
-  const currentEraStartSessionIndex = useCall<SessionIndex>(api.query.staking.currentEraStartSessionIndex);
-  const sessionsPerEra = api.consts?.staking?.sessionsPerEra;
-  const epochDuration =  api.consts?.babe?.epochDuration;
-  const eraLength = sessionsPerEra.mul(epochDuration);
-  let nextElectionIn = eraLength ? eraLength : new BN(0);
-  if (sessionInfo && epochIndex && genesisSlot && currentSlot && currentEraStartSessionIndex) {
-      const epochStartSlot = epochIndex.mul(sessionInfo.sessionLength).iadd(genesisSlot);
-      const sessionProgress = currentSlot.gt(epochDuration) ? currentSlot.sub(epochStartSlot): new BN(0);
-      if (sessionInfo.currentIndex.gte(currentEraStartSessionIndex)) {
-          const eraProgress = sessionInfo.currentIndex.sub(currentEraStartSessionIndex).imul(sessionInfo.sessionLength).iadd(sessionProgress);
-          if (eraLength.gte(eraProgress)) {
-              nextElectionIn = eraLength.sub(eraProgress);
-              progress = eraProgress.muln(100).div(eraLength);
-          }
-      }
+  const sessionProgress = useCall<DeriveSessionProgress>(api.derive.session.progress);
+  let nextElectionIn = new BN(0);
+  if (sessionProgress?.eraLength.gte(sessionProgress?.eraProgress)) {
+    nextElectionIn = sessionProgress?.eraLength.sub(sessionProgress?.eraProgress);
+    progress = sessionProgress?.eraProgress.muln(100).div(sessionProgress?.eraLength);
   }
 
   // Progress bar
@@ -113,6 +98,10 @@ export default React.memo(styled(Summary)`
     margin-right: 0.75rem;
     margin-top: -0.25rem;
     vertical-align: middle;
+  }
+
+  .media--1200 {
+    height: 0;
   }
 
   .validator--Summary-authors {
