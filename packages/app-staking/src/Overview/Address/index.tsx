@@ -73,7 +73,7 @@ function expandInfo ({ exposure, validatorPrefs }: ValidatorInfo): StakingState 
 
 const modalHeader = (<h2>top nominators<Icon></Icon></h2>);
 
-function NominatedByModal_({ nominators, onClose } : NominatorModalProps): React.ReactElement<NominatorModalProps> | null {
+function NominatedByModal_({ nominators } : NominatorModalProps): React.ReactElement<NominatorModalProps> | null {
   if(!nominators) return null;
 
   const [isVisible, setIsVisible] = useToggle(true);
@@ -86,13 +86,13 @@ function NominatedByModal_({ nominators, onClose } : NominatorModalProps): React
       <Modal.Content style={{ overflow: 'auto', maxHeight: '400px' }}>
           <table>
             <tbody>
-            {nominators?.slice(0, 128).map((n, index) => (
+            {nominators && nominators.length > 0 ? nominators?.slice(0, 128).map((n, index) => (
               <tr key={index} style={{ display: 'inline', marginRight: '2rem' }}>
                 <td style={{ width: '2rem' }}>{index + 1}</td>
                 <td style={{paddingRight: '10px'}}><AddressSmall value={n.nominatorId}/></td>
                 <td><FormatBalance value={n.value} symbol={STAKING_ASSET_NAME}/></td>
               </tr>
-            ))}
+            )) : (<h3>no nominations</h3>)}
             </tbody>
           </table>
       </Modal.Content>
