@@ -61,7 +61,7 @@ const componentDef: TypeToComponent[] = [
   { c: Moment, t: ['Moment', 'MomentOf'] },
   { c: Null, t: ['Null'] },
   { c: Option, t: ['Option'] },
-  { c: Text, t: ['String', 'Text'] },
+  { c: Text, t: ['String', 'Text', 'CollectionNameType'] },
   { c: Struct, t: ['Struct'] },
   { c: Tuple, t: ['Tuple'] },
   { c: Vector, t: ['Vec'] },
