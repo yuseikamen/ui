@@ -108,12 +108,11 @@ function getValuesFromString (value: string, props: Props): [string, BN, boolean
   // sanitize the user input value, keeping digits and decimal point only.
   const valueSanitized = value.replace(/[^\d|\.]/g, '');
   const valueFormatted = formatInput(valueSanitized);
-  const valueBn = new BN(
-    decimalToFixedWidth({
-      value: valueSanitized,
-      fixedPoint: props.decimals || formatBalance.getDefaults().decimals,
-    })
-  );
+  let valueWei = decimalToFixedWidth({
+    value: valueSanitized,
+    fixedPoint: props.decimals || formatBalance.getDefaults().decimals,
+  });
+  let valueBn = new BN(valueWei);
 
   return [
     valueFormatted,
