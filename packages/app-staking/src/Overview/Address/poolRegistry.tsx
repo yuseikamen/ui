@@ -46,6 +46,8 @@ export const poolRegistry: Record<string, any> = {
     "5DLV7RVNDE7pEuZ1i6pa3kFnpiR1S8dtnRfYN24h3BkhSt9R": "Binnostake",
     "5EkChLz1FL7pBs6UzmemVFKbBgxpL6w2whKqJwQ56wQyeQVE": "GoET",
     "5DFZvWUUzKsPmbzKDjghjZayAT7evWDaDGUJuEJHZ1huAHhT": "Commerce",
+    "5CSPDqPsoFeMMeLCi2hPCGw98qEThWQbobeExEfKCQdmWo7J": "Commerce",
+    "5FPGzWtwZ2KhdUh1xGYzCF8uQXnZDbKKDbzpcCErZp2Zt4eG": "Commerce",
     "5HEEhsRBWuQLeJWgDoGHKYL2TP3u8JCwp9UYEj7vCrBXF449": "Magica"
   }
 };
