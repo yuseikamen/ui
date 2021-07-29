@@ -54,6 +54,12 @@ export const poolRegistry: Record<string, any> = {
     "5CUehEVz9d17JAcgGYkUVzwCsqjNZ2o5QNVTtzsugw9mnS5j": "Magica",
     "5DaFT63mDSFPin93jUsH6RA3ZGCkTTJdrm72aWt8tCRaZwU8": "Karinto",
     "5CGH4QyXcxrHGTDxg87pHLwib8CFaxo7hwBHoCyhPKgSk39S": "Karinto",
-    "5Dxwcp4A2qeRrzv8SNRDYWh2n3s8ZYPwjJhecg1QKiXXJTWr": "Karinto"
+    "5Dxwcp4A2qeRrzv8SNRDYWh2n3s8ZYPwjJhecg1QKiXXJTWr": "Karinto",
+    "5GjDYsvScV6Bo4gwxibrxc6Xjnqkosv8V5pixz9sqJ4FLhAt": "CoolJapan",
+    "5CkTsRHXpCLC5ERZQqKvhHdZGc4zkFym9ZseS1Udd5QHbaQ8": "CoolJapan",
+    "5G6GSfUVRuUgNeCqHNc23S1nW8TDo5yn3qTU3D5SXW7mvhW6": "CoolJapan",
+    "5GEtjpujbteyQN7bcgSu4hc2A4jD9HrpZ9kvutXfMwy3RNNv": "MoyoriNet",
+    "5CypTaFf6qsQESJKNQkUA6cs6TRdNfs1FTTApMtoisrPRGot": "MoyoriNet",
+    "5HNFjjmuAiajFTHxbmfAjk1uBAK49qKGejuBJ9coZ8DQGdhs": "MoyoriNet"
   }
 };
